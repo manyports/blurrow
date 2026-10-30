@@ -1,14 +1,6 @@
 import { formatStars } from "@/lib/github";
 import { npmUrl, repo } from "@/lib/site";
 
-function StarIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M12 2.8l2.83 5.74 6.33.92-4.58 4.46 1.08 6.3L12 17.25l-5.66 2.97 1.08-6.3L2.84 9.46l6.33-.92L12 2.8z" />
-    </svg>
-  );
-}
-
 function GitHubIcon() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -54,6 +46,63 @@ function LinkRow({
   );
 }
 
+/* The one thing we'd love people to do here, so it's built like the
+   kit's primary button: a dark face in a dark bezel. The star fills
+   gold when you reach for it, staying put, and a band of light crosses the face
+   every few seconds so it's noticed without shouting.             */
+function StarCta({ stars }: { stars: number | null }) {
+  return (
+    <a
+      href={repo.url}
+      target="_blank"
+      rel="noopener"
+      className="group block rounded-[18px] p-[4px] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900"
+      style={{ background: "var(--bezel-dark)", boxShadow: "var(--bezel-dark-shadow)" }}
+    >
+      <style href="blurrow-star-sweep" precedence="default">{`
+        @keyframes blurrow-star-sweep { 0%, 72% { transform: translateX(-120%); } 100% { transform: translateX(420%); } }
+        @media (prefers-reduced-motion: reduce) { .blurrow-star-sweep { display: none; } }
+      `}</style>
+      <span
+        className="relative flex items-center gap-4 overflow-hidden rounded-[14px] px-4 py-4 sm:px-5 sm:py-5 transition-[transform,box-shadow] duration-200 group-hover:-translate-y-px group-active:translate-y-px"
+        style={{ background: "var(--face-dark)", boxShadow: "var(--face-dark-shadow)" }}
+      >
+        <span
+          aria-hidden
+          className="blurrow-star-sweep pointer-events-none absolute inset-y-0 left-0 w-1/4"
+          style={{
+            background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.09) 50%, transparent 100%)",
+            animation: "blurrow-star-sweep 5.5s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+          }}
+        />
+        <span
+          aria-hidden
+          className="relative w-11 h-11 shrink-0 rounded-[12px] flex items-center justify-center text-neutral-300 transition-colors duration-300 group-hover:text-amber-300"
+          style={{ background: "var(--tile-dark)", boxShadow: "var(--tile-dark-shadow)" }}
+        >
+          <span className="transition-[filter] duration-300 group-hover:[filter:drop-shadow(0_0_6px_rgba(252,211,77,0.65))]">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.8l2.83 5.74 6.33.92-4.58 4.46 1.08 6.3L12 17.25l-5.66 2.97 1.08-6.3L2.84 9.46l6.33-.92L12 2.8z" />
+            </svg>
+          </span>
+        </span>
+        <span className="relative flex-1 min-w-0 flex flex-col gap-0.5">
+          <span className="text-[16.5px] font-medium tracking-[-0.015em] text-white" style={{ textShadow: "0 -1px 0 rgba(0,0,0,0.45)" }}>
+            star blurrow on github
+          </span>
+          <span className="text-[13px] text-neutral-400">it&apos;s the easiest way to help other people find it</span>
+        </span>
+        <span
+          className="relative shrink-0 rounded-[10px] px-3 py-2 text-[13px] font-medium text-neutral-200 tabular-nums"
+          style={{ background: "var(--tile-dark)", boxShadow: "var(--tile-dark-shadow)" }}
+        >
+          {stars ? `★ ${formatStars(stars)}` : "be the first"}
+        </span>
+      </span>
+    </a>
+  );
+}
+
 /* The project's front door: it's open, here's how to help. Links rest in
    a well as raised rows, the same as the drafts tray above.           */
 export function OpenSource({ stars }: { stars: number | null }) {
@@ -67,20 +116,12 @@ export function OpenSource({ stars }: { stars: number | null }) {
           blurrow is free and mit licensed. found a bug, want a component that isn&apos;t here, or have an idea for one
           that is? issues and pull requests are very welcome.
         </p>
-        <p className="text-[15.5px] leading-[1.65] text-neutral-600 max-w-[46ch] text-pretty">
-          and if you like it, a star on github helps other people find it.
-        </p>
       </div>
       <div
-        className="rounded-[20px] p-2.5 flex flex-col gap-2 self-start"
+        className="rounded-[22px] p-2.5 flex flex-col gap-2 self-start"
         style={{ background: "var(--well)", boxShadow: "var(--well-shadow)" }}
       >
-        <LinkRow
-          href={repo.url}
-          icon={<StarIcon />}
-          label="star blurrow on github"
-          detail={stars ? `${formatStars(stars)} ${stars === 1 ? "star" : "stars"}` : "be the first to star it"}
-        />
+        <StarCta stars={stars} />
         <LinkRow href={`${repo.url}/issues/new`} icon={<GitHubIcon />} label="open an issue or share an idea" />
         <LinkRow href={`${repo.url}/pulls`} icon={<GitHubIcon />} label="send a pull request" />
         <LinkRow href={npmUrl} icon={<NpmIcon />} label="@blurrow/ui on npm" />
