@@ -14,22 +14,14 @@ export const npmUrl = "https://www.npmjs.com/package/@blurrow/ui?activeTab=readm
 export const initCommand = `npx ${pkg} init`;
 
 export const siteUrl = "https://www.blurrow.org";
-export const siteName = "blurrow/ui";
-export const tagline = "buttons you want to press, fields you want to fill in.";
+export const siteName = "blurrow";
+
+/* Written for people reading a search result or a link preview. Kept
+   under ~160 characters so it isn't cut off mid-thought.           */
 export const siteDescription =
-  "blurrow/ui is an open-source kit of 48 tactile react components for tailwind css v4: buttons with real depth, sunken fields, cards, menus, toasts and more, all lit by one light source. free and mit licensed.";
-export const keywords = [
-  "react components",
-  "react ui library",
-  "tailwind css components",
-  "tailwind v4",
-  "tactile ui",
-  "skeuomorphic ui",
-  "neumorphism",
-  "next.js components",
-  "design system",
-  "open source ui kit",
-  "button component",
-  "copy paste components",
-  "shadcn alternative",
-];
+  "Buttons that sink when you press them, fields set into the page, and one light behind every shadow. 48 free, open-source React components for Tailwind CSS.";
+export const homeTitle = "blurrow | Tactile React components for Tailwind CSS";
+/* Link previews: no brand in the title, the headline does the work */
+export const socialTitle = "Buttons you want to press, fields you want to fill in";
+export const socialDescription =
+  "blurrow is a free kit of 48 React components with real depth: buttons in a bezel, fields cut into the surface, and shadows that all agree on one light.";

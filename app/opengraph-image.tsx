@@ -2,7 +2,8 @@ import { ImageResponse } from "next/og";
 import { CARD, CommandChip, LitObjects, LitScene, OG, ogFonts, ogSize, roomBackground, Wordmark } from "@/lib/og";
 import { initCommand } from "@/lib/site";
 
-export const alt = "blurrow/ui: buttons you want to press, fields you want to fill in. tactile react components for tailwind css, under a lamp in a dark room.";
+export const alt =
+  "A pendant lamp in a dark room lighting a blurrow card with a text field, a toggle and two buttons, beside the line: buttons you want to press, fields you want to fill in.";
 export const size = ogSize;
 export const contentType = "image/png";
 

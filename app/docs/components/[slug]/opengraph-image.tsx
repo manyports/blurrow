@@ -13,7 +13,9 @@ export async function generateImageMetadata({ params }: { params: Promise<{ slug
       id: "banner",
       size,
       contentType: "image/png",
-      alt: entry ? `${entry.name}, a blurrow/ui react component: ${entry.description}` : "a blurrow/ui component",
+      alt: entry
+        ? `Banner for the blurrow ${entry.name} component, with the command to add it: npx @blurrow/ui add ${entry.slug}`
+        : "Banner for a blurrow component",
     },
   ];
 }

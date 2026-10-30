@@ -59,7 +59,7 @@ export default async function Home() {
   const ld = {
     "@context": "https://schema.org",
     "@graph": [
-      { "@type": "WebSite", "@id": `${siteUrl}/#website`, url: siteUrl, name: siteName, description: siteDescription, inLanguage: "en", publisher: authorLd },
+      { "@type": "WebSite", "@id": `${siteUrl}/#website`, url: siteUrl, name: siteName, alternateName: "blurrow/ui", description: siteDescription, inLanguage: "en", publisher: authorLd },
       {
         "@type": "SoftwareSourceCode",
         "@id": `${siteUrl}/#code`,
@@ -68,7 +68,7 @@ export default async function Home() {
         url: siteUrl,
         codeRepository: repo.url,
         programmingLanguage: ["TypeScript", "React", "CSS"],
-        runtimePlatform: "React 19, Tailwind CSS v4",
+        runtimePlatform: "React 19 and Tailwind CSS v4",
         license: "https://opensource.org/licenses/MIT",
         author: authorLd,
         isAccessibleForFree: true,

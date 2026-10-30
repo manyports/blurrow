@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { LinkButton } from "@/components/docs/LinkButton";
 
-export const metadata: Metadata = { title: "page not found", robots: { index: false, follow: true } };
+export const metadata: Metadata = { title: "Page not found", robots: { index: false, follow: true } };
 
 export default function NotFound() {
   return (

@@ -7,9 +7,11 @@ import { pageMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "components",
-  description: `all ${registry.length} blurrow/ui react components, from buttons, inputs and selects to modals, toasts, tables and cards. each with a live preview, examples and source.`,
+  title: `All ${registry.length} React components for Tailwind CSS`,
+  description:
+    "Every blurrow component in one place, from buttons, inputs and selects to modals, toasts, tables and cards. Each has a live preview, examples and its source.",
   path: "/docs/components",
+  imageAlt: "The blurrow banner: a pendant lamp lighting a card of components in a dark room.",
 });
 
 export default function ComponentsIndexPage() {

@@ -10,9 +10,11 @@ import { breadcrumbLd, pageMetadata } from "@/lib/seo";
 import { pkg } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "installation",
-  description: "set up blurrow/ui in one command with npx @blurrow/ui init, or by hand: install the package, add the styles to tailwind css v4, load archivo and wrap your app in ToastProvider.",
+  title: "Install blurrow in a React and Tailwind project",
+  description:
+    "Set up blurrow with one command, or by hand: install the package, add its styles to your CSS, load the Archivo font and wrap your app in ToastProvider.",
   path: "/docs/installation",
+  imageAlt: "The blurrow banner, with the setup command npx @blurrow/ui init.",
 });
 
 const css = `@import "tailwindcss";

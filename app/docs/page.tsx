@@ -7,9 +7,11 @@ import { breadcrumbLd, pageMetadata } from "@/lib/seo";
 import { initCommand, npmUrl, repo } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "introduction",
-  description: `what blurrow/ui is and how it's made: ${registry.length} tactile react components for tailwind css v4, with one material and one light source. open source and mit licensed.`,
+  title: "What blurrow is and how it's made",
+  description:
+    "Where blurrow came from and the four ideas behind it: one light source, raised and sunken surfaces, a bezel holding a face, and motion that travels.",
   path: "/docs",
+  imageAlt: "The blurrow banner: a pendant lamp lighting a card of components in a dark room.",
 });
 
 const principles = [

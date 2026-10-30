@@ -11,7 +11,7 @@ import { H2, H3, InlineCode, P, PageTitle, TextLink } from "@/components/docs/Pr
 import { examples } from "@/examples";
 import { getEntry, getNeighbours, registry } from "@/lib/registry";
 import { JsonLd } from "@/components/docs/JsonLd";
-import { authorLd, breadcrumbLd, pageMetadata } from "@/lib/seo";
+import { authorLd, breadcrumbLd, pageMetadata, sentenceCase } from "@/lib/seo";
 import { pkg, siteUrl } from "@/lib/site";
 import { getComponentFiles, getExports, getPropTypes, readExample } from "@/lib/source";
 
@@ -26,11 +26,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const slug = (await params).slug;
   const entry = getEntry(slug);
   if (!entry) return {};
+  const name = entry.name.charAt(0).toUpperCase() + entry.name.slice(1);
+  // the component's own line, plus a short tail only while it still fits
+  const base = sentenceCase(entry.description);
+  const tail = [" Free to use, with a live preview, examples and the source.", " Free and open source."].find((t) => base.length + t.length <= 160) ?? "";
   return pageMetadata({
-    title: `${entry.name} component`,
-    description: `${entry.description} a free, open-source react component for tailwind css v4 from blurrow/ui.`,
+    // google cuts titles around 60 characters, " | blurrow" included
+    title: `${name} component for React and Tailwind${name.length > 14 ? "" : " CSS"}`,
+    description: base + tail,
     path: `/docs/components/${slug}`,
     image: `/docs/components/${slug}/opengraph-image/banner`,
+    imageAlt: `Banner for the blurrow ${entry.name} component, with the command to add it: npx @blurrow/ui add ${slug}`,
     type: "article",
   });
 }
@@ -76,13 +82,12 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
           data={{
             "@context": "https://schema.org",
             "@type": "TechArticle",
-            headline: `${entry.name}: a tactile react component`,
-            description: entry.description,
+            headline: `The ${entry.name} component`,
+            description: sentenceCase(entry.description),
             url: `${siteUrl}/docs/components/${slug}`,
             image: `${siteUrl}/docs/components/${slug}/opengraph-image/banner`,
             articleSection: entry.category,
-            proficiencyLevel: "Beginner",
-            dependencies: `${pkg}, react 19, tailwind css v4`,
+            dependencies: `${pkg}, React 19, Tailwind CSS v4`,
             author: authorLd,
             publisher: authorLd,
             inLanguage: "en",
