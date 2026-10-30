@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 import { ToastProvider } from "@/components/ui/Toast";
 import { SiteHeader } from "@/components/docs/SiteHeader";
 import { getStars } from "@/lib/github";
@@ -70,6 +71,7 @@ export default async function RootLayout({
           <SiteHeader stars={stars} />
           {children}
         </ToastProvider>
+        <Analytics />
       </body>
     </html>
   );
