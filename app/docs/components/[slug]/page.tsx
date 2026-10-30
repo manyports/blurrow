@@ -10,7 +10,9 @@ import { Pager } from "@/components/docs/Pager";
 import { H2, H3, InlineCode, P, PageTitle, TextLink } from "@/components/docs/Prose";
 import { examples } from "@/examples";
 import { getEntry, getNeighbours, registry } from "@/lib/registry";
-import { pkg } from "@/lib/site";
+import { JsonLd } from "@/components/docs/JsonLd";
+import { authorLd, breadcrumbLd, pageMetadata } from "@/lib/seo";
+import { pkg, siteUrl } from "@/lib/site";
 import { getComponentFiles, getExports, getPropTypes, readExample } from "@/lib/source";
 
 /* Components that need a bigger stage than a button does */
@@ -21,8 +23,16 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const entry = getEntry((await params).slug);
-  return entry ? { title: entry.name, description: entry.description } : {};
+  const slug = (await params).slug;
+  const entry = getEntry(slug);
+  if (!entry) return {};
+  return pageMetadata({
+    title: `${entry.name} component`,
+    description: `${entry.description} a free, open-source react component for tailwind css v4 from blurrow/ui.`,
+    path: `/docs/components/${slug}`,
+    image: `/docs/components/${slug}/opengraph-image/banner`,
+    type: "article",
+  });
 }
 
 export default async function ComponentPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -55,6 +65,29 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
   return (
     <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_200px] xl:gap-12">
       <article className="min-w-0 flex flex-col gap-10">
+        <JsonLd
+          data={breadcrumbLd([
+            { name: "home", path: "/" },
+            { name: "components", path: "/docs/components" },
+            { name: entry.name, path: `/docs/components/${slug}` },
+          ])}
+        />
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "TechArticle",
+            headline: `${entry.name}: a tactile react component`,
+            description: entry.description,
+            url: `${siteUrl}/docs/components/${slug}`,
+            image: `${siteUrl}/docs/components/${slug}/opengraph-image/banner`,
+            articleSection: entry.category,
+            proficiencyLevel: "Beginner",
+            dependencies: `${pkg}, react 19, tailwind css v4`,
+            author: authorLd,
+            publisher: authorLd,
+            inLanguage: "en",
+          }}
+        />
         <div className="flex flex-col gap-6">
           <Breadcrumb
             items={[

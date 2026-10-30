@@ -1,13 +1,34 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageTitle } from "@/components/docs/Prose";
+import { JsonLd } from "@/components/docs/JsonLd";
 import { entriesByCategory, registry } from "@/lib/registry";
+import { pageMetadata } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 
-export const metadata: Metadata = { title: "components" };
+export const metadata: Metadata = pageMetadata({
+  title: "components",
+  description: `all ${registry.length} blurrow/ui react components, from buttons, inputs and selects to modals, toasts, tables and cards. each with a live preview, examples and source.`,
+  path: "/docs/components",
+});
 
 export default function ComponentsIndexPage() {
   return (
     <div className="flex flex-col gap-12">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "blurrow/ui components",
+          numberOfItems: registry.length,
+          itemListElement: registry.map((e, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: e.name,
+            url: `${siteUrl}/docs/components/${e.slug}`,
+          })),
+        }}
+      />
       <PageTitle
         title="components"
         description={`all ${registry.length} of them, grouped by what they're for. every page has a live preview, a few examples and the source.`}

@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { ToastProvider } from "@/components/ui/Toast";
 import { SiteHeader } from "@/components/docs/SiteHeader";
 import { getStars } from "@/lib/github";
+import { author, keywords, siteDescription, siteName, siteUrl, tagline } from "@/lib/site";
 import "./globals.css";
 
 const archivo = localFont({
@@ -20,11 +21,43 @@ const archivo = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
-    default: "blurrow/ui",
-    template: "%s · blurrow/ui",
+    default: `${siteName} · tactile react components for tailwind css`,
+    template: `%s · ${siteName}`,
   },
-  description: "react components that feel nice to press, type into and look at."
+  description: siteDescription,
+  applicationName: siteName,
+  keywords,
+  authors: [{ name: "manyports", url: author.site }],
+  creator: "manyports",
+  publisher: "manyports",
+  category: "technology",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName,
+    locale: "en_US",
+    title: `${siteName} · ${tagline}`,
+    description: siteDescription,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteName} · ${tagline}`,
+    description: siteDescription,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+  formatDetection: { telephone: false, email: false, address: false },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#EBEBEB",
+  colorScheme: "light",
 };
 
 export default async function RootLayout({

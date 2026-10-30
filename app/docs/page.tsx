@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import { Pager } from "@/components/docs/Pager";
 import { H2, InlineCode, P, PageTitle, TextLink } from "@/components/docs/Prose";
+import { JsonLd } from "@/components/docs/JsonLd";
 import { registry } from "@/lib/registry";
+import { breadcrumbLd, pageMetadata } from "@/lib/seo";
 import { initCommand, npmUrl, repo } from "@/lib/site";
 
-export const metadata: Metadata = { title: "introduction" };
+export const metadata: Metadata = pageMetadata({
+  title: "introduction",
+  description: `what blurrow/ui is and how it's made: ${registry.length} tactile react components for tailwind css v4, with one material and one light source. open source and mit licensed.`,
+  path: "/docs",
+});
 
 const principles = [
   {
@@ -28,6 +34,7 @@ const principles = [
 export default function IntroductionPage() {
   return (
     <article className="max-w-3xl flex flex-col gap-10">
+      <JsonLd data={breadcrumbLd([{ name: "home", path: "/" }, { name: "introduction", path: "/docs" }])} />
       <PageTitle
         title="introduction"
         description={`hi! blurrow/ui is ${registry.length} react components that share the same materials and the same light. they're meant to feel nice to press, type into and look at.`}

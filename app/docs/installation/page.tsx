@@ -5,9 +5,15 @@ import { CodeBlock } from "@/components/ui/CodeBlock";
 import { CollapsibleCode } from "@/components/docs/CollapsibleCode";
 import { Pager } from "@/components/docs/Pager";
 import { H2, InlineCode, P, PageTitle, TextLink } from "@/components/docs/Prose";
+import { JsonLd } from "@/components/docs/JsonLd";
+import { breadcrumbLd, pageMetadata } from "@/lib/seo";
 import { pkg } from "@/lib/site";
 
-export const metadata: Metadata = { title: "installation" };
+export const metadata: Metadata = pageMetadata({
+  title: "installation",
+  description: "set up blurrow/ui in one command with npx @blurrow/ui init, or by hand: install the package, add the styles to tailwind css v4, load archivo and wrap your app in ToastProvider.",
+  path: "/docs/installation",
+});
 
 const css = `@import "tailwindcss";
 @import "${pkg}/styles.css";
@@ -58,6 +64,13 @@ export default async function InstallationPage() {
 
   return (
     <article className="max-w-3xl flex flex-col gap-12">
+      <JsonLd
+        data={breadcrumbLd([
+          { name: "home", path: "/" },
+          { name: "docs", path: "/docs" },
+          { name: "installation", path: "/docs/installation" },
+        ])}
+      />
       <PageTitle
         title="installation"
         description="a few minutes of setup, then you can use any component. you'll need react 19 and tailwind css v4."

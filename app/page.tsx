@@ -10,7 +10,9 @@ import { OpenSource } from "@/components/landing/OpenSource";
 import { examples } from "@/examples";
 import { getEntry, registry } from "@/lib/registry";
 import { getStars } from "@/lib/github";
-import { initCommand } from "@/lib/site";
+import { JsonLd } from "@/components/docs/JsonLd";
+import { authorLd } from "@/lib/seo";
+import { initCommand, npmUrl, pkg, repo, siteDescription, siteName, siteUrl } from "@/lib/site";
 
 /* Nine components on the sheet. Captions say what each one does when
    you use it, in the plainest words that are still true.            */
@@ -54,9 +56,32 @@ function Row({ title, children, figure }: { title: string; children: React.React
 
 export default async function Home() {
   const stars = await getStars();
+  const ld = {
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "WebSite", "@id": `${siteUrl}/#website`, url: siteUrl, name: siteName, description: siteDescription, inLanguage: "en", publisher: authorLd },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": `${siteUrl}/#code`,
+        name: siteName,
+        description: siteDescription,
+        url: siteUrl,
+        codeRepository: repo.url,
+        programmingLanguage: ["TypeScript", "React", "CSS"],
+        runtimePlatform: "React 19, Tailwind CSS v4",
+        license: "https://opensource.org/licenses/MIT",
+        author: authorLd,
+        isAccessibleForFree: true,
+        sameAs: [repo.url, npmUrl],
+        ...(stars ? { interactionStatistic: { "@type": "InteractionCounter", interactionType: "https://schema.org/LikeAction", userInteractionCount: stars } } : {}),
+        targetProduct: { "@type": "SoftwareApplication", name: pkg, applicationCategory: "DeveloperApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } },
+      },
+    ],
+  };
 
   return (
     <>
+      <JsonLd data={ld} />
       <main className="mx-auto max-w-[1200px] px-4 sm:px-6">
         {/* ── Opening ──────────────────────────────────────────── */}
         <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-12 lg:gap-16 items-center pt-14 sm:pt-20 pb-20">
