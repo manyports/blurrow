@@ -112,7 +112,7 @@ export default async function Home() {
         </section>
 
         {/* ── Specimen sheet ───────────────────────────────────── */}
-        <section className="flex flex-col gap-8 pb-24">
+        <section id="favourites" className="flex flex-col gap-8 pb-24 scroll-mt-24">
           <div className="flex items-end justify-between gap-6">
             <Heading>a few favourites</Heading>
             <Link href="/docs/components" className="link-slide shrink-0 text-[14px] font-medium text-neutral-900">
@@ -144,7 +144,7 @@ export default async function Home() {
         </section>
 
         {/* ── How it's built ───────────────────────────────────── */}
-        <section className="flex flex-col pb-12">
+        <section id="how-its-made" className="flex flex-col pb-12 scroll-mt-24">
           <div className="pb-10">
             <Heading>how it&apos;s made</Heading>
           </div>
@@ -183,7 +183,7 @@ export default async function Home() {
         <OpenSource stars={stars} />
 
         {/* ── Using it: a dark room with a pull cord ───────────── */}
-        <section className="pt-6 pb-16">
+        <section id="get-started" className="pt-6 pb-16 scroll-mt-24">
           <LightsOut>
             <h2 className="text-[clamp(32px,5vw,56px)] font-medium leading-[1.02] tracking-[-0.045em] text-neutral-900 text-balance">
               ready when you are!

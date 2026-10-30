@@ -1,28 +1,56 @@
+<a href="https://www.blurrow.org">
+  <img src="https://raw.githubusercontent.com/manyports/blurrow/main/.github/readme/banner.png" alt="blurrow/ui: buttons you want to press, fields you want to fill in" width="100%">
+</a>
+
 # @blurrow/ui
 
-buttons you want to press, fields you want to fill in.
+48 react components that look and feel like physical things. buttons sit in a bezel and sink when you press them, text fields are cut into the surface, and every shadow agrees on where the light is coming from.
 
-48 react components that share the same materials and the same light. made with care by [@manyports](https://manyports.com).
+free, mit licensed, and built for react 19 and tailwind css v4. made with care by [@manyports](https://manyports.com).
 
-## install
+**[website](https://www.blurrow.org)** · [docs](https://www.blurrow.org/docs) · [all components](https://www.blurrow.org/docs/components) · [github](https://github.com/manyports/blurrow)
 
-the quick way, in your project:
+<img src="https://raw.githubusercontent.com/manyports/blurrow/main/.github/readme/favourites.png" alt="nine blurrow components: buttons, toggles, an input, tabs, pagination, a radio group, a select, a stat card and an alert" width="100%">
+
+## getting started
 
 ```bash
 npx @blurrow/ui init
 ```
 
-it installs the package, adds the styles to your css, loads the font and sets up toasts in your layout, showing each change before it makes it. or by hand:
+that's the whole setup. it installs the package, adds two lines to your stylesheet, loads the archivo font and wraps your app in `ToastProvider`, showing you each change before it writes anything.
+
+<img src="https://raw.githubusercontent.com/manyports/blurrow/main/.github/readme/cli.png" alt="the blurrow cli setting up a next.js project" width="560">
+
+then use whatever you like:
+
+```tsx
+import { Button, Input, Toggle } from "@blurrow/ui";
+
+export default function Settings() {
+  return (
+    <form className="flex flex-col gap-4">
+      <Input label="display name" placeholder="ada" />
+      <Toggle label="email me when someone replies" defaultChecked />
+      <Button variant="primary">save</Button>
+    </form>
+  );
+}
+```
+
+every component is marked `"use client"`, so they drop straight into server components too.
+
+## setting it up by hand
+
+if you'd rather not run `init`, it does four things:
+
+**1. install**
 
 ```bash
 npm install @blurrow/ui
 ```
 
-you'll need react 19 and tailwind css v4.
-
-## set up
-
-**1. styles.** add the tokens to your global stylesheet, after tailwind, and point tailwind at the package so it picks up the classes the components use:
+**2. styles.** add the tokens after tailwind, and let tailwind see the classes the components use. the `@source` path is relative to your css file.
 
 ```css
 /* app/globals.css */
@@ -32,9 +60,7 @@ you'll need react 19 and tailwind css v4.
 @source "../node_modules/@blurrow/ui";
 ```
 
-the `@source` path is relative to the css file, so adjust it if your stylesheet lives somewhere else.
-
-**2. font.** everything is set in archivo. load it as the `--font-archivo` variable. with next.js:
+**3. font.** everything is set in archivo, loaded as the `--font-archivo` variable. with next.js:
 
 ```tsx
 // app/layout.tsx
@@ -55,40 +81,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-`ToastProvider` is only needed if you use toasts.
-
-## use
-
-```tsx
-import { Button } from "@blurrow/ui";
-
-export default function Page() {
-  return <Button variant="primary">say hi</Button>;
-}
-```
-
-every component is marked `"use client"`, so you can import them straight into server components.
+**4. toasts.** `ToastProvider` above is only needed if you use `useToast()`.
 
 ## the cli
 
 ```bash
-npx @blurrow/ui init            # set up a project (safe to run again)
+npx @blurrow/ui init            # set up a project, safe to run again
 npx @blurrow/ui add [names…]    # copy components' source in, with anything they need
 npx @blurrow/ui list            # every component, and which ones you've copied
-npx @blurrow/ui diff [name]     # what you've changed in copied components
+npx @blurrow/ui diff [name]     # what you've changed in your copies
 npx @blurrow/ui doctor [--fix]  # check the setup, and repair the css if it's off
 ```
 
-once the package is installed, `npx blurrow <command>` is a shorter way to say the same thing.
+`add` with no names opens a picker: type to filter, space to choose. names are forgiving (`button`, `Button` and `button-group` all work) and typos get a suggestion. files you've edited are never overwritten unless you pass `--overwrite`.
 
-`add` with no names opens a picker (type to filter, space to pick). names are forgiving: `button`, `Button` and `button-group` all work, and typos get a suggestion. copied files that you've changed are never overwritten unless you pass `--overwrite`.
-
-everything takes `--yes` (no questions), `--dry-run` (show, don't write) and `--cwd <path>`. settings live in `blurrow.json`:
-
-```json
-{ "componentsDir": "components/ui", "css": "app/globals.css" }
-```
+everything takes `--yes`, `--dry-run` and `--cwd <path>`. settings live in `blurrow.json`. once the package is installed, `npx blurrow` works as a shorter name.
 
 ## license
 
-MIT
+mit. issues and ideas are welcome on [github](https://github.com/manyports/blurrow/issues).
