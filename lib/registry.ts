@@ -100,6 +100,7 @@ export const registry: RegistryEntry[] = [
       ex("input-demo", "default"),
       ex("input-with-label", "with label and hint"),
       ex("input-with-icon", "with icon"),
+      ex("input-layered", "layered, next to a button"),
       ex("input-error", "error"),
       ex("input-disabled", "disabled"),
     ],

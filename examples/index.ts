@@ -14,6 +14,7 @@ import CloseButtonDark from "./close-button-dark";
 import InputDemo from "./input-demo";
 import InputWithLabel from "./input-with-label";
 import InputWithIcon from "./input-with-icon";
+import InputLayered from "./input-layered";
 import InputError from "./input-error";
 import InputDisabled from "./input-disabled";
 import TextareaDemo from "./textarea-demo";
@@ -113,6 +114,7 @@ export const examples: Record<string, ComponentType> = {
   "input-demo": InputDemo,
   "input-with-label": InputWithLabel,
   "input-with-icon": InputWithIcon,
+  "input-layered": InputLayered,
   "input-error": InputError,
   "input-disabled": InputDisabled,
   "textarea-demo": TextareaDemo,
