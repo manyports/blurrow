@@ -1,0 +1,110 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+import type { Metadata } from "next";
+import { CodeBlock } from "@/components/ui/CodeBlock";
+import { CollapsibleCode } from "@/components/docs/CollapsibleCode";
+import { Pager } from "@/components/docs/Pager";
+import { H2, InlineCode, P, PageTitle, TextLink } from "@/components/docs/Prose";
+import { pkg } from "@/lib/site";
+
+export const metadata: Metadata = { title: "installation" };
+
+const css = `@import "tailwindcss";
+@import "${pkg}/styles.css";
+
+/* let tailwind see the classes the components use */
+@source "../node_modules/${pkg}";`;
+
+const layout = `import { Archivo } from "next/font/google";
+import { ToastProvider } from "${pkg}";
+import "./globals.css";
+
+const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo" });
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className={archivo.variable}>
+      <body className="bg-[#EBEBEB] font-sans text-neutral-900 antialiased">
+        <ToastProvider>{children}</ToastProvider>
+      </body>
+    </html>
+  );
+}`;
+
+const usage = `import { Button } from "${pkg}";
+
+export default function Page() {
+  return <Button variant="primary">say hi</Button>;
+}`;
+
+function Step({ n, id, title, children }: { n: number; id: string; title: string; children: React.ReactNode }) {
+  return (
+    <section className="relative flex flex-col gap-4 pl-11">
+      <span
+        aria-hidden
+        className="absolute left-0 top-0 w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-semibold text-neutral-600 tabular-nums"
+        style={{ background: "var(--face-light)", boxShadow: "var(--tile-light-shadow)" }}
+      >
+        {n}
+      </span>
+      <H2 id={id}>{title}</H2>
+      {children}
+    </section>
+  );
+}
+
+export default async function InstallationPage() {
+  const tokens = (await fs.readFile(path.join(process.cwd(), "app", "globals.css"), "utf8")).trimEnd();
+
+  return (
+    <article className="max-w-3xl flex flex-col gap-12">
+      <PageTitle
+        title="installation"
+        description="a few minutes of setup, then you can use any component. you'll need react and tailwind css v4."
+      />
+
+      <Step n={1} id="install" title="install the package">
+        <CodeBlock language="bash" code={`npm install ${pkg}`} />
+      </Step>
+
+      <Step n={2} id="styles" title="add the styles">
+        <P>
+          the components get their look from a small set of css tokens. pull them into your global stylesheet, and point
+          tailwind at the package so it picks up the classes the components use.
+        </P>
+        <CodeBlock language="css" title="app/globals.css" code={css} />
+      </Step>
+
+      <Step n={3} id="font" title="set up the font and toasts">
+        <P>
+          everything is set in archivo. load it as <InlineCode>--font-archivo</InlineCode> and the tokens take it from
+          there. if you&apos;ll use toasts, wrap your app in <InlineCode>ToastProvider</InlineCode> too.
+        </P>
+        <CodeBlock language="tsx" title="app/layout.tsx" code={layout} />
+      </Step>
+
+      <Step n={4} id="use" title="use it">
+        <P>
+          that&apos;s it! import whatever you need. each <TextLink href="/docs/components">component page</TextLink>{" "}
+          has examples to copy from.
+        </P>
+        <CodeBlock language="tsx" title="app/page.tsx" code={usage} />
+      </Step>
+
+      <section className="flex flex-col gap-4 pt-4">
+        <H2 id="copy">rather copy the source?</H2>
+        <P>
+          that works too. every component page has its full source under &ldquo;rather own the code?&rdquo;. drop the
+          files into <InlineCode>components/ui</InlineCode>, then put these tokens in your{" "}
+          <InlineCode>globals.css</InlineCode> in place of step 2.
+        </P>
+        <CollapsibleCode title="app/globals.css" language="css" code={tokens} />
+      </section>
+
+      <Pager
+        prev={{ title: "introduction", href: "/docs" }}
+        next={{ title: "all components", href: "/docs/components" }}
+      />
+    </article>
+  );
+}
