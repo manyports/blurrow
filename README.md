@@ -21,6 +21,20 @@ npm run dev   # http://localhost:3000
 2. Add examples to `examples/` and register them in `examples/index.ts`.
 3. Add an entry to `lib/registry.ts`. The page, install files (with local dependencies), import line and API reference are generated from the source.
 
+## The npm package
+
+`packages/ui` publishes `components/ui` as `@blurrow/ui`, so the docs and the package always share one source.
+
+- `components/ui/index.ts` exports everything; add a line when you add a component.
+- `components/ui/styles.css` holds the tokens and ships as `@blurrow/ui/styles.css`. Site-only CSS stays in `app/globals.css`.
+
+```bash
+npm run package:build     # bundle to packages/ui/dist (esm + types + styles.css)
+npm run package:publish   # publish to npm (runs the build first)
+```
+
+Bump `version` in `packages/ui/package.json` before each publish.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).

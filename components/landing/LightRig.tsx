@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CardShell } from "@/components/ui/CardShell";
 import { playClick } from "./click";
+import { Lamp } from "./Lamp";
 import { useInView } from "./useInView";
 
 const HOME = 0.5;
@@ -157,7 +158,7 @@ export function LightRig() {
           aria-hidden
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: `radial-gradient(60% 95% at ${lamp * 100}% -6%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.45) 45%, rgba(255,255,255,0) 80%)`,
+            background: `radial-gradient(60% 95% at ${lamp * 100}% 48px, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.45) 45%, rgba(255,255,255,0) 80%)`,
           }}
         />
         {/* The track the lamp slides along */}
@@ -176,25 +177,27 @@ export function LightRig() {
           onPointerCancel={release}
           onKeyDown={onKey}
           className={[
-            "absolute top-[6px] -translate-x-1/2 z-10 px-3 py-2 touch-none rounded-[10px] outline-none focus-visible:outline-2 focus-visible:outline-neutral-900",
+            "absolute top-[8px] -translate-x-1/2 z-10 px-3 pb-2 touch-none rounded-[10px] outline-none focus-visible:outline-2 focus-visible:outline-neutral-900",
             dragging ? "cursor-grabbing" : "cursor-grab",
           ].join(" ")}
           style={{ left: `${lamp * 100}%` }}
         >
+          {/* An adapter riding the rail, a short rod, and the shade */}
           <span className="flex flex-col items-center">
             <span
-              className="block w-14 h-3.5 rounded-full"
+              className="block w-6 h-3 rounded-[3px]"
               style={{
-                background: "var(--face-dark)",
-                boxShadow: "var(--face-dark-shadow)",
-                transform: dragging ? "scale(1.06)" : "none",
-                transition: "transform 200ms var(--ease-spring)",
+                background: "linear-gradient(180deg, #3a3a3a 0%, #1a1a1a 100%)",
+                boxShadow: "0 1px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.12)",
               }}
             />
+            <span className="block w-[2px] h-2 bg-neutral-700" />
             <span
-              className="block w-9 h-[3px] -mt-[2px] rounded-full bg-white"
-              style={{ boxShadow: "0 4px 18px 6px rgba(255,255,255,0.95)" }}
-            />
+              className="block"
+              style={{ transform: dragging ? "rotate(-4deg)" : "none", transformOrigin: "top center", transition: "transform 300ms var(--ease-spring)" }}
+            >
+              <Lamp lit width={54} />
+            </span>
           </span>
         </div>
 

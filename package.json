@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "package:build": "cd packages/ui && npm install && npm run build",
+    "package:publish": "cd packages/ui && npm publish"
   },
   "dependencies": {
     "next": "16.2.3",

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { CodeBlock } from "@/components/ui/CodeBlock";
-import { LinkButton } from "@/components/docs/LinkButton";
 import { Anatomy } from "@/components/landing/Anatomy";
 import { Footer } from "@/components/landing/Footer";
 import { LightRig } from "@/components/landing/LightRig";
@@ -79,14 +78,6 @@ export default function Home() {
               components that share the same materials and the same light, so everything you build with them feels like
               it belongs together.
             </Body>
-            <div className="flex flex-wrap gap-2 pt-2">
-              <LinkButton href="/docs/components" variant="primary">
-                browse components
-              </LinkButton>
-              <LinkButton href="/docs/installation" variant="secondary">
-                get started
-              </LinkButton>
-            </div>
           </div>
           <Anatomy />
         </section>
@@ -171,14 +162,6 @@ export default function Home() {
             </p>
             <div className="w-full max-w-md text-left">
               <CodeBlock language="bash" code={`npm install ${pkg}`} />
-            </div>
-            <div className="flex flex-wrap justify-center gap-2">
-              <LinkButton href="/docs/installation" variant="primary">
-                get started
-              </LinkButton>
-              <LinkButton href="/docs/components" variant="secondary">
-                browse components
-              </LinkButton>
             </div>
           </LightsOut>
         </section>

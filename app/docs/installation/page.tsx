@@ -54,7 +54,7 @@ function Step({ n, id, title, children }: { n: number; id: string; title: string
 }
 
 export default async function InstallationPage() {
-  const tokens = (await fs.readFile(path.join(process.cwd(), "app", "globals.css"), "utf8")).trimEnd();
+  const tokens = (await fs.readFile(path.join(process.cwd(), "components", "ui", "styles.css"), "utf8")).trimEnd();
 
   return (
     <article className="max-w-3xl flex flex-col gap-12">
@@ -95,10 +95,11 @@ export default async function InstallationPage() {
         <H2 id="copy">rather copy the source?</H2>
         <P>
           that works too. every component page has its full source under &ldquo;rather own the code?&rdquo;. drop the
-          files into <InlineCode>components/ui</InlineCode>, then put these tokens in your{" "}
+          files into <InlineCode>components/ui</InlineCode>, save the tokens below as{" "}
+          <InlineCode>components/ui/styles.css</InlineCode>, and import it right after tailwind in your{" "}
           <InlineCode>globals.css</InlineCode> in place of step 2.
         </P>
-        <CollapsibleCode title="app/globals.css" language="css" code={tokens} />
+        <CollapsibleCode title="components/ui/styles.css" language="css" code={tokens} />
       </section>
 
       <Pager

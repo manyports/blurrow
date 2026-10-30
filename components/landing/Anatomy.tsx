@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { playClick } from "./click";
+import { Lamp } from "./Lamp";
 import { useInView } from "./useInView";
 
 function Marker({ n, show }: { n: number; show: boolean }) {
@@ -84,9 +85,9 @@ export function Anatomy() {
         {/* The beam, from the lamp down onto the button */}
         <span
           aria-hidden
-          className="absolute left-1/2 -translate-x-1/2 top-[22px] bottom-[8%] w-[560px] pointer-events-none"
+          className="absolute left-1/2 -translate-x-1/2 top-[38px] bottom-[8%] w-[560px] pointer-events-none"
           style={{
-            clipPath: "polygon(46.5% 0, 53.5% 0, 100% 100%, 0 100%)",
+            clipPath: "polygon(45.5% 0, 54.5% 0, 100% 100%, 0 100%)",
             background: "linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.28) 45%, rgba(255,255,255,0) 100%)",
             filter: "blur(10px)",
             opacity: apart ? 1 : 0,
@@ -103,20 +104,10 @@ export function Anatomy() {
             transition: "opacity 900ms ease",
           }}
         />
-        {/* The lamp: a small dark fixture with a lit underside */}
-        <span aria-hidden className="absolute top-3 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none">
-          <span
-            className="block w-16 h-3 rounded-full"
-            style={{ background: "var(--face-dark)", boxShadow: "var(--face-dark-shadow)" }}
-          />
-          <span
-            className="block w-10 h-[3px] -mt-[2px] rounded-full bg-white"
-            style={{
-              boxShadow: apart ? "0 4px 18px 6px rgba(255,255,255,0.95)" : "0 2px 6px 1px rgba(255,255,255,0.5)",
-              opacity: apart ? 1 : 0.6,
-              transition: "box-shadow 900ms ease, opacity 900ms ease",
-            }}
-          />
+        {/* The lamp: a shade on a short cord, lit while the button is apart */}
+        <span aria-hidden className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none">
+          <span className="block w-px h-4 bg-neutral-500/50" />
+          <Lamp lit={apart} width={60} />
         </span>
 
         <button

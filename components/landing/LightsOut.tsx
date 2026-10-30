@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { playClick } from "./click";
+import { Lamp } from "./Lamp";
 import { useInView } from "./useInView";
 
 const REST = 132; // cord length at rest, px
@@ -152,17 +153,7 @@ export function LightsOut({ children }: { children: React.ReactNode }) {
       {/* Pendant lamp */}
       <div aria-hidden className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none">
         <span className="block w-px h-14" style={{ background: on ? "#9a9a9a" : "#3a3a3a" }} />
-        <span
-          className="block w-28 h-12 rounded-t-[56px]"
-          style={{ background: "linear-gradient(180deg, #2e2e2e 0%, #121212 100%)", boxShadow: "inset 0 2px 3px -2px rgba(255,255,255,0.18)" }}
-        />
-        <span
-          className="block w-12 h-3 -mt-px rounded-b-full transition-[background-color,box-shadow] duration-300"
-          style={{
-            background: on ? "#ffffff" : "#2a2a2a",
-            boxShadow: on ? "0 6px 40px 14px rgba(255,255,255,0.95), 0 20px 120px 40px rgba(255,255,255,0.6)" : "none",
-          }}
-        />
+        <Lamp lit={on} width={112} strong />
       </div>
 
       {/* Pull cord */}
