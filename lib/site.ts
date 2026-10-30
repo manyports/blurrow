@@ -8,3 +8,7 @@ export const author = { handle: "@manyports", site: "https://manyports.com", sit
    same column as the page under it, so these must match the
    max-w-[…] classes on the landing page (1200) and docs layout (1360). */
 export const container = { site: 1200, docs: 1360, gutter: 24 };
+
+export const repo = { owner: "manyports", name: "blurrow", url: "https://github.com/manyports/blurrow" };
+export const npmUrl = "https://www.npmjs.com/package/@blurrow/ui?activeTab=readme";
+export const initCommand = `npx ${pkg} init`;

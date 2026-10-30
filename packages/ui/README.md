@@ -6,6 +6,14 @@ buttons you want to press, fields you want to fill in.
 
 ## install
 
+the quick way, in your project:
+
+```bash
+npx @blurrow/ui init
+```
+
+it installs the package, adds the styles to your css, loads the font and sets up toasts in your layout, showing each change before it makes it. or by hand:
+
 ```bash
 npm install @blurrow/ui
 ```
@@ -60,6 +68,26 @@ export default function Page() {
 ```
 
 every component is marked `"use client"`, so you can import them straight into server components.
+
+## the cli
+
+```bash
+npx @blurrow/ui init            # set up a project (safe to run again)
+npx @blurrow/ui add [names…]    # copy components' source in, with anything they need
+npx @blurrow/ui list            # every component, and which ones you've copied
+npx @blurrow/ui diff [name]     # what you've changed in copied components
+npx @blurrow/ui doctor [--fix]  # check the setup, and repair the css if it's off
+```
+
+once the package is installed, `npx blurrow <command>` is a shorter way to say the same thing.
+
+`add` with no names opens a picker (type to filter, space to pick). names are forgiving: `button`, `Button` and `button-group` all work, and typos get a suggestion. copied files that you've changed are never overwritten unless you pass `--overwrite`.
+
+everything takes `--yes` (no questions), `--dry-run` (show, don't write) and `--cwd <path>`. settings live in `blurrow.json`:
+
+```json
+{ "componentsDir": "components/ui", "css": "app/globals.css" }
+```
 
 ## license
 

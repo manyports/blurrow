@@ -6,9 +6,11 @@ import { LightRig } from "@/components/landing/LightRig";
 import { LightsOut } from "@/components/landing/LightsOut";
 import { RaisedSunken } from "@/components/landing/RaisedSunken";
 import { MotionDemo } from "@/components/landing/MotionDemo";
+import { OpenSource } from "@/components/landing/OpenSource";
 import { examples } from "@/examples";
 import { getEntry, registry } from "@/lib/registry";
-import { pkg } from "@/lib/site";
+import { getStars } from "@/lib/github";
+import { initCommand } from "@/lib/site";
 
 /* Nine components on the sheet. Captions say what each one does when
    you use it, in the plainest words that are still true.            */
@@ -50,7 +52,9 @@ function Row({ title, children, figure }: { title: string; children: React.React
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const stars = await getStars();
+
   return (
     <>
       <main className="mx-auto max-w-[1200px] px-4 sm:px-6">
@@ -151,6 +155,8 @@ export default function Home() {
           </Row>
         </section>
 
+        <OpenSource stars={stars} />
+
         {/* ── Using it: a dark room with a pull cord ───────────── */}
         <section className="pt-6 pb-16">
           <LightsOut>
@@ -158,10 +164,10 @@ export default function Home() {
               ready when you are!
             </h2>
             <p className="text-[16px] leading-[1.6] text-neutral-500 max-w-[40ch]">
-              one install and the whole kit is yours to use :)
+              one command sets everything up, and the whole kit is yours to use :)
             </p>
             <div className="w-full max-w-md text-left">
-              <CodeBlock language="bash" code={`npm install ${pkg}`} />
+              <CodeBlock language="bash" code={initCommand} />
             </div>
           </LightsOut>
         </section>

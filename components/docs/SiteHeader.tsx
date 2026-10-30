@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/Button";
 import { CardShell } from "@/components/ui/CardShell";
 import { CommandPalette } from "@/components/ui/CommandPalette";
 import { Kbd } from "@/components/ui/Kbd";
-import { container } from "@/lib/site";
+import { formatStars } from "@/lib/format";
+import { container, repo } from "@/lib/site";
 import { docsNav } from "./nav";
 
 interface NavItem {
@@ -49,7 +50,7 @@ function SearchIcon() {
   );
 }
 
-export function SiteHeader() {
+export function SiteHeader({ stars }: { stars: number | null }) {
   const pathname = usePathname();
   const router = useRouter();
   const [searchOpen, setSearchOpen] = useState(false);
@@ -217,7 +218,21 @@ export function SiteHeader() {
               ))}
             </nav>
 
-            <div className="relative hidden md:flex items-center justify-self-end">
+            <div className="relative hidden md:flex items-center gap-2 justify-self-end">
+              {/* A raised key to the repo: the star count, when there is one */}
+              <a
+                href={repo.url}
+                target="_blank"
+                rel="noopener"
+                aria-label={stars ? `star blurrow on github, ${stars} stars` : "star blurrow on github"}
+                className="h-9 px-3 rounded-[11px] flex items-center gap-1.5 text-[13px] font-medium text-neutral-700 hover:text-neutral-900 transition-colors"
+                style={{ background: "var(--face-light)", boxShadow: "var(--tile-light-shadow)" }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M12 2.8l2.83 5.74 6.33.92-4.58 4.46 1.08 6.3L12 17.25l-5.66 2.97 1.08-6.3L2.84 9.46l6.33-.92L12 2.8z" />
+                </svg>
+                {stars ? <span className="tabular-nums">{formatStars(stars)}</span> : <span>star</span>}
+              </a>
               <button
                 type="button"
                 onClick={() => setSearchOpen(true)}
@@ -343,6 +358,20 @@ export function SiteHeader() {
                       </Link>
                     </React.Fragment>
                   ))}
+                  <span aria-hidden className="h-px mx-4 bg-neutral-900/[0.06]" />
+                  <a
+                    href={repo.url}
+                    target="_blank"
+                    rel="noopener"
+                    onClick={closeMenu}
+                    className="flex items-center justify-between gap-3 px-4 py-3.5 rounded-[12px] text-[22px] font-medium tracking-[-0.035em] text-neutral-900 active:bg-neutral-900/[0.04] transition-colors"
+                    style={{
+                      animation: visible ? `menu-item-in 380ms cubic-bezier(0.22,1,0.36,1) ${90 + navItems.length * 50}ms both` : "none",
+                    }}
+                  >
+                    star on github
+                    <span className="text-[15px] text-neutral-400 tabular-nums">{stars ? `★ ${formatStars(stars)}` : "★"}</span>
+                  </a>
                 </nav>
 
                 {/* Inside the docs, the sidebar comes along so every page is reachable */}

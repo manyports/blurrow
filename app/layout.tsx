@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ToastProvider } from "@/components/ui/Toast";
 import { SiteHeader } from "@/components/docs/SiteHeader";
+import { getStars } from "@/lib/github";
 import "./globals.css";
 
 const archivo = localFont({
@@ -26,16 +27,17 @@ export const metadata: Metadata = {
   description: "react components that feel nice to press, type into and look at."
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const stars = await getStars();
   return (
     <html lang="en" className={`${archivo.variable} h-full antialiased`}>
       <body className="min-h-full bg-[#EBEBEB] font-sans text-neutral-900">
         <ToastProvider>
-          <SiteHeader />
+          <SiteHeader stars={stars} />
           {children}
         </ToastProvider>
       </body>

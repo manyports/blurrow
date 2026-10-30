@@ -82,19 +82,22 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
         <section className="flex flex-col gap-5">
           <H2 id="installation">installation</H2>
           <P>
-            if you haven&apos;t yet, install the package and add its styles. the{" "}
-            <TextLink href="/docs/installation">installation page</TextLink> has the full setup.
+            new to blurrow? this sets up your project in one go: the package, the styles and the font. already done it?
+            skip straight to usage. the <TextLink href="/docs/installation">installation page</TextLink> has the
+            details.
           </P>
-          <CodeBlock language="bash" code={`npm install ${pkg}`} />
+          <CodeBlock language="bash" code={`npx ${pkg} init`} />
           <details className="group flex flex-col gap-4">
             <summary className="cursor-pointer list-none text-[14px] font-medium text-neutral-900 flex items-center gap-2 select-none">
               <span className="text-neutral-400 transition-transform duration-200 group-open:rotate-90">›</span>
               rather own the code? copy the source instead
             </summary>
             <div className="flex flex-col gap-4 pt-4">
+              <P>let the cli copy it, along with anything it needs:</P>
+              <CodeBlock language="bash" code={`npx ${pkg} add ${entry.slug}`} />
               <P>
-                drop {files.length > 1 ? "these files" : "this file"} into <InlineCode>components/ui</InlineCode> and
-                import from there.
+                or by hand: drop {files.length > 1 ? "these files" : "this file"} into{" "}
+                <InlineCode>components/ui</InlineCode> and import from there.
                 {deps.length > 0 && (
                   <>
                     {" "}

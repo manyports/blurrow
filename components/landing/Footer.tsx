@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { author, pkg } from "@/lib/site";
+import { author, initCommand, npmUrl, repo } from "@/lib/site";
 import { playClick } from "./click";
 
 const columns = [
@@ -185,7 +185,7 @@ function InstallChip() {
     <button
       type="button"
       onClick={() => {
-        navigator.clipboard.writeText(`npm install ${pkg}`).then(() => {
+        navigator.clipboard.writeText(initCommand).then(() => {
           setCopied(true);
           setTimeout(() => setCopied(false), 1600);
         });
@@ -193,7 +193,7 @@ function InstallChip() {
       className="field self-start h-10 rounded-[12px] px-4 flex items-center gap-3 font-mono text-[13px] text-neutral-700 cursor-pointer"
     >
       <span className="text-neutral-400">$</span>
-      npm install {pkg}
+      {initCommand}
       <span className="text-[12px] font-sans text-neutral-400 w-12 text-left">{copied ? "copied!" : "copy"}</span>
     </button>
   );
@@ -213,7 +213,11 @@ export function Footer() {
               <a href={author.site} target="_blank" rel="noopener" className="link-slide text-neutral-900">
                 {author.handle}
               </a>
-              . if something feels off, or wonderful, i&apos;d love to hear about it.
+              . it&apos;s open source, so if something feels off, or wonderful,{" "}
+              <a href={`${repo.url}/issues/new`} target="_blank" rel="noopener" className="link-slide text-neutral-900">
+                open an issue
+              </a>{" "}
+              and tell me about it.
             </p>
             <InstallChip />
           </div>
@@ -230,9 +234,15 @@ export function Footer() {
             ))}
             <nav aria-label="elsewhere" className="flex flex-col gap-3">
               <p className="text-[13px] text-neutral-400">elsewhere</p>
-              <a href={author.site} target="_blank" rel="noopener" className="link-slide self-start text-[14px] text-neutral-700 hover:text-neutral-900 transition-colors">
-                {author.siteLabel}
-              </a>
+              {[
+                { href: repo.url, label: "github" },
+                { href: npmUrl, label: "npm" },
+                { href: author.site, label: author.siteLabel },
+              ].map((l) => (
+                <a key={l.href} href={l.href} target="_blank" rel="noopener" className="link-slide self-start text-[14px] text-neutral-700 hover:text-neutral-900 transition-colors">
+                  {l.label}
+                </a>
+              ))}
             </nav>
           </div>
         </div>

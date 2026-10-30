@@ -35,6 +35,8 @@ npm run package:publish   # publish to npm (runs the build first)
 
 Bump `version` in `packages/ui/package.json` before each publish.
 
+The package also ships a CLI (`packages/ui/cli`, no dependencies): `init`, `add`, `list`, `diff` and `doctor`. It bundles the catalogue from `lib/registry.ts` and copies of `components/ui` (into `dist/registry`), so `add` and `diff` always match the release. Try it locally with `node packages/ui/dist/cli.js --help`.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).

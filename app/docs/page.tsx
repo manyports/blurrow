@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Pager } from "@/components/docs/Pager";
 import { H2, InlineCode, P, PageTitle, TextLink } from "@/components/docs/Prose";
 import { registry } from "@/lib/registry";
-import { pkg } from "@/lib/site";
+import { initCommand, npmUrl, repo } from "@/lib/site";
 
 export const metadata: Metadata = { title: "introduction" };
 
@@ -40,9 +40,21 @@ export default function IntroductionPage() {
           tailwind css v4, and gets its look from a small set of css tokens (gradients and layered shadows).
         </P>
         <P>
-          install it with <InlineCode>npm install {pkg}</InlineCode> and import what you need. if you&apos;d rather
-          tweak a component yourself, every page also has its source for you to copy. the{" "}
-          <TextLink href="/docs/installation">installation page</TextLink> walks you through both.
+          run <InlineCode>{initCommand}</InlineCode> in your project and it sets everything up: the package, the
+          styles, the font. then import what you need. if you&apos;d rather tweak a component yourself,{" "}
+          <InlineCode>npx @blurrow/ui add button</InlineCode> copies its source in. the{" "}
+          <TextLink href="/docs/installation">installation page</TextLink> has the details.
+        </P>
+        <P>
+          it&apos;s open source under the mit license, on{" "}
+          <a href={repo.url} target="_blank" rel="noopener" className="link-slide font-medium text-neutral-900">
+            github
+          </a>{" "}
+          and{" "}
+          <a href={npmUrl} target="_blank" rel="noopener" className="link-slide font-medium text-neutral-900">
+            npm
+          </a>
+          . issues, ideas and pull requests are all welcome.
         </P>
       </section>
 

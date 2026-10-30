@@ -60,8 +60,22 @@ export default async function InstallationPage() {
     <article className="max-w-3xl flex flex-col gap-12">
       <PageTitle
         title="installation"
-        description="a few minutes of setup, then you can use any component. you'll need react and tailwind css v4."
+        description="a few minutes of setup, then you can use any component. you'll need react 19 and tailwind css v4."
       />
+
+      <section className="flex flex-col gap-4">
+        <H2 id="quick">the quick way</H2>
+        <P>
+          run this in your project. it installs the package, adds the styles to your css, loads the font and sets up
+          toasts in your layout, showing you each change before it makes it.
+        </P>
+        <CodeBlock language="bash" code={`npx ${pkg} init`} />
+        <P>
+          later, <InlineCode>npx {pkg} doctor</InlineCode> checks everything&apos;s still wired up, and{" "}
+          <InlineCode>npx {pkg} doctor --fix</InlineCode> repairs your stylesheet if it isn&apos;t. rather do it by
+          hand? here&apos;s what init does:
+        </P>
+      </section>
 
       <Step n={1} id="install" title="install the package">
         <CodeBlock language="bash" code={`npm install ${pkg}`} />
@@ -94,7 +108,10 @@ export default async function InstallationPage() {
       <section className="flex flex-col gap-4 pt-4">
         <H2 id="copy">rather copy the source?</H2>
         <P>
-          that works too. every component page has its full source under &ldquo;rather own the code?&rdquo;. drop the
+          that works too. <InlineCode>npx {pkg} add button tabs</InlineCode> copies components (and anything they need)
+          into your project and wires up the tokens; run it with no names to pick from a list.{" "}
+          <InlineCode>npx {pkg} diff</InlineCode> shows what you&apos;ve changed since. or do it by hand: every component
+          page has its full source under &ldquo;rather own the code?&rdquo;. drop the
           files into <InlineCode>components/ui</InlineCode>, save the tokens below as{" "}
           <InlineCode>components/ui/styles.css</InlineCode>, and import it right after tailwind in your{" "}
           <InlineCode>globals.css</InlineCode> in place of step 2.
