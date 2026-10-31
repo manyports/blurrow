@@ -208,12 +208,12 @@ export function DropdownMenu({
           style={{ background: "var(--panel-bezel)", boxShadow: "var(--overlay-shadow)", marginLeft: shift || undefined }}
         >
           <div
-            className="bg-white rounded-[11px] p-1 flex flex-col"
+            className="bg-panel-face rounded-[11px] p-1 flex flex-col"
             style={{ boxShadow: "var(--panel-face-shadow)" }}
           >
             {items.map((item) => {
               if (item.divider) {
-                return <div key={item.key} role="separator" className="h-px bg-neutral-100 my-1 mx-2" />;
+                return <div key={item.key} role="separator" className="h-px bg-line my-1 mx-2" />;
               }
 
               return (
@@ -230,15 +230,15 @@ export function DropdownMenu({
                     "transition-[background,color] duration-100",
                     "disabled:opacity-35 disabled:pointer-events-none",
                     item.danger
-                      ? "text-red-600 focus:bg-red-50"
-                      : "text-neutral-700 focus:text-neutral-900 focus:bg-neutral-100/80",
+                      ? "text-danger focus:bg-danger-wash"
+                      : "text-ink-label focus:text-ink focus:bg-surface-active/80",
                   ].join(" ")}
                 >
                   {item.icon && (
                     <span
                       className={[
                         "shrink-0 w-4 h-4 flex items-center justify-center transition-colors duration-100",
-                        item.danger ? "text-red-500" : "text-neutral-400 group-focus/item:text-neutral-700",
+                        item.danger ? "text-danger-soft" : "text-ink-faint group-focus/item:text-ink-label",
                       ].join(" ")}
                     >
                       {item.icon}

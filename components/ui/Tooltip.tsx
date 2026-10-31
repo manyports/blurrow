@@ -188,7 +188,7 @@ export function Tooltip({
           id={`${uid}-tip`}
           role="tooltip"
           className={[
-            "absolute z-50 px-2.5 py-1.5 rounded-[9px] text-white text-[11.5px] font-medium whitespace-nowrap pointer-events-none",
+            "absolute z-50 px-2.5 py-1.5 rounded-[9px] text-ink-inverse text-[11.5px] font-medium whitespace-nowrap pointer-events-none",
             "transition-[opacity,transform,scale,translate] duration-150 ease-[var(--ease-spring)]",
             origin[position],
             visible
@@ -198,10 +198,9 @@ export function Tooltip({
           style={{
             top: coords.top,
             left: coords.left,
-            background: "var(--face-dark)",
-            boxShadow:
-              "0 0 3px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.22), 0 8px 24px -4px rgba(0,0,0,0.3), inset 0 2px 3px -2px rgba(255,255,255,0.105)",
-            textShadow: "0 -1px 0 rgba(0,0,0,0.4)",
+            background: "var(--face-inverse)",
+            boxShadow: "var(--tooltip-shadow)",
+            textShadow: "var(--emboss-inverse)",
           }}
         >
           {content}

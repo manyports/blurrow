@@ -53,7 +53,7 @@ export function Accordion({ items, allowMultiple = false, className }: Accordion
       style={{ background: "var(--panel-bezel)", boxShadow: "var(--panel-shadow)" }}
     >
       <div
-        className="bg-white rounded-[13px] overflow-hidden p-1"
+        className="bg-panel-face rounded-[13px] overflow-hidden p-1"
         style={{ boxShadow: "var(--panel-face-shadow)" }}
       >
         {items.map((item, index) => {
@@ -69,7 +69,7 @@ export function Accordion({ items, allowMultiple = false, className }: Accordion
                 "relative",
                 // Hairline between rows, inset so it doesn't touch the rounded corners
                 !isLast &&
-                  "after:absolute after:left-3 after:right-3 after:bottom-0 after:h-px after:bg-neutral-100",
+                  "after:absolute after:left-3 after:right-3 after:bottom-0 after:h-px after:bg-line",
               ]
                 .filter(Boolean)
                 .join(" ")}
@@ -84,15 +84,15 @@ export function Accordion({ items, allowMultiple = false, className }: Accordion
                   className={[
                     "group/acc w-full flex items-center justify-between gap-3 py-3 px-3 text-left text-[13.5px] font-medium cursor-pointer rounded-[10px]",
                     "transition-colors duration-150",
-                    isOpen ? "text-neutral-900" : "text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50",
+                    isOpen ? "text-ink" : "text-ink-label hover:text-ink hover:bg-surface-hover",
                   ].join(" ")}
                 >
                   <span>{item.title}</span>
                   {/* Plus that turns into a minus: says "more inside", not "navigate" */}
                   <span
                     aria-hidden
-                    className="relative shrink-0 w-6 h-6 rounded-[7px] flex items-center justify-center text-neutral-500 group-hover/acc:text-neutral-900 transition-colors"
-                    style={{ background: "var(--face-light)", boxShadow: "var(--face-light-shadow)" }}
+                    className="relative shrink-0 w-6 h-6 rounded-[7px] flex items-center justify-center text-ink-muted group-hover/acc:text-ink transition-colors"
+                    style={{ background: "var(--face)", boxShadow: "var(--face-shadow)" }}
                   >
                     <span className="absolute w-2.5 h-[1.5px] rounded-full bg-current" />
                     <span
@@ -120,7 +120,7 @@ export function Accordion({ items, allowMultiple = false, className }: Accordion
               >
                 <div className="overflow-hidden">
                   <div
-                    className="px-3 pb-4 pt-0.5 text-[13px] text-neutral-600 leading-relaxed"
+                    className="px-3 pb-4 pt-0.5 text-[13px] text-ink-body leading-relaxed"
                     style={{
                       opacity: isOpen ? 1 : 0,
                       transform: isOpen ? "translateY(0)" : "translateY(-4px)",

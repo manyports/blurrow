@@ -120,7 +120,7 @@ export function TagInput({
   return (
     <div className={["flex flex-col gap-1.5", fullWidth ? "w-full" : ""].join(" ")}>
       {label && (
-        <label htmlFor={`${uid}-input`} className="text-[12.5px] font-medium text-neutral-700 tracking-[-0.005em]">
+        <label htmlFor={`${uid}-input`} className="text-[12.5px] font-medium text-ink-label tracking-[-0.005em]">
           {label}
         </label>
       )}
@@ -131,7 +131,7 @@ export function TagInput({
           "transition-[box-shadow,background] duration-200 ease-out cursor-text",
           "[background:var(--field)] [box-shadow:var(--field-shadow)]",
           "hover:[background:var(--field-hover)] hover:[box-shadow:var(--field-shadow-hover)]",
-          "focus-within:[background:#ffffff] focus-within:[box-shadow:var(--field-shadow-focus)]",
+          "focus-within:[background:var(--field-focus)] focus-within:[box-shadow:var(--field-shadow-focus)]",
           fullWidth ? "w-full" : "",
           className,
         ]
@@ -142,7 +142,7 @@ export function TagInput({
           <span
             key={at.text}
             className={[
-              "inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-[7px] text-[11.5px] font-medium text-neutral-700 select-none",
+              "inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-[7px] text-[11.5px] font-medium text-ink-label select-none",
               "transition-all duration-180 ease-[cubic-bezier(0.34,1.4,0.64,1)]",
               at.state === "entering" ? "opacity-0 scale-75" : "",
               at.state === "visible" ? "opacity-100 scale-100" : "",
@@ -150,8 +150,8 @@ export function TagInput({
             ].join(" ")}
             style={{
               /* Tags are small raised faces sitting in the sunken field */
-              background: "var(--face-light)",
-              boxShadow: "var(--face-light-shadow)",
+              background: "var(--face)",
+              boxShadow: "var(--face-shadow)",
             }}
           >
             {at.text}
@@ -163,7 +163,7 @@ export function TagInput({
                 if (idx !== -1) removeTag(idx);
               }}
               aria-label={`Remove ${at.text}`}
-              className="w-4 h-4 inline-flex items-center justify-center rounded-[5px] text-neutral-400 hover:text-neutral-900 hover:bg-neutral-900/[0.06] cursor-pointer transition-colors"
+              className="w-4 h-4 inline-flex items-center justify-center rounded-[5px] text-ink-faint hover:text-ink hover:bg-ink/[0.06] cursor-pointer transition-colors"
             >
               <svg width="8" height="8" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -182,10 +182,10 @@ export function TagInput({
           placeholder={tags.length === 0 ? placeholder : ""}
           aria-label={label ? undefined : placeholder}
           aria-describedby={hint ? `${uid}-hint` : undefined}
-          className="flex-1 min-w-[80px] bg-transparent text-[13.5px] text-neutral-900 placeholder:text-neutral-400 outline-none py-0.5"
+          className="flex-1 min-w-[80px] bg-transparent text-[13.5px] text-ink placeholder:text-ink-faint outline-none py-0.5"
         />
       </div>
-      {hint && <p id={`${uid}-hint`} className="text-[11.5px] text-neutral-500 mt-0.5">{hint}</p>}
+      {hint && <p id={`${uid}-hint`} className="text-[11.5px] text-ink-muted mt-0.5">{hint}</p>}
     </div>
   );
 }

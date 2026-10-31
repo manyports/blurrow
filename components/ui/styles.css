@@ -1,14 +1,61 @@
 /* blurrow/ui: design tokens, materials and keyframes.
    Import after tailwindcss:  @import "tailwindcss"; @import "@blurrow/ui/styles.css";
-   The kit is set in Archivo; load it as the --font-archivo variable. */
+   The kit is set in Archivo; load it as the --font-archivo variable.
+
+   Light is the default. For dark, set data-theme="dark" on <html> (the
+   class "dark" works too), or on any element to darken just that part.
+   data-theme="system" follows the visitor's OS setting, and
+   data-theme="light" keeps a part of the page light inside a dark one. */
 
 @theme {
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* ── Material tokens ─────────────────────────────────────────────── */
+/* The theme's colours as Tailwind utilities: text-ink, bg-panel-face,
+   border-line… `inline` keeps the var() in every class, so a colour is
+   read where it's used and follows whichever theme that element is in. */
+@theme inline {
+  --color-page: var(--page);
+  --color-panel-face: var(--panel-face);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-groove: var(--groove);
+  --color-track: var(--track);
+  --color-track-on: var(--track-on);
+
+  --color-ink-strong: var(--ink-strong);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-label: var(--ink-label);
+  --color-ink-body: var(--ink-body);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-ink-ghost: var(--ink-ghost);
+  --color-ink-inverse: var(--ink-inverse);
+
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-wash: var(--danger-wash);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-ink: var(--warning-ink);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+
+  --color-code-keyword: var(--code-keyword);
+  --color-code-string: var(--code-string);
+  --color-code-tag: var(--code-tag);
+  --color-code-number: var(--code-number);
+}
+
+/* ── Materials ───────────────────────────────────────────────────── */
 /* One light source from above: highlights live on top edges, shade on
-   bottom edges, and every raised face casts onto whatever holds it.   */
+   bottom edges, and every raised face casts onto whatever holds it.
+   Materials are fixed: light is always light, dark is always dark.
+   Components read the theme roles further down, which point at these. */
 :root {
   --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
   --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
@@ -24,6 +71,14 @@
     0 0 3px rgba(17, 17, 17, 0.119),
     0 1px 4px -1px rgba(17, 17, 17, 0.1), inset 0 2px 3px -2px rgba(255, 255, 255, 1),
     inset 0 -2px 3px -2px rgba(17, 17, 17, 0.035);
+  --face-light-shadow-hover:
+    0 0 3px rgba(17, 17, 17, 0.136), 0 2px 3px rgba(17, 17, 17, 0.1),
+    0 4px 8px -2px rgba(17, 17, 17, 0.08), inset 0 2px 3px -2px rgba(255, 255, 255, 1),
+    inset 0 -2px 3px -2px rgba(17, 17, 17, 0.035);
+  /* A face with no bezel casts further when it lifts */
+  --face-light-float-shadow:
+    0 0 3px rgba(17, 17, 17, 0.136), 0 2px 4px rgba(17, 17, 17, 0.08),
+    0 6px 14px -4px rgba(17, 17, 17, 0.1), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
 
   /* Dark material */
   --bezel-dark: linear-gradient(180deg, #2c2c2c 0%, #0c0c0c 100%);
@@ -35,71 +90,37 @@
     0 0 3px rgba(0, 0, 0, 0.35),
     0 1px 4px -1px rgba(0, 0, 0, 0.3), inset 0 2px 3px -2px rgba(255, 255, 255, 0.105),
     inset 0 -2px 3px -2px rgba(0, 0, 0, 0.25);
+  --face-dark-shadow-hover:
+    0 0 3px rgba(0, 0, 0, 0.35), 0 2px 3px rgba(0, 0, 0, 0.45),
+    0 4px 8px -2px rgba(0, 0, 0, 0.35), inset 0 2px 3px -2px rgba(255, 255, 255, 0.135),
+    inset 0 -2px 3px -2px rgba(0, 0, 0, 0.25);
+  --face-dark-float-shadow:
+    0 0 3px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.4),
+    0 6px 14px -4px rgba(0, 0, 0, 0.35), inset 0 2px 3px -2px rgba(255, 255, 255, 0.135);
+
+  /* Mid material: a raised face a few steps lighter than a dark surface —
+     present, but in the same family of tones (secondary on dark)      */
+  --bezel-mid: linear-gradient(180deg, #2a2a2a 0%, #161616 100%);
+  --bezel-mid-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.35),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.053);
+  --face-mid: linear-gradient(180deg, #353535 0%, #2a2a2a 55%, #242424 100%);
+  --face-mid-shadow:
+    0 0 3px rgba(0, 0, 0, 0.35), 0 1px 1.5px rgba(0, 0, 0, 0.4),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.09), inset 0 -2px 3px -2px rgba(0, 0, 0, 0.2);
+  --face-mid-shadow-hover:
+    0 0 3px rgba(0, 0, 0, 0.35), 0 2px 3px rgba(0, 0, 0, 0.45),
+    0 4px 8px -2px rgba(0, 0, 0, 0.35), inset 0 2px 3px -2px rgba(255, 255, 255, 0.12),
+    inset 0 -2px 3px -2px rgba(0, 0, 0, 0.2);
+  --face-mid-float-shadow:
+    0 0 3px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.4),
+    0 6px 14px -4px rgba(0, 0, 0, 0.4), inset 0 2px 3px -2px rgba(255, 255, 255, 0.12);
 
   /* Sunken face (pressed) — the face drops flush with its bezel */
   --face-light-pressed:
     0 0 3px rgba(17, 17, 17, 0.136), inset 0 1px 2px rgba(17, 17, 17, 0.08);
   --face-dark-pressed:
     0 0 3px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(0, 0, 0, 0.45);
-
-  /* Fields — sunken: darker at the top, shade inside, a lit lip below.
-     Raised means "press me", sunken means "fill me".
-
-     Every state has the same five layers (edge, shade, lip, border, halo)
-     so box-shadow interpolates between them instead of snapping: hover
-     hints at the halo, focus lifts the well flush and draws the border.  */
-  --field: linear-gradient(180deg, #f2f2f2 0%, #f8f8f8 100%);
-  --field-hover: linear-gradient(180deg, #eeeeee 0%, #f5f5f5 100%);
-  --field-shadow:
-    inset 0 0 2px rgba(17, 17, 17, 0.15), inset 0 1px 2px rgba(17, 17, 17, 0.06),
-    0 1px 2px -1px rgba(255, 255, 255, 0.72), inset 0 0 0 1px rgba(17, 17, 17, 0),
-    0 0 0 0 rgba(17, 17, 17, 0);
-  --field-shadow-hover:
-    inset 0 0 2px rgba(17, 17, 17, 0.25), inset 0 1px 2px rgba(17, 17, 17, 0.07),
-    0 1px 2px -1px rgba(255, 255, 255, 0.72), inset 0 0 0 1px rgba(17, 17, 17, 0.04),
-    0 0 0 3px rgba(17, 17, 17, 0.025);
-  --field-shadow-focus:
-    inset 0 0 2px rgba(17, 17, 17, 0.06), inset 0 1px 2px rgba(17, 17, 17, 0.02),
-    0 1px 2px -1px rgba(255, 255, 255, 0), inset 0 0 0 1px rgba(17, 17, 17, 0.42),
-    0 0 0 4px rgba(17, 17, 17, 0.07);
-  --field-shadow-error:
-    inset 0 0 2px rgba(220, 38, 38, 0.3), inset 0 1px 2px rgba(220, 38, 38, 0.06),
-    0 1px 2px -1px rgba(255, 255, 255, 0.72), inset 0 0 0 1px rgba(220, 38, 38, 0),
-    0 0 0 0 rgba(220, 38, 38, 0);
-  --field-shadow-error-hover:
-    inset 0 0 2px rgba(220, 38, 38, 0.4), inset 0 1px 2px rgba(220, 38, 38, 0.08),
-    0 1px 2px -1px rgba(255, 255, 255, 0.72), inset 0 0 0 1px rgba(220, 38, 38, 0.08),
-    0 0 0 3px rgba(220, 38, 38, 0.04);
-  --field-shadow-error-focus:
-    inset 0 0 2px rgba(220, 38, 38, 0.1), inset 0 1px 2px rgba(220, 38, 38, 0.02),
-    0 1px 2px -1px rgba(255, 255, 255, 0), inset 0 0 0 1px rgba(220, 38, 38, 0.7),
-    0 0 0 4px rgba(220, 38, 38, 0.1);
-
-  /* Wells hold a sliding thumb (tabs, pagination, segmented controls) */
-  --well: linear-gradient(180deg, #ebebeb 0%, #f1f1f1 100%);
-  --well-shadow:
-    inset 0 0 2px rgba(17, 17, 17, 0.09), inset 0 1px 2px rgba(17, 17, 17, 0.08),
-    0 1px 2px -1px rgba(255, 255, 255, 0.72);
-  --thumb-shadow:
-    0 0 3px rgba(17, 17, 17, 0.102), 0 1px 2px rgba(17, 17, 17, 0.1),
-    0 2px 6px -2px rgba(17, 17, 17, 0.08), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
-
-  /* Panels — a soft bezel holding a white face (lists, menus, alerts) */
-  --panel-bezel: linear-gradient(180deg, #fbfbfb 0%, #f0f0f0 100%);
-  --panel-shadow:
-    0 0 0 0.5px rgba(17, 17, 17, 0.036), 0 1px 2px rgba(17, 17, 17, 0.04),
-    0 4px 12px -4px rgba(17, 17, 17, 0.08), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
-  --panel-face-shadow:
-    0 0 3px rgba(17, 17, 17, 0.076), 0 1px 2px rgba(17, 17, 17, 0.05),
-    inset 0 2px 3px -2px rgba(255, 255, 255, 1);
-  /* Panels that float above the page cast further */
-  --overlay-shadow:
-    0 0 0 0.5px rgba(17, 17, 17, 0.048), 0 4px 12px -4px rgba(17, 17, 17, 0.12),
-    0 16px 40px -12px rgba(17, 17, 17, 0.2), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
-  --modal-shadow:
-    0 0 0 0.5px rgba(17, 17, 17, 0.048), 0 8px 24px -8px rgba(17, 17, 17, 0.2),
-    0 32px 80px -16px rgba(17, 17, 17, 0.32), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
-  --scrim: rgba(10, 10, 10, 0.4);
 
   /* Cards — the largest surfaces; pair with .rim */
   --card-light: linear-gradient(180deg, #ffffff 0%, #fefefe 40%, #fafafa 100%);
@@ -148,12 +169,781 @@
   --tile-dark-shadow:
     0 0 0 0.5px rgba(255, 255, 255, 0.048), 0 2px 6px rgba(0, 0, 0, 0.35),
     inset 0 2px 3px -2px rgba(255, 255, 255, 0.09);
+
+  /* The dark card's own details (what theme="dark" wears on any page) */
+  --card-dark-rim: rgba(255, 255, 255, 0.1);
+  --divider-dark: rgba(255, 255, 255, 0.07);
+  --media-dots-dark: rgba(255, 255, 255, 0.09);
+  --media-dots-on-colour: rgba(255, 255, 255, 0.22);
+  --spark-dark: #ffffff;
+  --spark-dark-halo: rgba(255, 255, 255, 0.14);
+  --photo-edge-dark: rgba(255, 255, 255, 0.084);
+
+  /* Status tiles: coloured faces, lit like every other face */
+  --tile-success: linear-gradient(180deg, #10b981 0%, #059669 100%);
+  --tile-warning: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+  --tile-error: linear-gradient(180deg, #f87171 0%, #dc2626 100%);
+  --tile-status-shadow:
+    0 0 3px rgba(0, 0, 0, 0.212), 0 1px 2px rgba(0, 0, 0, 0.15),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.188);
+  --lamp-success: #10b981;
+  --lamp-warning: #f59e0b;
+  --lamp-accent: #8b5cf6;
+  --lamp-lip: inset 0 1px 1px rgba(255, 255, 255, 0.35);
+
+  /* Violet: the accent banner, in the same build as the primary key */
+  --bezel-violet: linear-gradient(180deg, #4c2a99 0%, #2e1065 100%);
+  --bezel-violet-shadow:
+    0 0 0 0.5px rgba(46, 16, 101, 0.36), 0 4px 12px -4px rgba(76, 29, 149, 0.45),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.09);
+  --face-violet: linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%);
+  --face-violet-shadow:
+    0 0 3px rgba(46, 16, 101, 0.35), 0 1px 2px rgba(46, 16, 101, 0.4),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.165);
+}
+
+/* ── Theme roles ─────────────────────────────────────────────────── */
+/* What the components read. Light points each role at a material above;
+   dark (below) gives each its own value. To re-brand, override these on
+   :root (and in the dark block); the materials can stay as they are.  */
+:root,
+.light,
+[data-theme='light'] {
+  /* Surfaces */
+  --page: #ebebeb;
+  --panel-face: #ffffff;
+  --panel-tray: linear-gradient(180deg, #fafafa 0%, #f6f6f6 100%);
+  --palette-tray: linear-gradient(180deg, #fcfcfc 0%, #f8f8f8 100%);
+  --surface-hover: oklch(98.5% 0 0);
+  --surface-active: oklch(97% 0 0);
+  --line: oklch(97% 0 0);
+  --line-strong: oklch(92.2% 0 0);
+  --hairline: rgba(17, 17, 17, 0.06);
+  --divider: rgba(17, 17, 17, 0.07);
+  --groove: color-mix(in oklab, oklch(20.5% 0 0) 8%, transparent);
+  --groove-lip: 1px 0 0 rgba(255, 255, 255, 0.9);
+  --scrollbar: rgba(17, 17, 17, 0.15);
+  --dots: rgba(17, 17, 17, 0.07);
+  --shimmer: rgba(255, 255, 255, 0.55);
+  --sheen: rgba(255, 255, 255, 0.75);
+  --halo: 0 0 0 4px rgba(17, 17, 17, 0.06), 0 0 0 5px rgba(17, 17, 17, 0.03);
+  --focus-ring-inset: inset 0 0 0 2px rgba(17, 17, 17, 0.85);
+
+  /* Ink: text and icons, strongest to faintest */
+  --ink-strong: oklch(14.5% 0 0);
+  --ink: oklch(20.5% 0 0);
+  --ink-soft: oklch(26.9% 0 0);
+  --ink-label: oklch(37.1% 0 0);
+  --ink-body: oklch(43.9% 0 0);
+  --ink-muted: oklch(55.6% 0 0);
+  --ink-faint: oklch(70.8% 0 0);
+  --ink-ghost: oklch(87% 0 0);
+  /* Ink on the inverse face: primary keys, checked boxes, tooltips */
+  --ink-inverse: #ffffff;
+  /* Letterpress: text pressed into a raised face, lit from above */
+  --emboss: 0 1px 0 rgba(255, 255, 255, 0.9);
+  --emboss-soft: 0 1px 0 rgba(255, 255, 255, 0.7);
+  --emboss-inverse: 0 -1px 0 rgba(0, 0, 0, 0.4);
+  --emboss-inverse-deep: 0 -1px 0 rgba(0, 0, 0, 0.45);
+
+  /* Status */
+  --danger: oklch(57.7% 0.245 27.325);
+  --danger-soft: oklch(63.7% 0.237 25.331);
+  --danger-wash: oklch(97.1% 0.013 17.38);
+  --success: oklch(50.8% 0.118 165.612);
+  --success-soft: oklch(59.6% 0.145 163.225);
+  --success-strong: #047857;
+  --warning: oklch(66.6% 0.179 58.318);
+  --warning-ink: oklch(41.4% 0.112 45.904);
+  --accent: oklch(49.1% 0.27 292.581);
+  --accent-soft: oklch(54.1% 0.281 293.009);
+  --code-keyword: oklch(54.1% 0.281 293.009);
+  --code-string: oklch(50.8% 0.118 165.612);
+  --code-tag: oklch(50% 0.134 242.749);
+  --code-number: oklch(55.5% 0.163 48.998);
+  --lamp-default: #262626;
+
+  /* Raised: the everyday key (secondary buttons, thumbs, knobs, tiles) */
+  --bezel: var(--bezel-light);
+  --bezel-shadow: var(--bezel-light-shadow);
+  --face: var(--face-light);
+  --face-shadow: var(--face-light-shadow);
+  --face-shadow-hover: var(--face-light-shadow-hover);
+  --face-pressed: var(--face-light-pressed);
+  --face-float-shadow: var(--face-light-float-shadow);
+  --face-drop: 0 6px 16px -6px rgba(17, 17, 17, 0.15);
+  --tile: var(--face-light);
+  --tile-shadow: var(--tile-light-shadow);
+  --thumb-shadow:
+    0 0 3px rgba(17, 17, 17, 0.102), 0 1px 2px rgba(17, 17, 17, 0.1),
+    0 2px 6px -2px rgba(17, 17, 17, 0.08), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --key-shadow:
+    0 0 3px rgba(17, 17, 17, 0.136), 0 1.5px 1px rgba(17, 17, 17, 0.12),
+    0 2px 3px -1px rgba(17, 17, 17, 0.1), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --knob-shadow:
+    0 0 3px rgba(17, 17, 17, 0.119), 0 1px 2px rgba(0, 0, 0, 0.14),
+    0 3px 6px -1px rgba(0, 0, 0, 0.12), inset 0 2px 3px -2px rgba(255, 255, 255, 1),
+    inset 0 -2px 3px -2px rgba(0, 0, 0, 0.04);
+
+  /* Inverse: the opposite of the page (primary, checked, selected) */
+  --bezel-inverse: var(--bezel-dark);
+  --bezel-inverse-shadow: var(--bezel-dark-shadow);
+  --face-inverse: var(--face-dark);
+  --face-inverse-shadow: var(--face-dark-shadow);
+  --face-inverse-shadow-hover: var(--face-dark-shadow-hover);
+  --face-inverse-pressed: var(--face-dark-pressed);
+  --face-inverse-float-shadow: var(--face-dark-float-shadow);
+  --inverse-lip: rgba(255, 255, 255, 0.12);
+  --dot-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  --fill-shadow: inset 0 2px 3px -2px rgba(255, 255, 255, 0.135), 0 0 2px rgba(0, 0, 0, 0.2);
+  --tooltip-shadow:
+    0 0 3px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.22),
+    0 8px 24px -4px rgba(0, 0, 0, 0.3), inset 0 2px 3px -2px rgba(255, 255, 255, 0.105);
+  --badge-inverse-shadow:
+    0 0 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.2),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.105);
+  --progress-bar: linear-gradient(90deg, #0a0a0a 0%, #262626 100%);
+  --banner-bezel: var(--bezel-dark);
+  --banner-bezel-shadow: var(--bezel-dark-shadow);
+  --banner-face: var(--face-dark);
+  --banner-face-shadow: var(--face-dark-shadow);
+  --progress-bar-glow: 0 0 8px rgba(17, 17, 17, 0.3);
+
+  /* Outline and ghost keys */
+  --outline-bezel: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(17, 17, 17, 0.04) 100%);
+  --outline-bezel-shadow: 0 0 0 0.5px rgba(17, 17, 17, 0.048), inset 0 2px 3px -2px rgba(255, 255, 255, 0.45);
+  --outline-face-shadow:
+    0 0 3px rgba(17, 17, 17, 0.102), 0 1px 1px rgba(17, 17, 17, 0.06),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --outline-face-shadow-hover:
+    0 0 3px rgba(17, 17, 17, 0.136), 0 1px 2px rgba(17, 17, 17, 0.08),
+    0 3px 6px -2px rgba(17, 17, 17, 0.06), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --outline-shadow: inset 0 0 2px rgba(17, 17, 17, 0.15);
+  --outline-shadow-hover: inset 0 0 2px rgba(17, 17, 17, 0.24), 0 1px 2px rgba(17, 17, 17, 0.05);
+  --outline-shadow-pressed: inset 0 0 2px rgba(17, 17, 17, 0.24), inset 0 1px 2px rgba(17, 17, 17, 0.06);
+  --ghost-shadow-hover: inset 0 0 2px rgba(17, 17, 17, 0.09);
+  --ghost-shadow-pressed: inset 0 1px 2px rgba(17, 17, 17, 0.08);
+
+  /* Badges */
+  --badge: linear-gradient(180deg, #ffffff 0%, #f1f1f1 100%);
+  --badge-shadow:
+    0 0 3px rgba(17, 17, 17, 0.119), 0 1px 1.5px rgba(17, 17, 17, 0.07),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --badge-accent: linear-gradient(180deg, #f5f0ff 0%, #ebe1ff 100%);
+  --badge-accent-shadow:
+    0 0 3px rgba(124, 58, 237, 0.255), 0 1px 1.5px rgba(124, 58, 237, 0.12),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.637);
+
+  /* The warning banner: an amber bezel holding a pale amber face */
+  --bezel-warning: linear-gradient(180deg, #fde68a 0%, #f5c84b 100%);
+  --bezel-warning-shadow:
+    0 0 0 0.5px rgba(180, 83, 9, 0.15), 0 4px 12px -4px rgba(217, 119, 6, 0.3),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.45);
+  --face-warning: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%);
+  --face-warning-shadow:
+    0 0 3px rgba(180, 83, 9, 0.255), 0 1px 2px rgba(180, 83, 9, 0.12),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+
+  /* Fields — sunken: darker at the top, shade inside, a lit lip below.
+     Raised means "press me", sunken means "fill me".
+
+     Every state has the same five layers (edge, shade, lip, border, halo)
+     so box-shadow interpolates between them instead of snapping: hover
+     hints at the halo, focus lifts the well flush and draws the border.  */
+  --field-from: #f2f2f2;
+  --field-to: #f8f8f8;
+  --field-hover-from: #eeeeee;
+  --field-hover-to: #f5f5f5;
+  --field-focus: #ffffff;
+  --field: linear-gradient(180deg, #f2f2f2 0%, #f8f8f8 100%);
+  --field-hover: linear-gradient(180deg, #eeeeee 0%, #f5f5f5 100%);
+  --field-shadow:
+    inset 0 0 2px rgba(17, 17, 17, 0.15), inset 0 1px 2px rgba(17, 17, 17, 0.06),
+    0 1px 2px -1px rgba(255, 255, 255, 0.72), inset 0 0 0 1px rgba(17, 17, 17, 0),
+    0 0 0 0 rgba(17, 17, 17, 0);
+  --field-shadow-hover:
+    inset 0 0 2px rgba(17, 17, 17, 0.25), inset 0 1px 2px rgba(17, 17, 17, 0.07),
+    0 1px 2px -1px rgba(255, 255, 255, 0.72), inset 0 0 0 1px rgba(17, 17, 17, 0.04),
+    0 0 0 3px rgba(17, 17, 17, 0.025);
+  --field-shadow-focus:
+    inset 0 0 2px rgba(17, 17, 17, 0.06), inset 0 1px 2px rgba(17, 17, 17, 0.02),
+    0 1px 2px -1px rgba(255, 255, 255, 0), inset 0 0 0 1px rgba(17, 17, 17, 0.42),
+    0 0 0 4px rgba(17, 17, 17, 0.07);
+  --field-shadow-error:
+    inset 0 0 2px rgba(220, 38, 38, 0.3), inset 0 1px 2px rgba(220, 38, 38, 0.06),
+    0 1px 2px -1px rgba(255, 255, 255, 0.72), inset 0 0 0 1px rgba(220, 38, 38, 0),
+    0 0 0 0 rgba(220, 38, 38, 0);
+  --field-shadow-error-hover:
+    inset 0 0 2px rgba(220, 38, 38, 0.4), inset 0 1px 2px rgba(220, 38, 38, 0.08),
+    0 1px 2px -1px rgba(255, 255, 255, 0.72), inset 0 0 0 1px rgba(220, 38, 38, 0.08),
+    0 0 0 3px rgba(220, 38, 38, 0.04);
+  --field-shadow-error-focus:
+    inset 0 0 2px rgba(220, 38, 38, 0.1), inset 0 1px 2px rgba(220, 38, 38, 0.02),
+    0 1px 2px -1px rgba(255, 255, 255, 0), inset 0 0 0 1px rgba(220, 38, 38, 0.7),
+    0 0 0 4px rgba(220, 38, 38, 0.1);
+  /* A switch's channel: recessed when off, filled with the inverse when on */
+  --track: color-mix(in oklab, oklch(92.2% 0 0) 70%, transparent);
+  --track-shadow:
+    inset 0 1px 2px rgba(17, 17, 17, 0.12), inset 0 0 2px rgba(17, 17, 17, 0.12),
+    0 1px 2px -1px rgba(255, 255, 255, 0.64);
+  --track-on: oklch(20.5% 0 0);
+  --track-on-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.3),
+    0 1px 2px -1px rgba(255, 255, 255, 0.48);
+
+  /* Wells hold a sliding thumb (tabs, pagination, segmented controls) */
+  --well: linear-gradient(180deg, #ebebeb 0%, #f1f1f1 100%);
+  --well-shadow:
+    inset 0 0 2px rgba(17, 17, 17, 0.09), inset 0 1px 2px rgba(17, 17, 17, 0.08),
+    0 1px 2px -1px rgba(255, 255, 255, 0.72);
+
+  /* Panels — a soft bezel holding a white face (lists, menus, alerts) */
+  --panel-bezel: linear-gradient(180deg, #fbfbfb 0%, #f0f0f0 100%);
+  --panel-shadow:
+    0 0 0 0.5px rgba(17, 17, 17, 0.036), 0 1px 2px rgba(17, 17, 17, 0.04),
+    0 4px 12px -4px rgba(17, 17, 17, 0.08), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --panel-face-shadow:
+    0 0 3px rgba(17, 17, 17, 0.076), 0 1px 2px rgba(17, 17, 17, 0.05),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  /* Panels that float above the page cast further */
+  --overlay-shadow:
+    0 0 0 0.5px rgba(17, 17, 17, 0.048), 0 4px 12px -4px rgba(17, 17, 17, 0.12),
+    0 16px 40px -12px rgba(17, 17, 17, 0.2), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --modal-shadow:
+    0 0 0 0.5px rgba(17, 17, 17, 0.048), 0 8px 24px -8px rgba(17, 17, 17, 0.2),
+    0 32px 80px -16px rgba(17, 17, 17, 0.32), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --scrim: rgba(10, 10, 10, 0.4);
+
+  /* Cards */
+  --card: var(--card-light);
+  --card-bezel: var(--card-bezel-light);
+  --card-shadow: var(--card-light-shadow);
+  --card-shadow-hover: var(--card-light-shadow-hover);
+  --card-face-shadow: var(--card-face-light-shadow);
+  --card-rim: rgba(255, 255, 255, 1);
+  --rim-default: rgba(255, 255, 255, 0.9);
+  --media-well: var(--media-well-light);
+  --media-dots: rgba(17, 17, 17, 0.09);
+  --slide-dots: rgba(17, 17, 17, 0.08);
+  --spark: #171717;
+  --spark-halo: rgba(17, 17, 17, 0.08);
+  --photo-edge: rgba(17, 17, 17, 0.048);
+  --cover:
+    radial-gradient(130% 90% at 25% 0%, rgba(255, 255, 255, 0.7), transparent 60%),
+    linear-gradient(180deg, #ececeb 0%, #f4f4f3 100%);
+  --cover-shadow: inset 0 1px 3px rgba(17, 17, 17, 0.06), inset 0 -2px 3px -2px rgba(17, 17, 17, 0.05);
+  --avatar-lift: 0 3px 12px -2px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  --avatar-rim:
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.45), inset 0 0 2px rgba(17, 17, 17, 0.12),
+    inset 0 -2px 3px -2px rgba(17, 17, 17, 0.04);
+}
+
+/* Dark: the same objects under the same lamp, in darker materials.
+   Primary: data-theme="dark". The class "dark" does the same, for setups
+   (next-themes, Tailwind's class strategy) that toggle a class.
+   Keep this block and the system one below in step.                  */
+.dark,
+[data-theme='dark'] {
+  color-scheme: dark;
+  /* Surfaces: the page is the deepest layer (never pure black); each
+     thing raised off it is a step lighter, each well cut into it a step
+     darker. The lamp hasn't moved: highlights stay on top edges.     */
+  --page: #111111;
+  --panel-face: #202020;
+  --panel-tray: linear-gradient(180deg, #1b1b1b 0%, #191919 100%);
+  --palette-tray: linear-gradient(180deg, #1d1d1d 0%, #1b1b1b 100%);
+  --surface-hover: #262626;
+  --surface-active: #2b2b2b;
+  --line: rgba(255, 255, 255, 0.06);
+  --line-strong: rgba(255, 255, 255, 0.1);
+  --hairline: rgba(255, 255, 255, 0.06);
+  --divider: rgba(255, 255, 255, 0.07);
+  --groove: rgba(0, 0, 0, 0.45);
+  --groove-lip: 1px 0 0 rgba(255, 255, 255, 0.06);
+  --scrollbar: rgba(255, 255, 255, 0.16);
+  --dots: rgba(255, 255, 255, 0.07);
+  --shimmer: rgba(255, 255, 255, 0.07);
+  --sheen: rgba(255, 255, 255, 0.06);
+  --halo: 0 0 0 4px rgba(255, 255, 255, 0.07), 0 0 0 5px rgba(255, 255, 255, 0.035);
+  --focus-ring-inset: inset 0 0 0 2px rgba(245, 245, 245, 0.8);
+
+  /* Ink */
+  --ink-strong: #ffffff;
+  --ink: oklch(97% 0 0);
+  --ink-soft: oklch(92.2% 0 0);
+  --ink-label: oklch(87% 0 0);
+  --ink-body: oklch(80% 0 0);
+  --ink-muted: oklch(70.8% 0 0);
+  --ink-faint: oklch(58% 0 0);
+  --ink-ghost: oklch(42% 0 0);
+  --ink-inverse: oklch(20.5% 0 0);
+  --emboss: 0 -1px 0 rgba(0, 0, 0, 0.4);
+  --emboss-soft: 0 -1px 0 rgba(0, 0, 0, 0.3);
+  --emboss-inverse: 0 1px 0 rgba(255, 255, 255, 0.55);
+  --emboss-inverse-deep: 0 1px 0 rgba(255, 255, 255, 0.6);
+
+  /* Status: the same hues, a few steps lighter to read on dark */
+  --danger: oklch(70.4% 0.191 22.216);
+  --danger-soft: oklch(70.4% 0.191 22.216);
+  --danger-wash: rgba(239, 68, 68, 0.12);
+  --success: oklch(76.5% 0.177 163.223);
+  --success-soft: oklch(76.5% 0.177 163.223);
+  --success-strong: oklch(76.5% 0.177 163.223);
+  --warning: oklch(82.8% 0.189 84.429);
+  --warning-ink: oklch(92.4% 0.12 95.746);
+  --accent: oklch(81.1% 0.111 293.571);
+  --accent-soft: oklch(70.2% 0.183 293.541);
+  --code-keyword: oklch(76% 0.14 293.5);
+  --code-string: oklch(78% 0.15 163);
+  --code-tag: oklch(78% 0.12 232.7);
+  --code-number: oklch(80% 0.15 70);
+  --lamp-default: #e5e5e5;
+
+  /* Raised: the mid material — the secondary key he drew for dark cards */
+  --bezel: var(--bezel-mid);
+  --bezel-shadow: var(--bezel-mid-shadow);
+  --face: var(--face-mid);
+  --face-shadow: var(--face-mid-shadow);
+  --face-shadow-hover: var(--face-mid-shadow-hover);
+  --face-pressed: var(--face-dark-pressed);
+  --face-float-shadow: var(--face-mid-float-shadow);
+  --face-drop: 0 6px 16px -6px rgba(0, 0, 0, 0.6);
+  --tile: var(--tile-dark);
+  --tile-shadow: var(--tile-dark-shadow);
+  --thumb-shadow:
+    0 0 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.45),
+    0 2px 6px -2px rgba(0, 0, 0, 0.45), inset 0 2px 3px -2px rgba(255, 255, 255, 0.1);
+  --key-shadow:
+    0 0 3px rgba(0, 0, 0, 0.5), 0 1.5px 1px rgba(0, 0, 0, 0.55),
+    0 2px 3px -1px rgba(0, 0, 0, 0.45), inset 0 2px 3px -2px rgba(255, 255, 255, 0.1);
+  --knob-shadow:
+    0 0 3px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.45),
+    0 3px 6px -1px rgba(0, 0, 0, 0.35), inset 0 2px 3px -2px rgba(255, 255, 255, 0.14),
+    inset 0 -2px 3px -2px rgba(0, 0, 0, 0.2);
+
+  /* Inverse: a pale key on the dark page, toned down so it doesn't glare */
+  --bezel-inverse: linear-gradient(180deg, #e4e4e4 0%, #a9a9a9 100%);
+  --bezel-inverse-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.6), 0 1px 1px rgba(0, 0, 0, 0.4),
+    0 4px 12px -4px rgba(0, 0, 0, 0.6), inset 0 2px 3px -2px rgba(255, 255, 255, 0.9),
+    inset 0 -2px 3px -2px rgba(0, 0, 0, 0.12);
+  --face-inverse: linear-gradient(180deg, #f2f2f2 0%, #e6e6e6 55%, #d9d9d9 100%);
+  --face-inverse-shadow:
+    0 0 3px rgba(0, 0, 0, 0.45), 0 1px 4px -1px rgba(0, 0, 0, 0.4),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 1), inset 0 -2px 3px -2px rgba(0, 0, 0, 0.1);
+  --face-inverse-shadow-hover:
+    0 0 3px rgba(0, 0, 0, 0.5), 0 2px 3px rgba(0, 0, 0, 0.45),
+    0 4px 8px -2px rgba(0, 0, 0, 0.4), inset 0 2px 3px -2px rgba(255, 255, 255, 1),
+    inset 0 -2px 3px -2px rgba(0, 0, 0, 0.1);
+  --face-inverse-pressed: 0 0 3px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(0, 0, 0, 0.22);
+  --face-inverse-float-shadow:
+    0 0 3px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.45),
+    0 6px 14px -4px rgba(0, 0, 0, 0.45), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --inverse-lip: rgba(255, 255, 255, 0.6);
+  --dot-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+  --fill-shadow: inset 0 2px 3px -2px rgba(255, 255, 255, 0.9), 0 0 2px rgba(0, 0, 0, 0.5);
+  --tooltip-shadow:
+    0 0 3px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.45),
+    0 8px 24px -4px rgba(0, 0, 0, 0.55), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --badge-inverse-shadow:
+    0 0 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --progress-bar: linear-gradient(90deg, #8a8a8a 0%, #ededed 100%);
+  --banner-bezel: var(--bezel-mid);
+  --banner-bezel-shadow: var(--bezel-mid-shadow);
+  --banner-face: var(--face-mid);
+  --banner-face-shadow: var(--face-mid-shadow);
+  --progress-bar-glow: 0 0 8px rgba(255, 255, 255, 0.18);
+
+  /* Outline and ghost keys */
+  --outline-bezel: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(0, 0, 0, 0.3) 100%);
+  --outline-bezel-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.5), inset 0 2px 3px -2px rgba(255, 255, 255, 0.06);
+  --outline-face-shadow:
+    0 0 3px rgba(0, 0, 0, 0.4), 0 1px 1px rgba(0, 0, 0, 0.35),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.09);
+  --outline-face-shadow-hover:
+    0 0 3px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.4),
+    0 3px 6px -2px rgba(0, 0, 0, 0.35), inset 0 2px 3px -2px rgba(255, 255, 255, 0.12);
+  --outline-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 0 2px rgba(0, 0, 0, 0.5);
+  --outline-shadow-hover:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16), inset 0 0 2px rgba(0, 0, 0, 0.5),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+  --outline-shadow-pressed:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12), inset 0 1px 2px rgba(0, 0, 0, 0.5);
+  --ghost-shadow-hover: inset 0 0 2px rgba(0, 0, 0, 0.5);
+  --ghost-shadow-pressed: inset 0 1px 2px rgba(0, 0, 0, 0.55);
+
+  /* Badges */
+  --badge: linear-gradient(180deg, #333333 0%, #2a2a2a 100%);
+  --badge-shadow:
+    0 0 3px rgba(0, 0, 0, 0.45), 0 1px 1.5px rgba(0, 0, 0, 0.4),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.1);
+  --badge-accent: linear-gradient(180deg, #33245c 0%, #2a1e4c 100%);
+  --badge-accent-shadow:
+    0 0 3px rgba(0, 0, 0, 0.45), 0 0 0 0.5px rgba(167, 139, 250, 0.22),
+    0 1px 1.5px rgba(0, 0, 0, 0.4), inset 0 2px 3px -2px rgba(196, 181, 253, 0.25);
+
+  /* The warning banner, as a dark amber face */
+  --bezel-warning: linear-gradient(180deg, #5c4310 0%, #33240a 100%);
+  --bezel-warning-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.5), 0 4px 12px -4px rgba(0, 0, 0, 0.55),
+    inset 0 2px 3px -2px rgba(253, 230, 138, 0.18);
+  --face-warning: linear-gradient(180deg, #3d2e0f 0%, #33260b 100%);
+  --face-warning-shadow:
+    0 0 3px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.4),
+    inset 0 2px 3px -2px rgba(253, 230, 138, 0.16);
+
+  /* Fields: a step darker than whatever holds them */
+  --field-from: #090909;
+  --field-to: #0d0d0d;
+  --field-hover-from: #070707;
+  --field-hover-to: #0b0b0b;
+  --field-focus: #151515;
+  --field: linear-gradient(180deg, #090909 0%, #0d0d0d 100%);
+  --field-hover: linear-gradient(180deg, #070707 0%, #0b0b0b 100%);
+  --field-shadow:
+    inset 0 0 2px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.5),
+    0 1px 2px -1px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.09),
+    0 0 0 0 rgba(255, 255, 255, 0);
+  --field-shadow-hover:
+    inset 0 0 2px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(0, 0, 0, 0.55),
+    0 1px 2px -1px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 0 3px rgba(255, 255, 255, 0.025);
+  --field-shadow-focus:
+    inset 0 0 2px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.2),
+    0 1px 2px -1px rgba(255, 255, 255, 0), inset 0 0 0 1px rgba(255, 255, 255, 0.42),
+    0 0 0 4px rgba(255, 255, 255, 0.07);
+  --field-shadow-error:
+    inset 0 0 2px rgba(248, 113, 113, 0.45), inset 0 1px 2px rgba(0, 0, 0, 0.5),
+    0 1px 2px -1px rgba(255, 255, 255, 0.09), inset 0 0 0 1px rgba(248, 113, 113, 0),
+    0 0 0 0 rgba(248, 113, 113, 0);
+  --field-shadow-error-hover:
+    inset 0 0 2px rgba(248, 113, 113, 0.6), inset 0 1px 2px rgba(0, 0, 0, 0.55),
+    0 1px 2px -1px rgba(255, 255, 255, 0.09), inset 0 0 0 1px rgba(248, 113, 113, 0.12),
+    0 0 0 3px rgba(248, 113, 113, 0.05);
+  --field-shadow-error-focus:
+    inset 0 0 2px rgba(248, 113, 113, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.2),
+    0 1px 2px -1px rgba(255, 255, 255, 0), inset 0 0 0 1px rgba(248, 113, 113, 0.7),
+    0 0 0 4px rgba(248, 113, 113, 0.12);
+  --track: rgba(0, 0, 0, 0.4);
+  --track-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.6), inset 0 0 2px rgba(0, 0, 0, 0.6),
+    0 1px 2px -1px rgba(255, 255, 255, 0.09);
+  --track-on: #e6e6e6;
+  --track-on-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 0 2px rgba(0, 0, 0, 0.25),
+    0 1px 2px -1px rgba(255, 255, 255, 0.09);
+
+  /* Wells */
+  --well: linear-gradient(180deg, #0a0a0a 0%, #0e0e0e 100%);
+  --well-shadow:
+    inset 0 0 2px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.6),
+    0 1px 2px -1px rgba(255, 255, 255, 0.09), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+
+  /* Panels */
+  --panel-bezel: linear-gradient(180deg, #1c1c1c 0%, #161616 100%);
+  --panel-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4),
+    0 4px 12px -4px rgba(0, 0, 0, 0.5), inset 0 2px 3px -2px rgba(255, 255, 255, 0.07);
+  --panel-face-shadow:
+    0 0 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.08);
+  --overlay-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.7), 0 4px 12px -4px rgba(0, 0, 0, 0.55),
+    0 16px 40px -12px rgba(0, 0, 0, 0.7), inset 0 2px 3px -2px rgba(255, 255, 255, 0.07);
+  --modal-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.7), 0 8px 24px -8px rgba(0, 0, 0, 0.6),
+    0 32px 80px -16px rgba(0, 0, 0, 0.8), inset 0 2px 3px -2px rgba(255, 255, 255, 0.07);
+  --scrim: rgba(0, 0, 0, 0.6);
+
+  /* Cards: his dark card, lifted a few steps so it rises off the page */
+  --card:
+    radial-gradient(90% 60% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 75%),
+    radial-gradient(140% 100% at 30% 0%, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 65%),
+    linear-gradient(180deg, #1a1a1a 0%, #141414 100%);
+  --card-bezel: linear-gradient(180deg, #1d1d1d 0%, #161616 100%);
+  --card-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.3),
+    0 4px 12px -2px rgba(0, 0, 0, 0.35), 0 12px 28px -8px rgba(0, 0, 0, 0.45),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.075);
+  --card-shadow-hover:
+    0 0 0 0.5px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.35),
+    0 10px 28px -6px rgba(0, 0, 0, 0.45), 0 28px 64px -16px rgba(0, 0, 0, 0.5),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.09);
+  --card-face-shadow: var(--card-face-dark-shadow);
+  --card-rim: rgba(255, 255, 255, 0.1);
+  --rim-default: rgba(255, 255, 255, 0.1);
+  --media-well: var(--media-well-dark);
+  --media-dots: rgba(255, 255, 255, 0.09);
+  --slide-dots: rgba(255, 255, 255, 0.08);
+  --spark: #f5f5f5;
+  --spark-halo: rgba(255, 255, 255, 0.14);
+  --photo-edge: rgba(255, 255, 255, 0.084);
+  --cover:
+    radial-gradient(130% 90% at 25% 0%, rgba(255, 255, 255, 0.06), transparent 60%),
+    linear-gradient(180deg, #181818 0%, #1c1c1c 100%);
+  --cover-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.45), inset 0 -2px 3px -2px rgba(0, 0, 0, 0.3);
+  --avatar-lift: 0 3px 12px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.3);
+  --avatar-rim:
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.5),
+    inset 0 -2px 3px -2px rgba(0, 0, 0, 0.2);
+}
+
+/* Opt-in system preference: data-theme="system" follows the OS. An
+   explicit data-theme="light" (or "dark") on the page wins, so a toggle
+   can always override it. A copy of the dark block above.          */
+@media (prefers-color-scheme: dark) {
+  [data-theme='system'] {
+    color-scheme: dark;
+    /* Surfaces: the page is the deepest layer (never pure black); each
+       thing raised off it is a step lighter, each well cut into it a step
+       darker. The lamp hasn't moved: highlights stay on top edges.     */
+    --page: #111111;
+    --panel-face: #202020;
+    --panel-tray: linear-gradient(180deg, #1b1b1b 0%, #191919 100%);
+    --palette-tray: linear-gradient(180deg, #1d1d1d 0%, #1b1b1b 100%);
+    --surface-hover: #262626;
+    --surface-active: #2b2b2b;
+    --line: rgba(255, 255, 255, 0.06);
+    --line-strong: rgba(255, 255, 255, 0.1);
+    --hairline: rgba(255, 255, 255, 0.06);
+    --divider: rgba(255, 255, 255, 0.07);
+    --groove: rgba(0, 0, 0, 0.45);
+    --groove-lip: 1px 0 0 rgba(255, 255, 255, 0.06);
+    --scrollbar: rgba(255, 255, 255, 0.16);
+    --dots: rgba(255, 255, 255, 0.07);
+    --shimmer: rgba(255, 255, 255, 0.07);
+    --sheen: rgba(255, 255, 255, 0.06);
+    --halo: 0 0 0 4px rgba(255, 255, 255, 0.07), 0 0 0 5px rgba(255, 255, 255, 0.035);
+    --focus-ring-inset: inset 0 0 0 2px rgba(245, 245, 245, 0.8);
+
+    /* Ink */
+    --ink-strong: #ffffff;
+    --ink: oklch(97% 0 0);
+    --ink-soft: oklch(92.2% 0 0);
+    --ink-label: oklch(87% 0 0);
+    --ink-body: oklch(80% 0 0);
+    --ink-muted: oklch(70.8% 0 0);
+    --ink-faint: oklch(58% 0 0);
+    --ink-ghost: oklch(42% 0 0);
+    --ink-inverse: oklch(20.5% 0 0);
+    --emboss: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    --emboss-soft: 0 -1px 0 rgba(0, 0, 0, 0.3);
+    --emboss-inverse: 0 1px 0 rgba(255, 255, 255, 0.55);
+    --emboss-inverse-deep: 0 1px 0 rgba(255, 255, 255, 0.6);
+
+    /* Status: the same hues, a few steps lighter to read on dark */
+    --danger: oklch(70.4% 0.191 22.216);
+    --danger-soft: oklch(70.4% 0.191 22.216);
+    --danger-wash: rgba(239, 68, 68, 0.12);
+    --success: oklch(76.5% 0.177 163.223);
+    --success-soft: oklch(76.5% 0.177 163.223);
+    --success-strong: oklch(76.5% 0.177 163.223);
+    --warning: oklch(82.8% 0.189 84.429);
+    --warning-ink: oklch(92.4% 0.12 95.746);
+    --accent: oklch(81.1% 0.111 293.571);
+    --accent-soft: oklch(70.2% 0.183 293.541);
+    --code-keyword: oklch(76% 0.14 293.5);
+    --code-string: oklch(78% 0.15 163);
+    --code-tag: oklch(78% 0.12 232.7);
+    --code-number: oklch(80% 0.15 70);
+    --lamp-default: #e5e5e5;
+
+    /* Raised: the mid material — the secondary key he drew for dark cards */
+    --bezel: var(--bezel-mid);
+    --bezel-shadow: var(--bezel-mid-shadow);
+    --face: var(--face-mid);
+    --face-shadow: var(--face-mid-shadow);
+    --face-shadow-hover: var(--face-mid-shadow-hover);
+    --face-pressed: var(--face-dark-pressed);
+    --face-float-shadow: var(--face-mid-float-shadow);
+    --face-drop: 0 6px 16px -6px rgba(0, 0, 0, 0.6);
+    --tile: var(--tile-dark);
+    --tile-shadow: var(--tile-dark-shadow);
+    --thumb-shadow:
+      0 0 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.45),
+      0 2px 6px -2px rgba(0, 0, 0, 0.45), inset 0 2px 3px -2px rgba(255, 255, 255, 0.1);
+    --key-shadow:
+      0 0 3px rgba(0, 0, 0, 0.5), 0 1.5px 1px rgba(0, 0, 0, 0.55),
+      0 2px 3px -1px rgba(0, 0, 0, 0.45), inset 0 2px 3px -2px rgba(255, 255, 255, 0.1);
+    --knob-shadow:
+      0 0 3px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.45),
+      0 3px 6px -1px rgba(0, 0, 0, 0.35), inset 0 2px 3px -2px rgba(255, 255, 255, 0.14),
+      inset 0 -2px 3px -2px rgba(0, 0, 0, 0.2);
+
+    /* Inverse: a pale key on the dark page, toned down so it doesn't glare */
+    --bezel-inverse: linear-gradient(180deg, #e4e4e4 0%, #a9a9a9 100%);
+    --bezel-inverse-shadow:
+      0 0 0 0.5px rgba(0, 0, 0, 0.6), 0 1px 1px rgba(0, 0, 0, 0.4),
+      0 4px 12px -4px rgba(0, 0, 0, 0.6), inset 0 2px 3px -2px rgba(255, 255, 255, 0.9),
+      inset 0 -2px 3px -2px rgba(0, 0, 0, 0.12);
+    --face-inverse: linear-gradient(180deg, #f2f2f2 0%, #e6e6e6 55%, #d9d9d9 100%);
+    --face-inverse-shadow:
+      0 0 3px rgba(0, 0, 0, 0.45), 0 1px 4px -1px rgba(0, 0, 0, 0.4),
+      inset 0 2px 3px -2px rgba(255, 255, 255, 1), inset 0 -2px 3px -2px rgba(0, 0, 0, 0.1);
+    --face-inverse-shadow-hover:
+      0 0 3px rgba(0, 0, 0, 0.5), 0 2px 3px rgba(0, 0, 0, 0.45),
+      0 4px 8px -2px rgba(0, 0, 0, 0.4), inset 0 2px 3px -2px rgba(255, 255, 255, 1),
+      inset 0 -2px 3px -2px rgba(0, 0, 0, 0.1);
+    --face-inverse-pressed: 0 0 3px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(0, 0, 0, 0.22);
+    --face-inverse-float-shadow:
+      0 0 3px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.45),
+      0 6px 14px -4px rgba(0, 0, 0, 0.45), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+    --inverse-lip: rgba(255, 255, 255, 0.6);
+    --dot-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+    --fill-shadow: inset 0 2px 3px -2px rgba(255, 255, 255, 0.9), 0 0 2px rgba(0, 0, 0, 0.5);
+    --tooltip-shadow:
+      0 0 3px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.45),
+      0 8px 24px -4px rgba(0, 0, 0, 0.55), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+    --badge-inverse-shadow:
+      0 0 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4),
+      inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+    --progress-bar: linear-gradient(90deg, #8a8a8a 0%, #ededed 100%);
+    --banner-bezel: var(--bezel-mid);
+    --banner-bezel-shadow: var(--bezel-mid-shadow);
+    --banner-face: var(--face-mid);
+    --banner-face-shadow: var(--face-mid-shadow);
+    --progress-bar-glow: 0 0 8px rgba(255, 255, 255, 0.18);
+
+    /* Outline and ghost keys */
+    --outline-bezel: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(0, 0, 0, 0.3) 100%);
+    --outline-bezel-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.5), inset 0 2px 3px -2px rgba(255, 255, 255, 0.06);
+    --outline-face-shadow:
+      0 0 3px rgba(0, 0, 0, 0.4), 0 1px 1px rgba(0, 0, 0, 0.35),
+      inset 0 2px 3px -2px rgba(255, 255, 255, 0.09);
+    --outline-face-shadow-hover:
+      0 0 3px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.4),
+      0 3px 6px -2px rgba(0, 0, 0, 0.35), inset 0 2px 3px -2px rgba(255, 255, 255, 0.12);
+    --outline-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 0 2px rgba(0, 0, 0, 0.5);
+    --outline-shadow-hover:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.16), inset 0 0 2px rgba(0, 0, 0, 0.5),
+      0 1px 2px rgba(0, 0, 0, 0.3);
+    --outline-shadow-pressed:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.12), inset 0 1px 2px rgba(0, 0, 0, 0.5);
+    --ghost-shadow-hover: inset 0 0 2px rgba(0, 0, 0, 0.5);
+    --ghost-shadow-pressed: inset 0 1px 2px rgba(0, 0, 0, 0.55);
+
+    /* Badges */
+    --badge: linear-gradient(180deg, #333333 0%, #2a2a2a 100%);
+    --badge-shadow:
+      0 0 3px rgba(0, 0, 0, 0.45), 0 1px 1.5px rgba(0, 0, 0, 0.4),
+      inset 0 2px 3px -2px rgba(255, 255, 255, 0.1);
+    --badge-accent: linear-gradient(180deg, #33245c 0%, #2a1e4c 100%);
+    --badge-accent-shadow:
+      0 0 3px rgba(0, 0, 0, 0.45), 0 0 0 0.5px rgba(167, 139, 250, 0.22),
+      0 1px 1.5px rgba(0, 0, 0, 0.4), inset 0 2px 3px -2px rgba(196, 181, 253, 0.25);
+
+    /* The warning banner, as a dark amber face */
+    --bezel-warning: linear-gradient(180deg, #5c4310 0%, #33240a 100%);
+    --bezel-warning-shadow:
+      0 0 0 0.5px rgba(0, 0, 0, 0.5), 0 4px 12px -4px rgba(0, 0, 0, 0.55),
+      inset 0 2px 3px -2px rgba(253, 230, 138, 0.18);
+    --face-warning: linear-gradient(180deg, #3d2e0f 0%, #33260b 100%);
+    --face-warning-shadow:
+      0 0 3px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.4),
+      inset 0 2px 3px -2px rgba(253, 230, 138, 0.16);
+
+    /* Fields: a step darker than whatever holds them */
+    --field-from: #090909;
+    --field-to: #0d0d0d;
+    --field-hover-from: #070707;
+    --field-hover-to: #0b0b0b;
+    --field-focus: #151515;
+    --field: linear-gradient(180deg, #090909 0%, #0d0d0d 100%);
+    --field-hover: linear-gradient(180deg, #070707 0%, #0b0b0b 100%);
+    --field-shadow:
+      inset 0 0 2px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.5),
+      0 1px 2px -1px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.09),
+      0 0 0 0 rgba(255, 255, 255, 0);
+    --field-shadow-hover:
+      inset 0 0 2px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(0, 0, 0, 0.55),
+      0 1px 2px -1px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+      0 0 0 3px rgba(255, 255, 255, 0.025);
+    --field-shadow-focus:
+      inset 0 0 2px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.2),
+      0 1px 2px -1px rgba(255, 255, 255, 0), inset 0 0 0 1px rgba(255, 255, 255, 0.42),
+      0 0 0 4px rgba(255, 255, 255, 0.07);
+    --field-shadow-error:
+      inset 0 0 2px rgba(248, 113, 113, 0.45), inset 0 1px 2px rgba(0, 0, 0, 0.5),
+      0 1px 2px -1px rgba(255, 255, 255, 0.09), inset 0 0 0 1px rgba(248, 113, 113, 0),
+      0 0 0 0 rgba(248, 113, 113, 0);
+    --field-shadow-error-hover:
+      inset 0 0 2px rgba(248, 113, 113, 0.6), inset 0 1px 2px rgba(0, 0, 0, 0.55),
+      0 1px 2px -1px rgba(255, 255, 255, 0.09), inset 0 0 0 1px rgba(248, 113, 113, 0.12),
+      0 0 0 3px rgba(248, 113, 113, 0.05);
+    --field-shadow-error-focus:
+      inset 0 0 2px rgba(248, 113, 113, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.2),
+      0 1px 2px -1px rgba(255, 255, 255, 0), inset 0 0 0 1px rgba(248, 113, 113, 0.7),
+      0 0 0 4px rgba(248, 113, 113, 0.12);
+    --track: rgba(0, 0, 0, 0.4);
+    --track-shadow:
+      inset 0 1px 2px rgba(0, 0, 0, 0.6), inset 0 0 2px rgba(0, 0, 0, 0.6),
+      0 1px 2px -1px rgba(255, 255, 255, 0.09);
+    --track-on: #e6e6e6;
+    --track-on-shadow:
+      inset 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 0 2px rgba(0, 0, 0, 0.25),
+      0 1px 2px -1px rgba(255, 255, 255, 0.09);
+
+    /* Wells */
+    --well: linear-gradient(180deg, #0a0a0a 0%, #0e0e0e 100%);
+    --well-shadow:
+      inset 0 0 2px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.6),
+      0 1px 2px -1px rgba(255, 255, 255, 0.09), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+
+    /* Panels */
+    --panel-bezel: linear-gradient(180deg, #1c1c1c 0%, #161616 100%);
+    --panel-shadow:
+      0 0 0 0.5px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4),
+      0 4px 12px -4px rgba(0, 0, 0, 0.5), inset 0 2px 3px -2px rgba(255, 255, 255, 0.07);
+    --panel-face-shadow:
+      0 0 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4),
+      inset 0 2px 3px -2px rgba(255, 255, 255, 0.08);
+    --overlay-shadow:
+      0 0 0 0.5px rgba(0, 0, 0, 0.7), 0 4px 12px -4px rgba(0, 0, 0, 0.55),
+      0 16px 40px -12px rgba(0, 0, 0, 0.7), inset 0 2px 3px -2px rgba(255, 255, 255, 0.07);
+    --modal-shadow:
+      0 0 0 0.5px rgba(0, 0, 0, 0.7), 0 8px 24px -8px rgba(0, 0, 0, 0.6),
+      0 32px 80px -16px rgba(0, 0, 0, 0.8), inset 0 2px 3px -2px rgba(255, 255, 255, 0.07);
+    --scrim: rgba(0, 0, 0, 0.6);
+
+    /* Cards: his dark card, lifted a few steps so it rises off the page */
+    --card:
+      radial-gradient(90% 60% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 75%),
+      radial-gradient(140% 100% at 30% 0%, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 65%),
+      linear-gradient(180deg, #1a1a1a 0%, #141414 100%);
+    --card-bezel: linear-gradient(180deg, #1d1d1d 0%, #161616 100%);
+    --card-shadow:
+      0 0 0 0.5px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.3),
+      0 4px 12px -2px rgba(0, 0, 0, 0.35), 0 12px 28px -8px rgba(0, 0, 0, 0.45),
+      inset 0 2px 3px -2px rgba(255, 255, 255, 0.075);
+    --card-shadow-hover:
+      0 0 0 0.5px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.35),
+      0 10px 28px -6px rgba(0, 0, 0, 0.45), 0 28px 64px -16px rgba(0, 0, 0, 0.5),
+      inset 0 2px 3px -2px rgba(255, 255, 255, 0.09);
+    --card-face-shadow: var(--card-face-dark-shadow);
+    --card-rim: rgba(255, 255, 255, 0.1);
+    --rim-default: rgba(255, 255, 255, 0.1);
+    --media-well: var(--media-well-dark);
+    --media-dots: rgba(255, 255, 255, 0.09);
+    --slide-dots: rgba(255, 255, 255, 0.08);
+    --spark: #f5f5f5;
+    --spark-halo: rgba(255, 255, 255, 0.14);
+    --photo-edge: rgba(255, 255, 255, 0.084);
+    --cover:
+      radial-gradient(130% 90% at 25% 0%, rgba(255, 255, 255, 0.06), transparent 60%),
+      linear-gradient(180deg, #181818 0%, #1c1c1c 100%);
+    --cover-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.45), inset 0 -2px 3px -2px rgba(0, 0, 0, 0.3);
+    --avatar-lift: 0 3px 12px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.3);
+    --avatar-rim:
+      inset 0 2px 3px -2px rgba(255, 255, 255, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.5),
+      inset 0 -2px 3px -2px rgba(0, 0, 0, 0.2);
+  }
 }
 
 /* ── Scrollbars inside panels ────────────────────────────────────── */
 .scroll-thin {
   scrollbar-width: thin;
-  scrollbar-color: rgba(17, 17, 17, 0.15) transparent;
+  scrollbar-color: var(--scrollbar) transparent;
 }
 
 /* ── Rim light ───────────────────────────────────────────────────── */
@@ -168,7 +958,7 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(180deg, var(--rim, rgba(255, 255, 255, 0.9)) 0%, transparent 55%);
+  background: linear-gradient(180deg, var(--rim, var(--rim-default)) 0%, transparent 55%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -178,8 +968,9 @@
 
 /* ── Field ───────────────────────────────────────────────────────── */
 /* Gradients can't transition, but registered colours can — so the well's
-   two stops are animatable properties and focus fades it up to white
-   rather than swapping it in a single frame.                           */
+   two stops are animatable properties and focus fades it up to its lit
+   colour rather than swapping it in a single frame. The stops come from
+   the theme (--field-from/-to, --field-hover-from/-to, --field-focus). */
 @property --field-top {
   syntax: '<color>';
   inherits: false;
@@ -192,8 +983,8 @@
 }
 @layer components {
   .field {
-    --field-top: #f2f2f2;
-    --field-bottom: #f8f8f8;
+    --field-top: var(--field-from);
+    --field-bottom: var(--field-to);
     background: linear-gradient(180deg, var(--field-top) 0%, var(--field-bottom) 100%);
     box-shadow: var(--field-shadow);
     transition:
@@ -202,15 +993,15 @@
       box-shadow 260ms var(--ease-out-soft);
   }
   .field:hover {
-    --field-top: #eeeeee;
-    --field-bottom: #f5f5f5;
+    --field-top: var(--field-hover-from);
+    --field-bottom: var(--field-hover-to);
     box-shadow: var(--field-shadow-hover);
   }
   .field:focus-visible,
   .field:is(input, textarea):focus,
   .field[data-open] {
-    --field-top: #ffffff;
-    --field-bottom: #ffffff;
+    --field-top: var(--field-focus);
+    --field-bottom: var(--field-focus);
     outline: none;
     box-shadow: var(--field-shadow-focus);
   }
@@ -388,7 +1179,7 @@
   background-image: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.75) 50%,
+    var(--sheen) 50%,
     transparent 100%
   );
   background-size: 40vw 100%;

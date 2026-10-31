@@ -25,17 +25,17 @@ export function AuthorCard({
       ]
         .filter(Boolean)
         .join(" ")}
-      style={{ background: "var(--panel-bezel)", boxShadow: "var(--card-light-shadow)" }}
+      style={{ background: "var(--panel-bezel)", boxShadow: "var(--card-shadow)" }}
     >
-      <div className="relative bg-white rounded-[17px] overflow-hidden" style={{ boxShadow: "var(--panel-face-shadow)" }}>
+      <div className="relative bg-panel-face rounded-[17px] overflow-hidden" style={{ boxShadow: "var(--panel-face-shadow)" }}>
         {/* Cover: a sunken well, so the avatar visibly sits on top of it */}
         <div
           aria-hidden
           className="h-20 relative overflow-hidden"
           style={{
             background:
-              "radial-gradient(130% 90% at 25% 0%, rgba(255,255,255,0.7), transparent 60%), linear-gradient(180deg, #ececeb 0%, #f4f4f3 100%)",
-            boxShadow: "inset 0 1px 3px rgba(17,17,17,0.06), inset 0 -2px 3px -2px rgba(17,17,17,0.05)",
+              "var(--cover)",
+            boxShadow: "var(--cover-shadow)",
           }}
         />
         <div className="px-6 pb-6">
@@ -44,14 +44,14 @@ export function AuthorCard({
               src={avatarSrc}
               name={name}
               size="lg"
-              className="ring-[3.5px] ring-white shadow-[0_3px_12px_-2px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+              className="ring-[3.5px] ring-panel-face shadow-[var(--avatar-lift)]"
             />
           </div>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
-              <p className="text-[15px] font-semibold text-neutral-900 leading-snug truncate tracking-[-0.01em]">{name}</p>
+              <p className="text-[15px] font-semibold text-ink leading-snug truncate tracking-[-0.01em]">{name}</p>
               {bio && (
-                <p className="text-[13px] text-neutral-500 leading-relaxed mt-1 line-clamp-2">{bio}</p>
+                <p className="text-[13px] text-ink-muted leading-relaxed mt-1 line-clamp-2">{bio}</p>
               )}
             </div>
             {onFollow && (

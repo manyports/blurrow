@@ -52,11 +52,11 @@ export function SpotlightCard({
           <div
             className={[
               "w-9 h-9 rounded-[11px] flex items-center justify-center mb-auto",
-              dark ? "text-white" : "text-neutral-800",
+              dark ? "text-white" : "text-ink-soft",
             ].join(" ")}
             style={{
-              background: dark ? "var(--tile-dark)" : "var(--face-light)",
-              boxShadow: dark ? "var(--tile-dark-shadow)" : "var(--tile-light-shadow)",
+              background: dark ? "var(--tile-dark)" : "var(--tile)",
+              boxShadow: dark ? "var(--tile-dark-shadow)" : "var(--tile-shadow)",
             }}
           >
             {icon}
@@ -69,7 +69,7 @@ export function SpotlightCard({
               // Without an icon above to push it down, the copy still sits low
               icon ? "pt-8" : "mt-auto",
               "text-[14px] font-medium tracking-[-0.01em]",
-              dark ? "text-neutral-400" : "text-neutral-500",
+              dark ? "text-neutral-400" : "text-ink-muted",
             ].join(" ")}
           >
             {eyebrow}
@@ -81,7 +81,7 @@ export function SpotlightCard({
             titleSizeBySize[size],
             !icon && !eyebrow ? "mt-auto" : "",
             "font-medium leading-[1.12] tracking-[-0.03em] text-balance",
-            dark ? "text-white" : "text-neutral-900",
+            dark ? "text-white" : "text-ink",
           ].join(" ")}
         >
           {title}
@@ -91,7 +91,7 @@ export function SpotlightCard({
           <p
             className={[
               "text-[15px] leading-[1.6] max-w-lg text-pretty",
-              dark ? "text-neutral-400" : "text-neutral-600",
+              dark ? "text-neutral-400" : "text-ink-body",
             ].join(" ")}
           >
             {subtitle}

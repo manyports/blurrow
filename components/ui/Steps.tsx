@@ -62,7 +62,7 @@ export function Steps({ steps, current, className = "" }: StepsProps) {
                 <span
                   className="block h-full rounded-full origin-left transition-transform duration-500 ease-[var(--ease-out-soft)]"
                   style={{
-                    background: "var(--face-dark)",
+                    background: "var(--face-inverse)",
                     transform: isCompleted ? "scaleX(1)" : "scaleX(0)",
                   }}
                 />
@@ -73,14 +73,14 @@ export function Steps({ steps, current, className = "" }: StepsProps) {
               className={[
                 "relative w-[30px] h-[30px] rounded-full flex items-center justify-center text-[12.5px] font-semibold tabular-nums shrink-0",
                 "transition-[box-shadow,color] duration-300",
-                reached ? "text-white" : "text-neutral-400",
+                reached ? "text-ink-inverse" : "text-ink-faint",
               ].join(" ")}
               style={{
-                background: reached ? "var(--face-dark)" : "var(--field)",
+                background: reached ? "var(--face-inverse)" : "var(--field)",
                 boxShadow: isCurrent
-                  ? "var(--face-dark-shadow), 0 0 0 4px rgba(17,17,17,0.06), 0 0 0 5px rgba(17,17,17,0.03)"
+                  ? "var(--face-inverse-shadow), var(--halo)"
                   : reached
-                    ? "var(--face-dark-shadow)"
+                    ? "var(--face-inverse-shadow)"
                     : "var(--field-shadow)",
               }}
             >
@@ -92,13 +92,13 @@ export function Steps({ steps, current, className = "" }: StepsProps) {
               <span
                 className={[
                   "text-[13px] font-medium leading-tight transition-colors duration-200",
-                  reached ? "text-neutral-900" : "text-neutral-500",
+                  reached ? "text-ink" : "text-ink-muted",
                 ].join(" ")}
               >
                 {step.label}
               </span>
               {step.description && (
-                <span className="text-[12px] text-neutral-400 leading-snug">{step.description}</span>
+                <span className="text-[12px] text-ink-faint leading-snug">{step.description}</span>
               )}
             </span>
           </li>

@@ -48,10 +48,10 @@ export function Checkbox({
       {(label || description) && (
         <div className="flex flex-col gap-0.5 min-w-0">
           {label && (
-            <span id={`${uid}-label`} className="text-[13px] font-medium text-neutral-900 leading-snug">{label}</span>
+            <span id={`${uid}-label`} className="text-[13px] font-medium text-ink leading-snug">{label}</span>
           )}
           {description && (
-            <span id={`${uid}-desc`} className="text-[12px] text-neutral-500 leading-relaxed">{description}</span>
+            <span id={`${uid}-desc`} className="text-[12px] text-ink-muted leading-relaxed">{description}</span>
           )}
         </div>
       )}
@@ -69,8 +69,8 @@ export function Checkbox({
           "transition-[box-shadow,transform,scale] duration-200 ease-out active:scale-90",
         ].join(" ")}
         style={{
-          background: active ? "var(--face-dark)" : "var(--field)",
-          boxShadow: active ? "var(--face-dark-shadow)" : "var(--field-shadow)",
+          background: active ? "var(--face-inverse)" : "var(--field)",
+          boxShadow: active ? "var(--face-inverse-shadow)" : "var(--field-shadow)",
         }}
       >
         {active && (

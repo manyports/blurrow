@@ -73,27 +73,27 @@ export function Sidebar({
       className={["rounded-[20px] p-1.5", className].join(" ")}
       style={{ background: "var(--panel-bezel)", boxShadow: "var(--panel-shadow)" }}
     >
-      <div className="bg-white rounded-[15px] overflow-hidden" style={{ boxShadow: "var(--panel-face-shadow)" }}>
+      <div className="bg-panel-face rounded-[15px] overflow-hidden" style={{ boxShadow: "var(--panel-face-shadow)" }}>
       {header && (
-        <div className="px-3 py-3 border-b border-neutral-100 flex items-center gap-2.5">
+        <div className="px-3 py-3 border-b border-line flex items-center gap-2.5">
           {header.logo && (
             <div
-              className="w-7 h-7 rounded-[8px] flex items-center justify-center shrink-0 text-white"
-              style={{ background: "var(--face-dark)", boxShadow: "var(--face-dark-shadow)" }}
+              className="w-7 h-7 rounded-[8px] flex items-center justify-center shrink-0 text-ink-inverse"
+              style={{ background: "var(--face-inverse)", boxShadow: "var(--face-inverse-shadow)" }}
             >
               {header.logo}
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-semibold text-neutral-900 leading-none truncate">{header.title}</p>
+            <p className="text-[13px] font-semibold text-ink leading-none truncate">{header.title}</p>
             {header.subtitle && (
-              <p className="text-[11px] text-neutral-400 mt-0.5 leading-none truncate">{header.subtitle}</p>
+              <p className="text-[11px] text-ink-faint mt-0.5 leading-none truncate">{header.subtitle}</p>
             )}
           </div>
           <button
             type="button"
             aria-label="Switch workspace"
-            className="shrink-0 w-6 h-6 flex items-center justify-center text-neutral-400 hover:text-neutral-900 transition-colors cursor-pointer rounded-[7px] hover:bg-neutral-100"
+            className="shrink-0 w-6 h-6 flex items-center justify-center text-ink-faint hover:text-ink transition-colors cursor-pointer rounded-[7px] hover:bg-surface-active"
           >
             <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 9l4-4 4 4M8 15l4 4 4-4" />
@@ -110,8 +110,8 @@ export function Sidebar({
             style={{
               top: pill.top,
               height: pill.height,
-              background: "var(--face-dark)",
-              boxShadow: "var(--face-dark-shadow)",
+              background: "var(--face-inverse)",
+              boxShadow: "var(--face-inverse-shadow)",
               transition: "top 300ms var(--ease-spring), height 300ms var(--ease-spring)",
             }}
           />
@@ -120,7 +120,7 @@ export function Sidebar({
         {sections.map((section, si) => (
           <div key={si} className="flex flex-col gap-0.5">
             {section.title && (
-              <p className="relative z-10 px-2.5 pt-1 pb-1.5 text-[11.5px] font-medium text-neutral-400 lowercase">
+              <p className="relative z-10 px-2.5 pt-1 pb-1.5 text-[11.5px] font-medium text-ink-faint lowercase">
                 {section.title}
               </p>
             )}
@@ -139,8 +139,8 @@ export function Sidebar({
                     "transition-colors duration-200 cursor-pointer",
                     "disabled:opacity-35 disabled:pointer-events-none",
                     isActive
-                      ? "text-white"
-                      : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100/80",
+                      ? "text-ink-inverse"
+                      : "text-ink-body hover:text-ink hover:bg-surface-active/80",
                   ].join(" ")}
                 >
                   {item.icon && (
@@ -148,8 +148,8 @@ export function Sidebar({
                       className={[
                         "shrink-0 w-[22px] h-[22px] rounded-md flex items-center justify-center transition-colors duration-200",
                         isActive
-                          ? "bg-white/12 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]"
-                          : "text-neutral-500 [background:var(--face-light)] [box-shadow:var(--face-light-shadow)]",
+                          ? "bg-ink-inverse/12 shadow-[inset_0_1px_0_var(--inverse-lip)]"
+                          : "text-ink-muted [background:var(--face)] [box-shadow:var(--face-shadow)]",
                       ].join(" ")}
                     >
                       {item.icon}
@@ -163,8 +163,8 @@ export function Sidebar({
                       className={[
                         "shrink-0 text-[11px] font-medium px-1.5 py-0.5 rounded-md tabular-nums leading-none transition-colors duration-200",
                         isActive
-                          ? "bg-white/20 text-white/80"
-                          : "bg-neutral-100 text-neutral-500",
+                          ? "bg-ink-inverse/20 text-ink-inverse/80"
+                          : "bg-surface-active text-ink-muted",
                       ].join(" ")}
                     >
                       {item.badge}

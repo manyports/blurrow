@@ -2,7 +2,7 @@ import { Kbd } from "@/components/ui/Kbd";
 
 export default function KbdDemo() {
   return (
-    <div className="flex flex-col items-center gap-3 text-[13px] text-neutral-500">
+    <div className="flex flex-col items-center gap-3 text-[13px] text-ink-muted">
       <div className="flex gap-1">
         <Kbd>⌘</Kbd>
         <Kbd>⇧</Kbd>

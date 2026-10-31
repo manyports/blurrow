@@ -58,9 +58,9 @@ export function Pagination({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage <= 1}
         aria-label="Previous page"
-        className="group/nav relative overflow-hidden h-8 px-3 rounded-[9px] flex items-center gap-1.5 text-[13px] font-medium text-neutral-600 hover:text-neutral-900 transition-colors cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
+        className="group/nav relative overflow-hidden h-8 px-3 rounded-[9px] flex items-center gap-1.5 text-[13px] font-medium text-ink-body hover:text-ink transition-colors cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
       >
-        <span className="pointer-events-none absolute inset-0 rounded-[9px] opacity-0 group-hover/nav:opacity-100 transition-opacity duration-200 [background:var(--face-light)] [box-shadow:var(--thumb-shadow)]" />
+        <span className="pointer-events-none absolute inset-0 rounded-[9px] opacity-0 group-hover/nav:opacity-100 transition-opacity duration-200 [background:var(--face)] [box-shadow:var(--thumb-shadow)]" />
         <svg className="relative z-10" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
@@ -75,7 +75,7 @@ export function Pagination({
             style={{
               left: pill.left,
               width: pill.width,
-              background: "var(--face-light)",
+              background: "var(--face)",
               boxShadow: "var(--thumb-shadow)",
               transition: "left 340ms var(--ease-out-soft), width 340ms var(--ease-out-soft)",
             }}
@@ -87,7 +87,7 @@ export function Pagination({
             <span
               key={`dot-${i}`}
               aria-hidden
-              className="w-8 h-8 flex items-center justify-center text-[11px] text-neutral-400 select-none relative z-10"
+              className="w-8 h-8 flex items-center justify-center text-[11px] text-ink-faint select-none relative z-10"
             >
               ···
             </span>
@@ -103,8 +103,8 @@ export function Pagination({
               className={[
                 "relative z-10 min-w-8 h-8 px-1 rounded-[9px] flex items-center justify-center text-[13px] font-medium transition-colors duration-200 cursor-pointer tabular-nums",
                 slot === currentPage
-                  ? "text-neutral-900"
-                  : "text-neutral-500 hover:text-neutral-900",
+                  ? "text-ink"
+                  : "text-ink-muted hover:text-ink",
               ].join(" ")}
             >
               {slot}
@@ -117,9 +117,9 @@ export function Pagination({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage >= totalPages}
         aria-label="Next page"
-        className="group/nav relative overflow-hidden h-8 px-3 rounded-[9px] flex items-center gap-1.5 text-[13px] font-medium text-neutral-600 hover:text-neutral-900 transition-colors cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
+        className="group/nav relative overflow-hidden h-8 px-3 rounded-[9px] flex items-center gap-1.5 text-[13px] font-medium text-ink-body hover:text-ink transition-colors cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
       >
-        <span className="pointer-events-none absolute inset-0 rounded-[9px] opacity-0 group-hover/nav:opacity-100 transition-opacity duration-200 [background:var(--face-light)] [box-shadow:var(--thumb-shadow)]" />
+        <span className="pointer-events-none absolute inset-0 rounded-[9px] opacity-0 group-hover/nav:opacity-100 transition-opacity duration-200 [background:var(--face)] [box-shadow:var(--thumb-shadow)]" />
         <span className="relative z-10 hidden sm:inline">next</span>
         <svg className="relative z-10" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

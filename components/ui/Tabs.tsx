@@ -83,7 +83,7 @@ export function Tabs({ tabs, defaultTab, onChange, className = "" }: TabsProps) 
             style={{
               left: pill.left,
               width: pill.width,
-              background: "var(--face-light)",
+              background: "var(--face)",
               boxShadow: "var(--thumb-shadow)",
               transition: "left 300ms var(--ease-spring), width 300ms var(--ease-spring)",
             }}
@@ -106,8 +106,8 @@ export function Tabs({ tabs, defaultTab, onChange, className = "" }: TabsProps) 
               className={[
                 "relative z-10 flex-1 sm:flex-none px-3.5 py-2 rounded-[9px] text-[13px] font-medium text-center whitespace-nowrap cursor-pointer",
                 "transition-colors duration-150",
-                "focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-neutral-900",
-                isActive ? "text-neutral-900" : "text-neutral-500 hover:text-neutral-800",
+                "focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ink",
+                isActive ? "text-ink" : "text-ink-muted hover:text-ink-soft",
               ].join(" ")}
             >
               {tab.label}
@@ -124,7 +124,7 @@ export function Tabs({ tabs, defaultTab, onChange, className = "" }: TabsProps) 
           aria-labelledby={`${uid}-tab-${active}`}
           tabIndex={0}
           className={[
-            "text-[13px] text-neutral-600 leading-relaxed rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-900",
+            "text-[13px] text-ink-body leading-relaxed rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink",
             direction === "right" ? "animate-tab-slide-right" : "animate-tab-slide-left",
           ].join(" ")}
         >

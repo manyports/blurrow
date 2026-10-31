@@ -8,7 +8,7 @@ export default function PopoverPositions() {
     <div className="flex flex-wrap items-center justify-center gap-2 py-10">
       {positions.map((p) => (
         <Popover key={p} position={p} trigger={<Button variant="secondary" size="sm">{p}</Button>}>
-          <p className="text-[13px] text-neutral-600 whitespace-nowrap">opens to the {p}.</p>
+          <p className="text-[13px] text-ink-body whitespace-nowrap">opens to the {p}.</p>
         </Popover>
       ))}
     </div>

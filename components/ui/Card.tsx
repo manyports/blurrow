@@ -42,7 +42,7 @@ function MediaPlaceholder({ dark, bg, monogram }: { dark?: boolean; bg?: string;
   return (
     <div
       className={["relative w-full h-full flex items-center justify-center", bg ?? ""].join(" ")}
-      style={bg ? undefined : { background: dark ? "var(--media-well-dark)" : "var(--media-well-light)" }}
+      style={bg ? undefined : { background: dark ? "var(--media-well-dark)" : "var(--media-well)" }}
     >
       {/* A faint dot grid fading out from the centre: a slot, not a hole */}
       <div
@@ -50,11 +50,11 @@ function MediaPlaceholder({ dark, bg, monogram }: { dark?: boolean; bg?: string;
         className="absolute inset-0"
         style={{
           backgroundImage: `radial-gradient(${
-            bg ? "rgba(255,255,255,0.22)" : dark ? "rgba(255,255,255,0.09)" : "rgba(17,17,17,0.09)"
+            bg ? "var(--media-dots-on-colour)" : dark ? "var(--media-dots-dark)" : "var(--media-dots)"
           } 1px, transparent 1px)`,
           backgroundSize: "12px 12px",
-          maskImage: "radial-gradient(70% 70% at 50% 50%, #000 0%, transparent 100%)",
-          WebkitMaskImage: "radial-gradient(70% 70% at 50% 50%, #000 0%, transparent 100%)",
+          maskImage: "radial-gradient(70% 70% at 50% 50%, black 0%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(70% 70% at 50% 50%, black 0%, transparent 100%)",
         }}
       />
       {/* The title's initial, set huge and barely there and cropped by the
@@ -64,7 +64,7 @@ function MediaPlaceholder({ dark, bg, monogram }: { dark?: boolean; bg?: string;
           aria-hidden
           className={[
             "absolute -right-3 -bottom-[0.32em] text-[220px] font-semibold leading-none tracking-[-0.06em] select-none",
-            dark ? "text-white/[0.045]" : "text-neutral-900/[0.045]",
+            dark ? "text-white/[0.045]" : "text-ink/[0.045]",
           ].join(" ")}
         >
           {monogram}
@@ -103,11 +103,11 @@ function IconTile({ dark, children }: { dark: boolean; children: React.ReactNode
       aria-hidden
       className={[
         "w-9 h-9 rounded-[11px] flex items-center justify-center shrink-0",
-        dark ? "text-neutral-100" : "text-neutral-700",
+        dark ? "text-neutral-100" : "text-ink-label",
       ].join(" ")}
       style={{
-        background: dark ? "var(--tile-dark)" : "var(--face-light)",
-        boxShadow: dark ? "var(--tile-dark-shadow)" : "var(--tile-light-shadow)",
+        background: dark ? "var(--tile-dark)" : "var(--tile)",
+        boxShadow: dark ? "var(--tile-dark-shadow)" : "var(--tile-shadow)",
       }}
     >
       {children}
@@ -138,7 +138,7 @@ export function Card(props: CardProps) {
         rail={actions}
       >
         {/* Hairline under the media so it reads as set into the face */}
-        <div className="relative h-52 shrink-0 overflow-hidden" style={{ boxShadow: "0 1px 0 rgba(17,17,17,0.07)" }}>
+        <div className="relative h-52 shrink-0 overflow-hidden" style={{ boxShadow: "0 1px 0 var(--divider)" }}>
           <Media image={image} imageSrc={imageSrc} imageAlt={imageAlt} bg={imageBg} />
         </div>
 
@@ -146,20 +146,20 @@ export function Card(props: CardProps) {
           {(title || badge) && (
             <div className="flex items-center gap-2">
               {title && (
-                <h3 className="text-[17px] font-semibold text-neutral-900 tracking-[-0.015em] leading-snug">{title}</h3>
+                <h3 className="text-[17px] font-semibold text-ink tracking-[-0.015em] leading-snug">{title}</h3>
               )}
               {badge}
             </div>
           )}
           {subtitle && (
             // Line breaks in the copy are for centred layouts; let it flow here
-            <p className="mt-1.5 text-[14px] text-neutral-600 leading-[1.55] text-pretty">
+            <p className="mt-1.5 text-[14px] text-ink-body leading-[1.55] text-pretty">
               {subtitle.replace(/\n/g, " ")}
             </p>
           )}
           {children}
           {note && (
-            <p className="mt-auto pt-5 text-[12px] text-neutral-500 leading-relaxed text-pretty">{note}</p>
+            <p className="mt-auto pt-5 text-[12px] text-ink-muted leading-relaxed text-pretty">{note}</p>
           )}
         </div>
       </CardShell>
@@ -198,7 +198,7 @@ export function Card(props: CardProps) {
             className={[
               "text-[34px] font-medium leading-[1.02] tracking-[-0.04em] text-balance max-w-[14ch]",
               icon ? "mt-5" : "",
-              dark ? "text-white" : "text-neutral-900",
+              dark ? "text-white" : "text-ink",
             ].join(" ")}
           >
             {title}
@@ -206,14 +206,14 @@ export function Card(props: CardProps) {
         )}
         <div className="mt-auto pt-8 flex flex-col gap-2">
           {subtitle && (
-            <p className="text-[14px] leading-[1.45] tracking-[-0.005em] text-neutral-500">{subtitle}</p>
+            <p className={["text-[14px] leading-[1.45] tracking-[-0.005em]", dark ? "text-neutral-500" : "text-ink-muted"].join(" ")}>{subtitle}</p>
           )}
           {children}
         </div>
       </div>
       <div
         className="relative w-[40%] shrink-0 overflow-hidden"
-        style={{ boxShadow: dark ? "-1px 0 0 rgba(255,255,255,0.07)" : "-1px 0 0 rgba(17,17,17,0.07)" }}
+        style={{ boxShadow: dark ? "-1px 0 0 var(--divider-dark)" : "-1px 0 0 var(--divider)" }}
       >
         <Media
           image={image}

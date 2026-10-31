@@ -110,7 +110,7 @@ export function ShareButtons({
       onClick: handleCopy as () => void,
       content: (
         <>
-          <span key={String(copied)} className={["animate-checkbox-in", copied ? "text-emerald-600" : ""].join(" ")}>
+          <span key={String(copied)} className={["animate-checkbox-in", copied ? "text-success-soft" : ""].join(" ")}>
             {copied ? <CheckIcon /> : <LinkIcon />}
           </span>
           <span className="w-[62px] text-left">{copied ? "copied" : "copy link"}</span>
@@ -124,7 +124,7 @@ export function ShareButtons({
 
   return (
     <div className={className}>
-      <p className="text-[12px] font-medium text-neutral-500 lowercase mb-3">
+      <p className="text-[12px] font-medium text-ink-muted lowercase mb-3">
         Share
       </p>
       <ButtonGroup label="Share" items={keys} />

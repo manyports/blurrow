@@ -20,17 +20,17 @@ interface TimelineProps {
    lamp; the variant only changes the lamp's colour. Nodes are joined by
    one continuous groove, and titles sit on the node's centre line.     */
 const lamp: Record<TimelineVariant, string> = {
-  default: "#262626",
-  success: "#10b981",
-  warning: "#f59e0b",
-  accent: "#8b5cf6",
+  default: "var(--lamp-default)",
+  success: "var(--lamp-success)",
+  warning: "var(--lamp-warning)",
+  accent: "var(--lamp-accent)",
 };
 
 const iconText: Record<TimelineVariant, string> = {
-  default: "text-neutral-600",
-  success: "text-emerald-600",
-  warning: "text-amber-600",
-  accent: "text-violet-600",
+  default: "text-ink-body",
+  success: "text-success-soft",
+  warning: "text-warning",
+  accent: "text-accent-soft",
 };
 
 export function Timeline({ items, className = "" }: TimelineProps) {
@@ -40,7 +40,7 @@ export function Timeline({ items, className = "" }: TimelineProps) {
       style={{ background: "var(--panel-bezel)", boxShadow: "var(--panel-shadow)" }}
     >
       <ol
-        className="bg-white rounded-[13px] px-5 py-5 flex flex-col"
+        className="bg-panel-face rounded-[13px] px-5 py-5 flex flex-col"
         style={{ boxShadow: "var(--panel-face-shadow)" }}
       >
         {items.map((item, index) => {
@@ -63,14 +63,14 @@ export function Timeline({ items, className = "" }: TimelineProps) {
                   "relative w-6 h-6 rounded-full flex items-center justify-center shrink-0",
                   iconText[variant],
                 ].join(" ")}
-                style={{ background: "var(--face-light)", boxShadow: "var(--tile-light-shadow)" }}
+                style={{ background: "var(--face)", boxShadow: "var(--tile-shadow)" }}
               >
                 {item.icon ?? (
                   <span
                     className="w-2 h-2 rounded-full"
                     style={{
                       background: lamp[variant],
-                      boxShadow: `0 0 6px ${lamp[variant]}66, inset 0 1px 1px rgba(255,255,255,0.35)`,
+                      boxShadow: `0 0 6px color-mix(in srgb, ${lamp[variant]} 40%, transparent), var(--lamp-lip)`,
                     }}
                   />
                 )}
@@ -78,17 +78,17 @@ export function Timeline({ items, className = "" }: TimelineProps) {
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-baseline justify-between gap-3">
-                  <p className="text-[13.5px] font-medium text-neutral-900 leading-6 tracking-[-0.005em]">
+                  <p className="text-[13.5px] font-medium text-ink leading-6 tracking-[-0.005em]">
                     {item.title}
                   </p>
                   {item.date && (
-                    <time className="text-[12px] text-neutral-400 tabular-nums shrink-0">
+                    <time className="text-[12px] text-ink-faint tabular-nums shrink-0">
                       {item.date}
                     </time>
                   )}
                 </div>
                 {item.description && (
-                  <p className="text-[13px] text-neutral-500 leading-relaxed mt-0.5">
+                  <p className="text-[13px] text-ink-muted leading-relaxed mt-0.5">
                     {item.description}
                   </p>
                 )}

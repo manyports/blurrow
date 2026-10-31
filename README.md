@@ -89,6 +89,8 @@ things you press are raised. things you type into are sunken. you can tell a but
 
 and every shadow is drawn as if one lamp is hanging right above your screen. top edges catch the light, bottom edges fall into shade. since the lamp never moves, a light card and a dark card cast the same shadow and get along fine on the same page. on [the website](https://www.blurrow.org) you can grab that lamp and drag it around.
 
+it comes in light and dark. put `data-theme="dark"` on `<html>` and every material swaps for a darker one under the same lamp, or use `data-theme="system"` to follow the os. [the installation guide](https://www.blurrow.org/docs/installation#dark-mode) has the details.
+
 ## what's in the box
 
 | | |

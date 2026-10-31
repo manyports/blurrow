@@ -44,7 +44,7 @@ export function Textarea({
       {label && (
         <label
           htmlFor={textareaId}
-          className="text-[12.5px] font-medium text-neutral-700 tracking-[-0.005em] transition-colors duration-200 group-focus-within/field:text-neutral-950"
+          className="text-[12.5px] font-medium text-ink-label tracking-[-0.005em] transition-colors duration-200 group-focus-within/field:text-ink-strong"
         >
           {label}
         </label>
@@ -55,8 +55,8 @@ export function Textarea({
         rows={rows}
         onChange={handleChange}
         className={[
-          "field rounded-xl px-4 py-3 text-[13.5px] text-neutral-900 resize-none scroll-thin",
-          "placeholder:text-neutral-400 placeholder:transition-colors placeholder:duration-200 focus:placeholder:text-neutral-300",
+          "field rounded-xl px-4 py-3 text-[13.5px] text-ink resize-none scroll-thin",
+          "placeholder:text-ink-faint placeholder:transition-colors placeholder:duration-200 focus:placeholder:text-ink-ghost",
           "disabled:opacity-40 disabled:cursor-not-allowed",
           fullWidth ? "w-full" : "",
           className,
@@ -68,7 +68,7 @@ export function Textarea({
         {...rest}
       />
       {error && (
-        <p id={messageId} role="alert" className="text-[11.5px] text-red-600 font-medium flex items-center gap-1 mt-0.5">
+        <p id={messageId} role="alert" className="text-[11.5px] text-danger font-medium flex items-center gap-1 mt-0.5">
           <svg width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="10" />
             <path strokeLinecap="round" d="M12 8v4m0 4h.01" />
@@ -77,7 +77,7 @@ export function Textarea({
         </p>
       )}
       {hint && !error && (
-        <p id={messageId} className="text-[11.5px] text-neutral-500 mt-0.5">{hint}</p>
+        <p id={messageId} className="text-[11.5px] text-ink-muted mt-0.5">{hint}</p>
       )}
     </div>
   );

@@ -25,11 +25,11 @@ const KEYWORDS = new Set([
 const TOKEN_RE = /(\/\/.*$|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`|<\/?\s*[A-Z][a-zA-Z0-9.]*|<\/?\s*[a-z][a-zA-Z0-9-]*|=>|\b\d+(?:\.\d+)?\b|\b[a-zA-Z_$][a-zA-Z0-9_$]*\b)/;
 
 const TOKEN_STYLES: Record<string, string> = {
-  keyword: "text-violet-600",
-  string:  "text-emerald-700",
-  comment: "text-neutral-400 italic",
-  tag:     "text-sky-700",
-  number:  "text-amber-700",
+  keyword: "text-code-keyword",
+  string:  "text-code-string",
+  comment: "text-ink-faint italic",
+  tag:     "text-code-tag",
+  number:  "text-code-number",
 };
 
 function classifyToken(val: string): string {
@@ -101,11 +101,11 @@ export function CodeBlock({
       <figcaption className="flex items-center justify-between gap-3 pl-3 pr-0.5 h-10">
         <div className="flex items-center gap-2 min-w-0">
           {title && (
-            <span className="text-[12px] font-medium text-neutral-700 truncate">{title}</span>
+            <span className="text-[12px] font-medium text-ink-label truncate">{title}</span>
           )}
           {language && (
             <span
-              className="text-[11px] font-semibold text-neutral-500 lowercase px-1.5 py-0.5 rounded-[5px]"
+              className="text-[11px] font-semibold text-ink-muted lowercase px-1.5 py-0.5 rounded-[5px]"
               style={{ background: "var(--well)", boxShadow: "var(--well-shadow)" }}
             >
               {language}
@@ -120,14 +120,14 @@ export function CodeBlock({
           type="button"
           onClick={handleCopy}
           aria-label={copied ? "copied to clipboard" : "copy code"}
-          className="inline-flex items-center h-7 px-2.5 rounded-[8px] text-[11.5px] font-medium cursor-pointer transition-[color,transform,scale] duration-150 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900"
+          className="inline-flex items-center h-7 px-2.5 rounded-[8px] text-[11.5px] font-medium cursor-pointer transition-[color,transform,scale] duration-150 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
           style={{
-            background: "var(--face-light)",
-            boxShadow: "var(--face-light-shadow)",
-            color: copied ? "#047857" : undefined,
+            background: "var(--face)",
+            boxShadow: "var(--face-shadow)",
+            color: copied ? "var(--success-strong)" : undefined,
           }}
         >
-          <span className="grid overflow-hidden text-neutral-600" style={{ color: "inherit" }}>
+          <span className="grid overflow-hidden text-ink-body" style={{ color: "inherit" }}>
             <span
               aria-hidden
               className="[grid-area:1/1] inline-flex items-center justify-center gap-1.5"
@@ -171,15 +171,15 @@ export function CodeBlock({
         <span aria-live="polite" className="sr-only">{copied ? "copied to clipboard" : ""}</span>
       </figcaption>
       <div
-        className="bg-white rounded-[13px] overflow-x-auto scroll-thin"
+        className="bg-panel-face rounded-[13px] overflow-x-auto scroll-thin"
         style={{ boxShadow: "var(--panel-face-shadow)" }}
       >
-        <pre className="py-4 px-4 text-[13px] leading-[1.7] font-mono text-neutral-800">
+        <pre className="py-4 px-4 text-[13px] leading-[1.7] font-mono text-ink-soft">
           <code>
             {lines.map((line, i) => (
               <div key={i} className="flex">
                 {showLineNumbers && (
-                  <span aria-hidden className="select-none w-8 shrink-0 text-right pr-4 text-neutral-300 tabular-nums">
+                  <span aria-hidden className="select-none w-8 shrink-0 text-right pr-4 text-ink-ghost tabular-nums">
                     {i + 1}
                   </span>
                 )}

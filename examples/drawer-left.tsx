@@ -19,7 +19,7 @@ export default function DrawerLeft() {
         title="filters"
         description="narrow down the posts you see."
       >
-        <p className="py-4 text-[13px] text-neutral-500">put navigation or filters here.</p>
+        <p className="py-4 text-[13px] text-ink-muted">put navigation or filters here.</p>
       </Drawer>
     </>
   );

@@ -13,7 +13,7 @@ export function DocsNav({ onNavigate }: { onNavigate?: () => void }) {
     <nav aria-label="Docs" className="flex flex-col gap-6">
       {docsNav.map((section) => (
         <div key={section.title} className="flex flex-col gap-0.5">
-          <p className="px-3 pb-1.5 text-[12px] font-medium text-neutral-400">
+          <p className="px-3 pb-1.5 text-[12px] font-medium text-ink-faint">
             {section.title}
           </p>
           {section.links.map((link) => {
@@ -26,12 +26,12 @@ export function DocsNav({ onNavigate }: { onNavigate?: () => void }) {
                 aria-current={active ? "page" : undefined}
                 className={[
                   "px-3 py-[7px] rounded-[10px] text-[13.5px] tracking-[-0.005em] transition-[color,background-color] duration-200",
-                  "outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-neutral-900",
+                  "outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ink",
                   active
-                    ? "font-medium text-neutral-900"
-                    : "text-neutral-500 hover:text-neutral-900 hover:bg-neutral-900/[0.035]",
+                    ? "font-medium text-ink"
+                    : "text-ink-muted hover:text-ink hover:bg-ink/[0.035]",
                 ].join(" ")}
-                style={active ? { background: "var(--face-light)", boxShadow: "var(--thumb-shadow)" } : undefined}
+                style={active ? { background: "var(--face)", boxShadow: "var(--thumb-shadow)" } : undefined}
               >
                 {link.title}
               </Link>

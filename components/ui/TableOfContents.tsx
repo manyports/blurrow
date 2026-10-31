@@ -64,19 +64,19 @@ export function TableOfContents({
       style={{ background: "var(--panel-bezel)", boxShadow: "var(--panel-shadow)" }}
     >
       <div
-        className="bg-white rounded-[13px] px-5 pt-4 pb-4"
+        className="bg-panel-face rounded-[13px] px-5 pt-4 pb-4"
         style={{ boxShadow: "var(--panel-face-shadow)" }}
       >
-        <p aria-hidden className="text-[12px] font-medium text-neutral-400 mb-3">
+        <p aria-hidden className="text-[12px] font-medium text-ink-faint mb-3">
           on this page
         </p>
 
         <div className="relative">
-          <span aria-hidden className="absolute left-0 top-0 bottom-0 w-px bg-neutral-900/[0.08]" />
+          <span aria-hidden className="absolute left-0 top-0 bottom-0 w-px bg-ink/[0.08]" />
           {marker && (
             <span
               aria-hidden
-              className="absolute -left-[0.5px] w-[2px] rounded-full bg-neutral-900"
+              className="absolute -left-[0.5px] w-[2px] rounded-full bg-ink"
               style={{ top: marker.top + 6, height: marker.height - 12, transition: slide }}
             />
           )}
@@ -96,12 +96,12 @@ export function TableOfContents({
                   // Weight stays fixed so the active item doesn't reflow its line
                   "relative block w-full text-left py-1.5 text-[13px] leading-5 rounded-[6px] cursor-pointer",
                   "transition-colors duration-200 outline-none",
-                  "focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-neutral-900",
+                  "focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ink",
                   isActive
-                    ? "text-neutral-900 font-medium"
+                    ? "text-ink font-medium"
                     : item.level === 1
-                      ? "text-neutral-600 hover:text-neutral-900"
-                      : "text-neutral-400 hover:text-neutral-700",
+                      ? "text-ink-body hover:text-ink"
+                      : "text-ink-faint hover:text-ink-label",
                 ].join(" ")}
                 style={{ paddingLeft: indent[item.level] }}
               >

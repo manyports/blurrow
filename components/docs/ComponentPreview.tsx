@@ -28,12 +28,12 @@ export function ComponentPreview({ name, code, children, size = "md" }: Componen
             >
               <div
                 className={[
-                  "relative rounded-[15px] flex items-center justify-center px-5 py-12 sm:px-10 text-[14px] text-neutral-900",
+                  "relative rounded-[15px] flex items-center justify-center px-5 py-12 sm:px-10 text-[14px] text-ink",
                   size === "lg" ? "min-h-[420px]" : "min-h-[300px]",
                 ].join(" ")}
                 style={{
-                  background: "#EBEBEB",
-                  boxShadow: "inset 0 0 2px rgba(17,17,17,0.12), inset 0 1px 2px rgba(17,17,17,0.05)",
+                  background: "var(--page)",
+                  boxShadow: "var(--stage-shadow)",
                 }}
               >
                 {children}
@@ -44,7 +44,7 @@ export function ComponentPreview({ name, code, children, size = "md" }: Componen
         {
           key: "code",
           label: "code",
-          content: <CodeBlock language="tsx" title={`${name}.tsx`} code={code} className="text-neutral-800" />,
+          content: <CodeBlock language="tsx" title={`${name}.tsx`} code={code} className="text-ink-soft" />,
         },
       ]}
     />

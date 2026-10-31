@@ -24,26 +24,26 @@ export function ButtonGroup({ items, label, className = "" }: ButtonGroupProps) 
       role="group"
       aria-label={label}
       className={["inline-flex w-fit rounded-[12px] p-[3px]", className].join(" ")}
-      style={{ background: "var(--bezel-light)", boxShadow: "var(--bezel-light-shadow)" }}
+      style={{ background: "var(--bezel)", boxShadow: "var(--bezel-shadow)" }}
     >
       <div
         className="flex rounded-[9px] overflow-hidden"
-        style={{ background: "var(--face-light)", boxShadow: "var(--face-light-shadow)" }}
+        style={{ background: "var(--face)", boxShadow: "var(--face-shadow)" }}
       >
         {items.map((item, i) => {
           const keyClass = [
             "group/key relative h-9 inline-flex items-center justify-center gap-1.5 cursor-pointer",
-            "text-[13px] font-medium text-neutral-800 outline-none",
+            "text-[13px] font-medium text-ink-soft outline-none",
             "transition-[box-shadow,background] duration-150",
-            "active:bg-neutral-900/[0.04] active:[box-shadow:inset_0_1px_2px_rgba(17,17,17,0.08)]",
-            "focus-visible:[box-shadow:inset_0_0_0_2px_rgba(17,17,17,0.85)]",
+            "active:bg-ink/[0.04] active:[box-shadow:var(--ghost-shadow-pressed)]",
+            "focus-visible:[box-shadow:var(--focus-ring-inset)]",
             item.wide ? "px-4" : "w-10",
           ].join(" ");
           const inner = (
             <>
               <span
                 aria-hidden
-                className="pointer-events-none absolute inset-0 origin-bottom scale-y-0 bg-neutral-900/[0.025] transition-transform duration-300 ease-out group-hover/key:scale-y-100"
+                className="pointer-events-none absolute inset-0 origin-bottom scale-y-0 bg-ink/[0.025] transition-transform duration-300 ease-out group-hover/key:scale-y-100"
               />
               <span className="relative inline-flex items-center gap-1.5">{item.content}</span>
             </>
@@ -52,7 +52,7 @@ export function ButtonGroup({ items, label, className = "" }: ButtonGroupProps) 
             "aria-label": item.label,
             title: item.wide ? undefined : item.label,
             className: keyClass,
-            style: { textShadow: "0 1px 0 rgba(255,255,255,0.9)" },
+            style: { textShadow: "var(--emboss)" },
           };
 
           return (
@@ -60,8 +60,8 @@ export function ButtonGroup({ items, label, className = "" }: ButtonGroupProps) 
               {i > 0 && (
                 <span
                   aria-hidden
-                  className="w-px self-stretch my-2 bg-neutral-900/[0.08]"
-                  style={{ boxShadow: "1px 0 0 rgba(255,255,255,0.9)" }}
+                  className="w-px self-stretch my-2 bg-groove"
+                  style={{ boxShadow: "var(--groove-lip)" }}
                 />
               )}
               {item.href ? (

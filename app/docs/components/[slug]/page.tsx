@@ -126,8 +126,8 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
           </P>
           <CodeBlock language="bash" code={`npx ${pkg} init`} />
           <details className="group flex flex-col gap-4">
-            <summary className="cursor-pointer list-none text-[14px] font-medium text-neutral-900 flex items-center gap-2 select-none">
-              <span className="text-neutral-400 transition-transform duration-200 group-open:rotate-90">›</span>
+            <summary className="cursor-pointer list-none text-[14px] font-medium text-ink flex items-center gap-2 select-none">
+              <span className="text-ink-faint transition-transform duration-200 group-open:rotate-90">›</span>
               rather own the code? copy the source instead
             </summary>
             <div className="flex flex-col gap-4 pt-4">

@@ -197,13 +197,13 @@ export function CommandPalette({
         style={{ background: "var(--panel-bezel)", boxShadow: "var(--modal-shadow)" }}
       >
         <div
-          className="bg-white rounded-[14px] overflow-hidden"
+          className="bg-panel-face rounded-[14px] overflow-hidden"
           style={{ boxShadow: "var(--panel-face-shadow)" }}
         >
           {/* Search input */}
           <div className="flex items-center gap-3 px-4 py-3.5">
             <svg
-              className="shrink-0 text-neutral-400"
+              className="shrink-0 text-ink-faint"
               width="14"
               height="14"
               fill="none"
@@ -228,13 +228,13 @@ export function CommandPalette({
               aria-controls={`${uid}-list`}
               aria-activedescendant={flatItems[activeIndex] ? `${uid}-item-${activeIndex}` : undefined}
               aria-autocomplete="list"
-              className="flex-1 min-w-0 text-[14.5px] font-medium text-neutral-900 placeholder:text-neutral-400 placeholder:font-normal bg-transparent border-none outline-none"
+              className="flex-1 min-w-0 text-[14.5px] font-medium text-ink placeholder:text-ink-faint placeholder:font-normal bg-transparent border-none outline-none"
             />
             <Kbd className="shrink-0">esc</Kbd>
           </div>
 
           {/* Separator */}
-          <div className="border-b border-neutral-100" />
+          <div className="border-b border-line" />
 
           {/* Results */}
           <div
@@ -245,15 +245,15 @@ export function CommandPalette({
           >
             {filtered.length === 0 ? (
               <div className="py-10 flex flex-col items-center gap-1 text-center">
-                <p className="text-[13px] font-medium text-neutral-700">
+                <p className="text-[13px] font-medium text-ink-label">
                   nothing for &ldquo;{query}&rdquo;
                 </p>
-                <p className="text-[12px] text-neutral-400">try a shorter or different word.</p>
+                <p className="text-[12px] text-ink-faint">try a shorter or different word.</p>
               </div>
             ) : (
               filtered.map((section, si) => (
                 <div key={section.title} role="group" aria-label={section.title} className={si > 0 ? "mt-3" : ""}>
-                  <div aria-hidden className="px-3 py-1.5 text-[11.5px] font-medium text-neutral-400 lowercase select-none">
+                  <div aria-hidden className="px-3 py-1.5 text-[11.5px] font-medium text-ink-faint lowercase select-none">
                     {section.title}
                   </div>
                   <div className="flex flex-col gap-0.5">
@@ -272,7 +272,7 @@ export function CommandPalette({
                           className={[
                             "group/cmd flex items-center gap-3 w-full text-left px-3 py-2 rounded-[10px] cursor-pointer",
                             "transition-[background,box-shadow] duration-100",
-                            isActive ? "bg-neutral-50" : "",
+                            isActive ? "bg-surface-hover" : "",
                           ].join(" ")}
                           style={{ boxShadow: isActive ? "var(--panel-face-shadow)" : undefined }}
                         >
@@ -280,19 +280,19 @@ export function CommandPalette({
                             <span
                               className={[
                                 "shrink-0 w-7 h-7 rounded-[8px] flex items-center justify-center transition-colors duration-100",
-                                isActive ? "text-neutral-900" : "text-neutral-500",
+                                isActive ? "text-ink" : "text-ink-muted",
                               ].join(" ")}
-                              style={{ background: "var(--face-light)", boxShadow: "var(--face-light-shadow)" }}
+                              style={{ background: "var(--face)", boxShadow: "var(--face-shadow)" }}
                             >
                               {item.icon}
                             </span>
                           )}
                           <div className="flex-1 min-w-0 flex flex-col">
-                            <span className="text-[13px] font-medium text-neutral-900 truncate">
+                            <span className="text-[13px] font-medium text-ink truncate">
                               {item.label}
                             </span>
                             {item.description && (
-                              <span className="text-[12px] text-neutral-500 truncate">
+                              <span className="text-[12px] text-ink-muted truncate">
                                 {item.description}
                               </span>
                             )}
@@ -308,7 +308,7 @@ export function CommandPalette({
                               strokeWidth="2"
                               viewBox="0 0 24 24"
                               className={[
-                                "shrink-0 text-neutral-400 transition-all duration-150",
+                                "shrink-0 text-ink-faint transition-all duration-150",
                                 isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1",
                               ].join(" ")}
                             >
@@ -326,8 +326,8 @@ export function CommandPalette({
 
           {/* Key hints — teach the palette while it's open */}
           <div
-            className="flex items-center gap-4 px-4 py-2.5 border-t border-neutral-100 text-[11.5px] text-neutral-500 select-none"
-            style={{ background: "linear-gradient(180deg, #fcfcfc 0%, #f8f8f8 100%)" }}
+            className="flex items-center gap-4 px-4 py-2.5 border-t border-line text-[11.5px] text-ink-muted select-none"
+            style={{ background: "var(--palette-tray)" }}
           >
             <span className="inline-flex items-center gap-1.5">
               <Kbd>↑</Kbd>
@@ -338,7 +338,7 @@ export function CommandPalette({
               <Kbd>↵</Kbd>
               Open
             </span>
-            <span className="ml-auto tabular-nums text-neutral-400">
+            <span className="ml-auto tabular-nums text-ink-faint">
               {flatItems.length} {flatItems.length === 1 ? "result" : "results"}
             </span>
           </div>
