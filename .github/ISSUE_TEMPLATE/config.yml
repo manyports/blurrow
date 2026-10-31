@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: docs
+    url: https://www.blurrow.org/docs
+    about: setup, every component, its props and examples
