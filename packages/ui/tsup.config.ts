@@ -1,15 +1,30 @@
 import fs from "node:fs";
 import { defineConfig } from "tsup";
+import type { Plugin } from "esbuild";
+
+/* "./Button" inside a component becomes "./Button.js" in the output and
+   isn't inlined: inlining would copy a client component into a file
+   without the directive, and node-style resolvers need the extension. */
+const siblingsStayImports: Plugin = {
+  name: "siblings-stay-imports",
+  setup(build) {
+    build.onResolve({ filter: /^\.\/[^/]+$/ }, (args) => ({
+      path: `${args.path}.js`,
+      external: true,
+    }));
+  },
+};
 
 const { version } = JSON.parse(fs.readFileSync("package.json", "utf8"));
 
 export default defineConfig([
-  /* The library: one bundle from the components the docs site renders,
-     so what ships is exactly what's documented. Nearly every component
-     uses state or effects, so the whole bundle is marked as client
-     code; server components can still import from it.               */
+  /* The library: one output file per component from the components the
+     docs site renders, so what ships is exactly what's documented. Each
+     file keeps its own "use client" (or lack of one), so the static parts
+     render on the server and only the interactive ones reach the browser.
+     Imports between components stay imports, pointed at the built file. */
   {
-    entry: { index: "../../components/ui/index.ts" },
+    entry: ["../../components/ui/*.ts", "../../components/ui/*.tsx"],
     format: ["esm"],
     dts: true,
     sourcemap: true,
@@ -17,7 +32,7 @@ export default defineConfig([
     target: "es2020",
     tsconfig: "tsconfig.json",
     external: ["react", "react-dom", "react/jsx-runtime"],
-    banner: { js: '"use client";' },
+    esbuildPlugins: [siblingsStayImports],
   },
   /* The CLI: plain node, no dependencies, the catalogue baked in */
   {
