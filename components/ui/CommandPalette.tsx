@@ -75,19 +75,23 @@ export function CommandPalette({
     [filtered],
   );
 
-  // Mount / unmount lifecycle (matches Modal pattern)
-  useEffect(() => {
+  // Mount / unmount lifecycle (matches Modal pattern); every opening starts fresh
+  const [wasOpen, setWasOpen] = useState(false);
+  if (open !== wasOpen) {
+    setWasOpen(open);
     if (open) {
       setMounted(true);
       setQuery("");
       setActiveIndex(0);
-      return;
-    }
-    if (mounted) {
+    } else {
       setVisible(false);
-      const t = setTimeout(() => setMounted(false), CLOSE_MS);
-      return () => clearTimeout(t);
     }
+  }
+
+  useEffect(() => {
+    if (open || !mounted) return;
+    const t = setTimeout(() => setMounted(false), CLOSE_MS);
+    return () => clearTimeout(t);
   }, [open, mounted]);
 
   // Enter animation (matches Modal pattern)

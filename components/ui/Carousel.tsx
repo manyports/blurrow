@@ -64,8 +64,11 @@ export function Carousel({
   const goNext = () => go((currentIdxRef.current + 1) % items.length, "right");
   const goPrev = () => go((currentIdxRef.current - 1 + items.length) % items.length, "left");
 
+  // Kept current after each render so the autoplay timer never goes stale
   const goNextRef = useRef(goNext);
-  goNextRef.current = goNext;
+  useEffect(() => {
+    goNextRef.current = goNext;
+  });
 
   useEffect(() => {
     if (!autoPlay || paused) return;
@@ -96,7 +99,8 @@ export function Carousel({
     const dy = e.clientY - dragRef.current.y;
     dragRef.current.active = false;
     if (Math.abs(dx) > THRESHOLD && Math.abs(dx) > Math.abs(dy) * 1.5) {
-      dx < 0 ? goNextRef.current() : goPrev();
+      if (dx < 0) goNextRef.current();
+      else goPrev();
     }
   };
 

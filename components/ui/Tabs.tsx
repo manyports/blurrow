@@ -34,8 +34,8 @@ export function Tabs({ tabs, defaultTab, onChange, className = "" }: TabsProps) 
     setPill({ left: br.left - lr.left, width: br.width, ready: true });
   };
 
-  useLayoutEffect(() => { measurePill(active); }, []);
-  useEffect(() => { measurePill(active); }, [active]);
+  // Before paint, so the thumb is never seen out of place
+  useLayoutEffect(() => { measurePill(active); }, [active]);
 
   useEffect(() => {
     const ro = new ResizeObserver(() => measurePill(active));

@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          # the docs site and the package each have their own lockfile
+          cache-dependency-path: |
+            package-lock.json
+            packages/ui/package-lock.json
+
+      - run: npm ci
+
+      - name: lint
+        run: npx eslint .
+
+      - name: typecheck
+        run: npx tsc --noEmit
+
+      - name: build the docs site
+        run: npm run build
+
+      - name: build the package
+        run: npm run package:build

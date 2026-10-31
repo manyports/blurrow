@@ -47,12 +47,14 @@ export function Popover({
   const panelRef = useRef<HTMLDivElement>(null);
   const uid = useId();
 
+  /* Mounted and faded out during render; the effect only times the rest */
+  if (open && !mounted) setMounted(true);
+  if (!open && visible) setVisible(false);
+
   useEffect(() => {
     if (open) {
-      setMounted(true);
       requestAnimationFrame(() => requestAnimationFrame(() => setVisible(true)));
     } else {
-      setVisible(false);
       const t = setTimeout(() => setMounted(false), 180);
       return () => clearTimeout(t);
     }

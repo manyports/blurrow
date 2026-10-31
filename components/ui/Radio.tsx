@@ -33,6 +33,21 @@ interface Blob {
 
 const LEAD = "260ms var(--ease-out-soft)";
 const TRAIL = "480ms cubic-bezier(0.34, 1.25, 0.64, 1) 50ms";
+
+/* Where the face sits over a well, in the group's own coordinates. Read
+   straight off the DOM, so setting it from an effect is a measurement,
+   not derived state                                                  */
+function wellBox(group: HTMLElement | null, el: HTMLElement | null, dir: Blob["dir"]): Blob | null {
+  if (!group || !el) return null;
+  return {
+    top: el.offsetTop,
+    bottom: group.clientHeight - el.offsetTop - el.offsetHeight,
+    left: el.offsetLeft,
+    size: el.offsetWidth,
+    dir,
+  };
+}
+
 export function RadioGroup({
   options,
   value,
@@ -59,24 +74,13 @@ export function RadioGroup({
   const selectedIndex = options.findIndex((o) => o.value === selected);
   const tabStop = selectedIndex >= 0 ? selectedIndex : enabled[0];
 
-  const measure = (dir: Blob["dir"]) => {
-    const group = groupRef.current;
-    const el = refs.current[prevIndex.current];
-    if (!group || !el) return setBlob(null);
-    setBlob({
-      top: el.offsetTop,
-      bottom: group.clientHeight - el.offsetTop - el.offsetHeight,
-      left: el.offsetLeft,
-      size: el.offsetWidth,
-      dir,
-    });
-  };
+  const measure = (dir: Blob["dir"]) =>
+    setBlob(wellBox(groupRef.current, refs.current[prevIndex.current], dir));
 
   useLayoutEffect(() => {
     const prev = prevIndex.current;
     prevIndex.current = selectedIndex;
     measure(prev < 0 || selectedIndex < 0 ? 0 : selectedIndex > prev ? 1 : selectedIndex < prev ? -1 : 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedIndex]);
 
   // Rewrapped descriptions move the wells; follow them without animating.
@@ -92,7 +96,6 @@ export function RadioGroup({
     });
     ro.observe(group);
     return () => ro.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const move = (from: number, step: 1 | -1) => {
