@@ -38,7 +38,7 @@ export default function Settings() {
 }
 ```
 
-every component is marked `"use client"`, so they drop straight into server components too.
+they drop straight into server components. the interactive ones are marked `"use client"`, and the static ones (badges, cards, avatars, skeletons…) render on the server and send no javascript.
 
 ## setting it up by hand
 
