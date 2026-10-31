@@ -42,16 +42,15 @@ export function Drawer({
   const uid = useId();
 
   /* ── mount / unmount ────────────────────────────────── */
+  /* Mounting on open and sliding out on close happen during render, so
+     neither waits for an extra commit; only the unmount is delayed */
+  if (open && !mounted) setMounted(true);
+  if (!open && visible) setVisible(false);
+
   useEffect(() => {
-    if (open) {
-      setMounted(true);
-      return;
-    }
-    if (mounted) {
-      setVisible(false);
-      const t = setTimeout(() => setMounted(false), EXIT_MS);
-      return () => clearTimeout(t);
-    }
+    if (open || !mounted) return;
+    const t = setTimeout(() => setMounted(false), EXIT_MS);
+    return () => clearTimeout(t);
   }, [open, mounted]);
 
   /* ── trigger enter animation after mount ────────────── */

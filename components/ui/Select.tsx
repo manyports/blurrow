@@ -156,6 +156,9 @@ export function Select({
         <button
           ref={buttonRef}
           type="button"
+          /* A select-only combobox: the role is what lets the button point
+             at the active option while focus stays on it                */
+          role="combobox"
           disabled={disabled}
           onClick={() => (open ? close() : openList())}
           onKeyDown={onKeyDown}

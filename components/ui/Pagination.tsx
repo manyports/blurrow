@@ -20,8 +20,8 @@ export function Pagination({
   const containerRef = useRef<HTMLDivElement>(null);
   const btnRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
-  const measurePill = () => {
-    const btn = btnRefs.current[String(currentPage)];
+  const measurePill = (page: number) => {
+    const btn = btnRefs.current[String(page)];
     const container = containerRef.current;
     if (!btn || !container) return;
     const cr = container.getBoundingClientRect();
@@ -29,18 +29,15 @@ export function Pagination({
     setPill({ left: br.left - cr.left, width: br.width, ready: true });
   };
 
-  useLayoutEffect(() => {
-    measurePill();
-  }, []);
-
   /* Only the thumb moves: it glides to the new page without overshoot,
-     and the numbers themselves stay still.                            */
-  useEffect(() => {
-    measurePill();
+     and the numbers themselves stay still. Measured before paint, so it
+     is never seen out of place.                                        */
+  useLayoutEffect(() => {
+    measurePill(currentPage);
   }, [currentPage]);
 
   useEffect(() => {
-    const ro = new ResizeObserver(() => measurePill());
+    const ro = new ResizeObserver(() => measurePill(currentPage));
     if (containerRef.current) ro.observe(containerRef.current);
     return () => ro.disconnect();
   }, [currentPage]);

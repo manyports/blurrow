@@ -41,6 +41,8 @@ const enterFrom: Record<DropdownMenuPosition, string> = {
   "top-end": "translate-y-1.5",
 };
 
+const ITEMS = '[role="menu"] [role="menuitem"]:not([disabled])';
+
 export function DropdownMenu({
   trigger,
   items,
@@ -55,11 +57,11 @@ export function DropdownMenu({
   const [placement, setPlacement] = useState(position);
   const [shift, setShift] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
   const uid = useId();
 
-  const enabledItems = () =>
-    Array.from(menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled])') ?? []);
+  /* Found through the wrapper: attachMenu only reads the node it's handed,
+     so the compiler can keep it memoized                                */
+  const enabledItems = () => Array.from(ref.current?.querySelectorAll<HTMLElement>(ITEMS) ?? []);
 
   const focusItem = (index: number) => {
     const list = enabledItems();
@@ -71,8 +73,8 @@ export function DropdownMenu({
      offsetWidth/Height ignore the enter transform, so the numbers are the
      menu's settled size.                                                */
   const attachMenu = useCallback((menu: HTMLDivElement | null) => {
-    menuRef.current = menu;
-    const anchor = ref.current;
+    // The wrapper the menu hangs from, the same node as ref
+    const anchor = menu?.parentElement;
     if (!menu || !anchor) return;
     const gap = 8;
     const a = anchor.getBoundingClientRect();
@@ -100,18 +102,20 @@ export function DropdownMenu({
     setShift(nudge);
   }, [position]);
 
+  /* Mounted and faded out during render; the effect only times the rest */
+  if (open && !mounted) setMounted(true);
+  if (!open && visible) setVisible(false);
+
   useEffect(() => {
     if (open) {
-      setMounted(true);
       requestAnimationFrame(() =>
         requestAnimationFrame(() => {
           setVisible(true);
           // Land on the first item so arrow keys work straight away
-          focusItem(0);
+          ref.current?.querySelector<HTMLElement>(ITEMS)?.focus();
         })
       );
     } else {
-      setVisible(false);
       const t = setTimeout(() => setMounted(false), 180);
       return () => clearTimeout(t);
     }

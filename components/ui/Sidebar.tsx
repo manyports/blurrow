@@ -53,8 +53,8 @@ export function Sidebar({
     setPill({ top: br.top - nr.top, height: br.height, ready: true });
   };
 
-  useLayoutEffect(() => { measurePill(current); }, []);
-  useEffect(() => { measurePill(current); }, [current]);
+  // Before paint, so the pill is never seen out of place
+  useLayoutEffect(() => { measurePill(current); }, [current]);
 
   useEffect(() => {
     const ro = new ResizeObserver(() => measurePill(current));

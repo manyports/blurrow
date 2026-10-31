@@ -138,7 +138,7 @@ export function TagInput({
           .filter(Boolean)
           .join(" ")}
       >
-        {animTags.map((at, i) => (
+        {animTags.map((at) => (
           <span
             key={at.text}
             className={[

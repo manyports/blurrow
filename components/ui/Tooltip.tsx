@@ -65,9 +65,11 @@ export function Tooltip({
     }
   }, [hide]);
 
+  // Mounted during render; the effect only waits for it to paint
+  if (open && !mounted) setMounted(true);
+
   useEffect(() => {
     if (open) {
-      setMounted(true);
       requestAnimationFrame(() => requestAnimationFrame(() => setVisible(true)));
     }
   }, [open]);
@@ -110,9 +112,12 @@ export function Tooltip({
     setCoords({ top, left });
   }, [position]);
 
-  useEffect(() => {
-    if (mounted) measure();
-  }, [mounted, measure]);
+  /* Measured as soon as the tooltip is attached, like DropdownMenu, so
+     it's placed before the first paint rather than after it           */
+  const attachTooltip = useCallback((el: HTMLDivElement | null) => {
+    tooltipRef.current = el;
+    if (el) measure();
+  }, [measure]);
 
   useEffect(() => {
     if (!open) return;
@@ -184,7 +189,7 @@ export function Tooltip({
         : children}
       {mounted && (
         <div
-          ref={tooltipRef}
+          ref={attachTooltip}
           id={`${uid}-tip`}
           role="tooltip"
           className={[
