@@ -4,6 +4,36 @@
 
 /* Site chrome only: not part of the package */
 
+/* ── Site tokens ─────────────────────────────────────────────────── */
+/* The few surfaces only the docs have, themed like the kit's own.   */
+:root,
+.light,
+[data-theme='light'] {
+  /* The preview stage: the page's own grey, pressed slightly in */
+  --stage-shadow: inset 0 0 2px rgba(17, 17, 17, 0.12), inset 0 1px 2px rgba(17, 17, 17, 0.05);
+  --bar-shadow-scrolled:
+    0 1px 3px rgba(17, 17, 17, 0.04), 0 8px 24px -6px rgba(17, 17, 17, 0.12),
+    0 0 0 0.5px rgba(17, 17, 17, 0.06), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --menu-scrim: rgba(235, 235, 235, 0.6);
+}
+.dark,
+[data-theme='dark'] {
+  --stage-shadow: inset 0 0 2px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.45);
+  --bar-shadow-scrolled:
+    0 1px 3px rgba(0, 0, 0, 0.3), 0 8px 24px -6px rgba(0, 0, 0, 0.6),
+    0 0 0 0.5px rgba(0, 0, 0, 0.6), inset 0 2px 3px -2px rgba(255, 255, 255, 0.075);
+  --menu-scrim: rgba(15, 15, 15, 0.6);
+}
+@media (prefers-color-scheme: dark) {
+  [data-theme='system'] {
+    --stage-shadow: inset 0 0 2px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.45);
+    --bar-shadow-scrolled:
+      0 1px 3px rgba(0, 0, 0, 0.3), 0 8px 24px -6px rgba(0, 0, 0, 0.6),
+      0 0 0 0.5px rgba(0, 0, 0, 0.6), inset 0 2px 3px -2px rgba(255, 255, 255, 0.075);
+    --menu-scrim: rgba(15, 15, 15, 0.6);
+  }
+}
+
 /* ── Header ──────────────────────────────────────────────────────── */
 @keyframes header-in {
   from { opacity: 0; transform: translateY(-10px); }

@@ -31,10 +31,10 @@ export function Progress({
       {(label || showValue) && (
         <div className="flex items-center justify-between gap-4">
           {label && (
-            <span className="text-[13px] font-medium text-neutral-700 truncate">{label}</span>
+            <span className="text-[13px] font-medium text-ink-label truncate">{label}</span>
           )}
           {showValue && (
-            <span aria-hidden className="text-[12px] tabular-nums text-neutral-500 shrink-0">
+            <span aria-hidden className="text-[12px] tabular-nums text-ink-muted shrink-0">
               {Math.round(pct)}%
             </span>
           )}
@@ -55,8 +55,8 @@ export function Progress({
             width: `${displayed}%`,
             /* Never collapses below a pill, so 1% still reads as started */
             minWidth: displayed > 0 ? 6 : 0,
-            background: "var(--face-dark)",
-            boxShadow: "inset 0 2px 3px -2px rgba(255,255,255,0.135), 0 0 2px rgba(0,0,0,0.2)",
+            background: "var(--face-inverse)",
+            boxShadow: "var(--fill-shadow)",
             transition: "width 700ms var(--ease-out-soft)",
           }}
         />

@@ -32,11 +32,35 @@ const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo" });
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={archivo.variable}>
-      <body className="bg-[#EBEBEB] font-sans text-neutral-900 antialiased">
+      <body className="bg-page font-sans text-ink antialiased">
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );
+}`;
+
+const themeHtml = `<!-- the whole page -->
+<html lang="en" data-theme="dark">
+
+<!-- or one part of it -->
+<section data-theme="dark">…</section>`;
+
+const themeToggle = `// follow the reader's system setting until they choose
+document.documentElement.dataset.theme = "system";
+
+// then their choice wins
+document.documentElement.dataset.theme = dark ? "dark" : "light";`;
+
+const rebrand = `/* after the kit's styles, with the same selectors it uses */
+:root,
+[data-theme="light"] {
+  --page: #eeece8;
+  --ink: #1c1917;
+}
+.dark,
+[data-theme="dark"] {
+  --page: #0c0a09;
+  --ink: #f5f5f4;
 }`;
 
 const usage = `import { Button } from "${pkg}";
@@ -50,8 +74,8 @@ function Step({ n, id, title, children }: { n: number; id: string; title: string
     <section className="relative flex flex-col gap-4 pl-11">
       <span
         aria-hidden
-        className="absolute left-0 top-0 w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-semibold text-neutral-600 tabular-nums"
-        style={{ background: "var(--face-light)", boxShadow: "var(--tile-light-shadow)" }}
+        className="absolute left-0 top-0 w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-semibold text-ink-body tabular-nums"
+        style={{ background: "var(--face)", boxShadow: "var(--tile-shadow)" }}
       >
         {n}
       </span>
@@ -119,6 +143,38 @@ export default async function InstallationPage() {
         </P>
         <CodeBlock language="tsx" title="app/page.tsx" code={usage} />
       </Step>
+
+      <section className="flex flex-col gap-4 pt-4">
+        <H2 id="dark-mode">dark mode</H2>
+        <P>
+          every colour, shadow and gradient the components use is a css variable, with a light set and a dark set. light
+          is the default. to go dark, put <InlineCode>data-theme=&quot;dark&quot;</InlineCode> on{" "}
+          <InlineCode>&lt;html&gt;</InlineCode>, or on any element to darken just that part. the lamp stays where it
+          was: top edges still catch the light, and fields still sit below the surface.
+        </P>
+        <CodeBlock language="html" code={themeHtml} />
+        <P>
+          the class <InlineCode>dark</InlineCode> does the same, if your theme switcher toggles a class (next-themes,
+          tailwind&apos;s class strategy). to follow the reader&apos;s system setting, use{" "}
+          <InlineCode>data-theme=&quot;system&quot;</InlineCode>. an explicit <InlineCode>light</InlineCode> or{" "}
+          <InlineCode>dark</InlineCode> always wins, so a toggle can override it, and{" "}
+          <InlineCode>data-theme=&quot;light&quot;</InlineCode> keeps a part of the page light inside a dark one.
+        </P>
+        <CodeBlock language="ts" code={themeToggle} />
+        <P>
+          your own page can follow along with the same tokens: <InlineCode>bg-page</InlineCode> and{" "}
+          <InlineCode>text-ink</InlineCode> in the layout above, and <InlineCode>text-ink-muted</InlineCode>,{" "}
+          <InlineCode>bg-panel-face</InlineCode>, <InlineCode>border-line</InlineCode> and friends anywhere else. the
+          cards&apos; <InlineCode>theme=&quot;dark&quot;</InlineCode> and the buttons&apos;{" "}
+          <InlineCode>tone=&quot;dark&quot;</InlineCode> still work: they keep that one object in the dark material,
+          whatever the page is doing.
+        </P>
+        <P>
+          to make it yours, override the variables after the kit&apos;s styles, with the same selectors it uses. the
+          full list is in the stylesheet below.
+        </P>
+        <CodeBlock language="css" title="app/globals.css" code={rebrand} />
+      </section>
 
       <section className="flex flex-col gap-4 pt-4">
         <H2 id="copy">rather copy the source?</H2>

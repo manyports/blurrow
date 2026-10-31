@@ -143,7 +143,7 @@ export function Select({
       {label && (
         <span
           id={`${uid}-label`}
-          className="text-[12.5px] font-medium text-neutral-700 tracking-[-0.005em]"
+          className="text-[12.5px] font-medium text-ink-label tracking-[-0.005em]"
         >
           {label}
         </span>
@@ -166,7 +166,7 @@ export function Select({
           aria-activedescendant={open ? `${uid}-opt-${active}` : undefined}
           className={[
             "group/select relative isolate inline-flex items-center justify-between gap-3 w-full",
-            "rounded-xl px-4 py-3 text-[13.5px] font-medium text-neutral-900",
+            "rounded-xl px-4 py-3 text-[13.5px] font-medium text-ink",
             "field cursor-pointer select-none",
             "focus:outline-none disabled:opacity-40 disabled:pointer-events-none",
           ].join(" ")}
@@ -176,7 +176,7 @@ export function Select({
             id={`${uid}-value`}
             className={[
               "relative z-10 truncate",
-              selected ? "text-neutral-900" : "text-neutral-400 font-normal",
+              selected ? "text-ink" : "text-ink-faint font-normal",
             ].join(" ")}
           >
             {selected ? selected.label : placeholder}
@@ -191,7 +191,7 @@ export function Select({
             viewBox="0 0 24 24"
             className={[
               "relative z-10 shrink-0 transition-[transform,color] duration-300 ease-[var(--ease-spring)]",
-              open ? "rotate-180 text-neutral-900" : "text-neutral-400 group-hover/select:text-neutral-700",
+              open ? "rotate-180 text-ink" : "text-ink-faint group-hover/select:text-ink-label",
             ].join(" ")}
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -203,7 +203,7 @@ export function Select({
                 className="block absolute inset-y-0 w-[30%] -left-[30%] animate-input-shimmer"
                 style={{
                   background:
-                    "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%)",
+                    "linear-gradient(90deg, transparent 0%, var(--shimmer) 50%, transparent 100%)",
                 }}
               />
             </span>
@@ -235,7 +235,7 @@ export function Select({
               id={`${uid}-list`}
               role="listbox"
               aria-labelledby={label ? `${uid}-label` : undefined}
-              className="bg-white rounded-[11px] p-1 flex flex-col gap-0.5 max-h-72 overflow-y-auto scroll-thin"
+              className="bg-panel-face rounded-[11px] p-1 flex flex-col gap-0.5 max-h-72 overflow-y-auto scroll-thin"
               style={{ boxShadow: "var(--panel-face-shadow)" }}
             >
               {options.map((opt, i) => {
@@ -254,8 +254,10 @@ export function Select({
                     className={[
                       "flex items-center justify-between gap-3 w-full px-2.5 py-2 text-[13px] rounded-[8px] cursor-pointer",
                       "transition-colors duration-100",
-                      isSelected ? "font-medium text-neutral-900" : "text-neutral-600",
-                      isActive ? "bg-neutral-100/80 text-neutral-900" : "",
+                      isSelected ? "font-medium" : "",
+                      // one ink per state: utilities sort by name, so text-ink-body would beat text-ink
+                      isSelected || isActive ? "text-ink" : "text-ink-body",
+                      isActive ? "bg-surface-active/80" : "",
                     ].join(" ")}
                     style={{
                       animation: `select-option-in 300ms var(--ease-out-soft) ${40 + i * 22}ms both`,
@@ -265,7 +267,7 @@ export function Select({
                     {isSelected && (
                       <svg
                         aria-hidden
-                        className="shrink-0 text-neutral-900"
+                        className="shrink-0 text-ink"
                         width="13"
                         height="13"
                         fill="none"
@@ -284,7 +286,7 @@ export function Select({
         )}
       </div>
 
-      {hint && <p className="text-[11.5px] text-neutral-500 mt-0.5">{hint}</p>}
+      {hint && <p className="text-[11.5px] text-ink-muted mt-0.5">{hint}</p>}
     </div>
   );
 }

@@ -138,7 +138,7 @@ export function Carousel({
                   "relative h-1.5 rounded-full overflow-hidden cursor-pointer",
                   "transition-[width,background] duration-300 ease-[var(--ease-out-soft)]",
                   "after:absolute after:-inset-2 after:content-['']",
-                  active ? "w-6 bg-neutral-900/15" : "w-1.5 bg-neutral-900/20 hover:bg-neutral-900/40",
+                  active ? "w-6 bg-ink/15" : "w-1.5 bg-ink/20 hover:bg-ink/40",
                 ].join(" ")}
                 aria-label={`Go to slide ${i + 1}`}
                 aria-current={active ? "true" : undefined}
@@ -149,7 +149,7 @@ export function Carousel({
                     aria-hidden
                     className={["absolute inset-0 rounded-full origin-left", autoPlay ? "carousel-progress" : ""].join(" ")}
                     style={{
-                      background: "var(--face-dark)",
+                      background: "var(--face-inverse)",
                       animationDuration: `${interval}ms`,
                       animationPlayState: paused ? "paused" : "running",
                     }}
@@ -159,9 +159,9 @@ export function Carousel({
             );
           })}
         </div>
-        <span className="text-[12px] font-medium text-neutral-600 tabular-nums">
+        <span className="text-[12px] font-medium text-ink-body tabular-nums">
           {currentIdx + 1}
-          <span className="text-neutral-400"> / {items.length}</span>
+          <span className="text-ink-faint"> / {items.length}</span>
         </span>
       </div>
 
@@ -242,7 +242,7 @@ export function CarouselSlide({ theme = "dark", tint = "#8A8E7A", icon, title, m
     <div
       className="relative w-full h-full flex flex-col justify-end gap-6 p-8 overflow-hidden select-none"
       style={{
-        background: theme === "dark" ? "var(--card-dark)" : theme === "light" ? "var(--card-light)" : tint,
+        background: theme === "dark" ? "var(--card-dark)" : theme === "light" ? "var(--card)" : tint,
       }}
     >
       <div
@@ -250,11 +250,11 @@ export function CarouselSlide({ theme = "dark", tint = "#8A8E7A", icon, title, m
         className="absolute inset-y-0 right-0 w-3/5"
         style={{
           backgroundImage: `radial-gradient(${
-            theme === "tint" ? "rgba(255,255,255,0.22)" : dark ? "rgba(255,255,255,0.09)" : "rgba(17,17,17,0.08)"
+            theme === "tint" ? "var(--media-dots-on-colour)" : dark ? "var(--media-dots-dark)" : "var(--slide-dots)"
           } 1px, transparent 1px)`,
           backgroundSize: "12px 12px",
-          maskImage: "radial-gradient(60% 70% at 70% 50%, #000 0%, transparent 100%)",
-          WebkitMaskImage: "radial-gradient(60% 70% at 70% 50%, #000 0%, transparent 100%)",
+          maskImage: "radial-gradient(60% 70% at 70% 50%, black 0%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(60% 70% at 70% 50%, black 0%, transparent 100%)",
         }}
       />
       {icon && (
@@ -262,11 +262,11 @@ export function CarouselSlide({ theme = "dark", tint = "#8A8E7A", icon, title, m
           aria-hidden
           className={[
             "relative w-9 h-9 rounded-[11px] flex items-center justify-center mb-auto",
-            dark ? "text-neutral-100" : "text-neutral-700",
+            dark ? "text-neutral-100" : "text-ink-label",
           ].join(" ")}
           style={{
-            background: dark ? "var(--tile-dark)" : "var(--face-light)",
-            boxShadow: dark ? "var(--tile-dark-shadow)" : "var(--tile-light-shadow)",
+            background: dark ? "var(--tile-dark)" : "var(--tile)",
+            boxShadow: dark ? "var(--tile-dark-shadow)" : "var(--tile-shadow)",
           }}
         >
           {icon}
@@ -276,13 +276,13 @@ export function CarouselSlide({ theme = "dark", tint = "#8A8E7A", icon, title, m
         <p
           className={[
             "text-[22px] font-medium leading-[1.2] tracking-[-0.015em] mb-2",
-            dark ? "text-white" : "text-neutral-900",
+            dark ? "text-white" : "text-ink",
           ].join(" ")}
         >
           {title}
         </p>
         {meta && (
-          <p className={["text-[13px]", theme === "tint" ? "text-white/65" : dark ? "text-neutral-400" : "text-neutral-500"].join(" ")}>
+          <p className={["text-[13px]", theme === "tint" ? "text-white/65" : dark ? "text-neutral-400" : "text-ink-muted"].join(" ")}>
             {meta}
           </p>
         )}

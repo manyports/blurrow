@@ -108,7 +108,7 @@ export function Popover({
             style={{ background: "var(--panel-bezel)", boxShadow: "var(--overlay-shadow)" }}
           >
             <div
-              className="bg-white rounded-[11px] p-3.5 text-[13px] text-neutral-600 leading-relaxed"
+              className="bg-panel-face rounded-[11px] p-3.5 text-[13px] text-ink-body leading-relaxed"
               style={{ boxShadow: "var(--panel-face-shadow)" }}
             >
               {children}

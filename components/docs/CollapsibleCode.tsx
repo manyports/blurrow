@@ -21,7 +21,7 @@ export function CollapsibleCode({ title, code, language = "tsx" }: { title: stri
       {long && !open && (
         <div
           className="absolute inset-x-0 bottom-0 h-40 flex items-end justify-center pb-4"
-          style={{ background: "linear-gradient(180deg, rgba(235,235,235,0) 0%, rgba(235,235,235,0.9) 65%, #EBEBEB 100%)" }}
+          style={{ background: "linear-gradient(180deg, color-mix(in srgb, var(--page) 0%, transparent) 0%, color-mix(in srgb, var(--page) 90%, transparent) 65%, var(--page) 100%)" }}
         >
           <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
             show all

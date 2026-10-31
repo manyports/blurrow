@@ -121,11 +121,11 @@ export function RadioGroup({
             ].join(" ")}
           >
             <div className="flex flex-col gap-0.5 min-w-0">
-              <span id={`${uid}-${i}-label`} className="text-[13px] font-medium text-neutral-900 leading-snug">
+              <span id={`${uid}-${i}-label`} className="text-[13px] font-medium text-ink leading-snug">
                 {opt.label}
               </span>
               {opt.description && (
-                <span id={`${uid}-${i}-desc`} className="text-[12px] text-neutral-500 leading-relaxed">
+                <span id={`${uid}-${i}-desc`} className="text-[12px] text-ink-muted leading-relaxed">
                   {opt.description}
                 </span>
               )}
@@ -155,7 +155,7 @@ export function RadioGroup({
               className={[
                 "shrink-0 w-[22px] h-[22px] rounded-full cursor-pointer",
                 "transition-[box-shadow] duration-200 ease-out",
-                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900",
+                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
                 active ? "" : "group-hover/radio:[box-shadow:var(--field-shadow-hover)]",
               ].join(" ")}
               style={{ background: "var(--field)", boxShadow: "var(--field-shadow)" }}
@@ -174,8 +174,8 @@ export function RadioGroup({
               bottom: blob.bottom,
               left: blob.left,
               width: blob.size,
-              background: "var(--face-dark)",
-              boxShadow: "var(--face-dark-shadow)",
+              background: "var(--face-inverse)",
+              boxShadow: "var(--face-inverse-shadow)",
               transition:
                 blob.dir === 0
                   ? "none"
@@ -187,11 +187,11 @@ export function RadioGroup({
           {/* The dot rides the trailing edge's spring, arriving as it settles */}
           <span
             aria-hidden
-            className="pointer-events-none absolute w-2 h-2 rounded-full bg-white"
+            className="pointer-events-none absolute w-2 h-2 rounded-full bg-ink-inverse"
             style={{
               top: blob.top + (blob.size - 8) / 2,
               left: blob.left + (blob.size - 8) / 2,
-              boxShadow: "0 1px 1px rgba(0,0,0,0.3)",
+              boxShadow: "var(--dot-shadow)",
               transition: blob.dir === 0 ? "none" : `top ${TRAIL}`,
             }}
           />

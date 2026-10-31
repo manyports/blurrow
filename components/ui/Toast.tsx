@@ -41,7 +41,7 @@ const variantConfig: Record<
   { tile: string; icon: React.ReactNode }
 > = {
   default: {
-    tile: "var(--face-dark)",
+    tile: "var(--face-inverse)",
     icon: (
       <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="10" />
@@ -50,7 +50,7 @@ const variantConfig: Record<
     ),
   },
   success: {
-    tile: "linear-gradient(180deg, #10b981 0%, #059669 100%)",
+    tile: "var(--tile-success)",
     icon: (
       <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -58,7 +58,7 @@ const variantConfig: Record<
     ),
   },
   warning: {
-    tile: "linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%)",
+    tile: "var(--tile-warning)",
     icon: (
       <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
@@ -66,7 +66,7 @@ const variantConfig: Record<
     ),
   },
   error: {
-    tile: "linear-gradient(180deg, #f87171 0%, #dc2626 100%)",
+    tile: "var(--tile-error)",
     icon: (
       <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -199,26 +199,29 @@ function ToastCard({
         style={{ background: "var(--panel-bezel)", boxShadow: "var(--overlay-shadow)" }}
       >
         <div
-          className="bg-white rounded-[13px] pl-3 pr-2 py-3 flex items-start gap-3"
+          className="bg-panel-face rounded-[13px] pl-3 pr-2 py-3 flex items-start gap-3"
           style={{ boxShadow: "var(--panel-face-shadow)" }}
         >
           <div
             aria-hidden
-            className="shrink-0 w-7 h-7 rounded-[8px] flex items-center justify-center text-white"
+            className={[
+              "shrink-0 w-7 h-7 rounded-[8px] flex items-center justify-center",
+              // the default tile is the inverse face; status tiles stay white-on-colour
+              tile === "var(--face-inverse)" ? "text-ink-inverse" : "text-white",
+            ].join(" ")}
             style={{
               background: tile,
-              boxShadow:
-                "0 0 3px rgba(0,0,0,0.212), 0 1px 2px rgba(0,0,0,0.15), inset 0 2px 3px -2px rgba(255,255,255,0.188)",
+              boxShadow: "var(--tile-status-shadow)",
             }}
           >
             {icon}
           </div>
           <div className="flex-1 min-w-0 pt-[5px]">
-            <p className="text-[13px] font-semibold text-neutral-900 leading-tight tracking-[-0.01em]">
+            <p className="text-[13px] font-semibold text-ink leading-tight tracking-[-0.01em]">
               {item.title}
             </p>
             {item.description && (
-              <p className="text-[12.5px] text-neutral-500 mt-1 leading-relaxed">
+              <p className="text-[12.5px] text-ink-muted mt-1 leading-relaxed">
                 {item.description}
               </p>
             )}
@@ -371,8 +374,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               }}
             >
               <span
-                className="text-[10.5px] font-medium text-neutral-500 px-2 py-0.5 rounded-full"
-                style={{ background: "var(--face-light)", boxShadow: "var(--face-light-shadow)" }}
+                className="text-[10.5px] font-medium text-ink-muted px-2 py-0.5 rounded-full"
+                style={{ background: "var(--face)", boxShadow: "var(--face-shadow)" }}
               >
                 +{showCount} more
               </span>

@@ -36,26 +36,26 @@ export function Table<T extends Record<string, unknown>>({
     >
       {(title || description) && (
         <div className="px-3.5 pt-3.5 pb-3">
-          {title && <p className="text-[13px] font-semibold text-neutral-900 tracking-[-0.01em]">{title}</p>}
-          {description && <p className="text-[12px] text-neutral-500 mt-0.5">{description}</p>}
+          {title && <p className="text-[13px] font-semibold text-ink tracking-[-0.01em]">{title}</p>}
+          {description && <p className="text-[12px] text-ink-muted mt-0.5">{description}</p>}
         </div>
       )}
 
       <div
-        className="bg-white rounded-[13px] overflow-x-auto scroll-thin"
+        className="bg-panel-face rounded-[13px] overflow-x-auto scroll-thin"
         style={{ boxShadow: "var(--panel-face-shadow)" }}
       >
         <table className="w-full text-left border-collapse">
           {title && <caption className="sr-only">{title}</caption>}
           <thead>
-            <tr className="border-b border-neutral-100">
+            <tr className="border-b border-line">
               {columns.map((col) => (
                 <th
                   key={String(col.key)}
                   scope="col"
                   style={col.width ? { width: col.width } : undefined}
                   className={[
-                    "px-4 pt-3 pb-2.5 text-[12px] font-medium text-neutral-500 lowercase whitespace-nowrap",
+                    "px-4 pt-3 pb-2.5 text-[12px] font-medium text-ink-muted lowercase whitespace-nowrap",
                     alignClass(col.align),
                   ].join(" ")}
                 >
@@ -82,9 +82,9 @@ export function Table<T extends Record<string, unknown>>({
                     : undefined
                 }
                 className={[
-                  "border-b border-neutral-100 last:border-0 transition-colors duration-100",
+                  "border-b border-line last:border-0 transition-colors duration-100",
                   onRowClick
-                    ? "cursor-pointer hover:bg-neutral-50 focus-visible:bg-neutral-50 outline-none focus-visible:shadow-[inset_2px_0_0_#171717]"
+                    ? "cursor-pointer hover:bg-surface-hover focus-visible:bg-surface-hover outline-none focus-visible:shadow-[inset_2px_0_0_var(--ink)]"
                     : "",
                 ].join(" ")}
               >
@@ -95,7 +95,7 @@ export function Table<T extends Record<string, unknown>>({
                       key={String(col.key)}
                       className={[
                         "px-4 py-3 text-[13px]",
-                        ci === 0 ? "font-medium text-neutral-900" : "text-neutral-600 tabular-nums",
+                        ci === 0 ? "font-medium text-ink" : "text-ink-body tabular-nums",
                         alignClass(col.align),
                       ].join(" ")}
                     >
@@ -108,8 +108,8 @@ export function Table<T extends Record<string, unknown>>({
             {rows.length === 0 && (
               <tr>
                 <td colSpan={columns.length} className="px-5 py-12 text-center">
-                  <p className="text-[13px] font-medium text-neutral-700">nothing here yet</p>
-                  <p className="text-[12px] text-neutral-500 mt-0.5">rows will show up here once there are some.</p>
+                  <p className="text-[13px] font-medium text-ink-label">nothing here yet</p>
+                  <p className="text-[12px] text-ink-muted mt-0.5">rows will show up here once there are some.</p>
                 </td>
               </tr>
             )}

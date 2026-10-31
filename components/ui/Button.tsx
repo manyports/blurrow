@@ -34,59 +34,52 @@ const shellConfig: Record<
   }
 > = {
   primary: {
-    bezel: "var(--bezel-dark)",
-    bezelShadow: "var(--bezel-dark-shadow)",
-    face: "var(--face-dark)",
-    faceShadow: "var(--face-dark-shadow)",
-    faceHoverShadow:
-      "0 0 3px rgba(0,0,0,0.35), 0 2px 3px rgba(0,0,0,0.45), 0 4px 8px -2px rgba(0,0,0,0.35), inset 0 2px 3px -2px rgba(255,255,255,0.135), inset 0 -2px 3px -2px rgba(0,0,0,0.25)",
-    facePressedShadow: "var(--face-dark-pressed)",
-    text: "text-white",
-    textShadow: "0 -1px 0 rgba(0,0,0,0.45)",
-    fill: "bg-white/[0.05]",
+    bezel: "var(--bezel-inverse)",
+    bezelShadow: "var(--bezel-inverse-shadow)",
+    face: "var(--face-inverse)",
+    faceShadow: "var(--face-inverse-shadow)",
+    faceHoverShadow: "var(--face-inverse-shadow-hover)",
+    facePressedShadow: "var(--face-inverse-pressed)",
+    text: "text-ink-inverse",
+    textShadow: "var(--emboss-inverse-deep)",
+    fill: "bg-ink-inverse/[0.05]",
   },
   secondary: {
-    bezel: "var(--bezel-light)",
-    bezelShadow: "var(--bezel-light-shadow)",
-    face: "var(--face-light)",
-    faceShadow: "var(--face-light-shadow)",
-    faceHoverShadow:
-      "0 0 3px rgba(17,17,17,0.136), 0 2px 3px rgba(17,17,17,0.1), 0 4px 8px -2px rgba(17,17,17,0.08), inset 0 2px 3px -2px rgba(255,255,255,1), inset 0 -2px 3px -2px rgba(17,17,17,0.035)",
-    facePressedShadow: "var(--face-light-pressed)",
-    text: "text-neutral-800",
-    textShadow: "0 1px 0 rgba(255,255,255,0.9)",
-    fill: "bg-neutral-900/[0.025]",
+    bezel: "var(--bezel)",
+    bezelShadow: "var(--bezel-shadow)",
+    face: "var(--face)",
+    faceShadow: "var(--face-shadow)",
+    faceHoverShadow: "var(--face-shadow-hover)",
+    facePressedShadow: "var(--face-pressed)",
+    text: "text-ink-soft",
+    textShadow: "var(--emboss)",
+    fill: "bg-ink/[0.025]",
   },
   outline: {
-    bezel: "linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(17,17,17,0.04) 100%)",
-    bezelShadow:
-      "0 0 0 0.5px rgba(17,17,17,0.048), inset 0 2px 3px -2px rgba(255,255,255,0.45)",
-    face: "var(--face-light)",
-    faceShadow:
-      "0 0 3px rgba(17,17,17,0.102), 0 1px 1px rgba(17,17,17,0.06), inset 0 2px 3px -2px rgba(255,255,255,1)",
-    faceHoverShadow:
-      "0 0 3px rgba(17,17,17,0.136), 0 1px 2px rgba(17,17,17,0.08), 0 3px 6px -2px rgba(17,17,17,0.06), inset 0 2px 3px -2px rgba(255,255,255,1)",
-    facePressedShadow: "var(--face-light-pressed)",
-    text: "text-neutral-700",
-    textShadow: "0 1px 0 rgba(255,255,255,0.9)",
-    fill: "bg-neutral-900/[0.025]",
+    bezel: "var(--outline-bezel)",
+    bezelShadow: "var(--outline-bezel-shadow)",
+    face: "var(--face)",
+    faceShadow: "var(--outline-face-shadow)",
+    faceHoverShadow: "var(--outline-face-shadow-hover)",
+    facePressedShadow: "var(--face-pressed)",
+    text: "text-ink-label",
+    textShadow: "var(--emboss)",
+    fill: "bg-ink/[0.025]",
   },
 };
 
 /* Secondary on a dark surface: a raised face a few steps lighter than the
-   card — present, but in the same family of tones.                       */
+   card — present, but in the same family of tones. It's the mid material,
+   the same one secondary keys wear everywhere in the dark theme.        */
 const darkSecondary = {
-  bezel: "linear-gradient(180deg, #2a2a2a 0%, #161616 100%)",
-  bezelShadow:
-    "0 0 0 0.5px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.35), inset 0 2px 3px -2px rgba(255,255,255,0.053)",
-  face: "linear-gradient(180deg, #353535 0%, #2a2a2a 55%, #242424 100%)",
-  faceShadow:
-    "0 0 3px rgba(0,0,0,0.35), 0 1px 1.5px rgba(0,0,0,0.4), inset 0 2px 3px -2px rgba(255,255,255,0.09), inset 0 -2px 3px -2px rgba(0,0,0,0.2)",
-  faceHoverShadow:
-    "0 0 3px rgba(0,0,0,0.35), 0 2px 3px rgba(0,0,0,0.45), 0 4px 8px -2px rgba(0,0,0,0.35), inset 0 2px 3px -2px rgba(255,255,255,0.12), inset 0 -2px 3px -2px rgba(0,0,0,0.2)",
+  bezel: "var(--bezel-mid)",
+  bezelShadow: "var(--bezel-mid-shadow)",
+  face: "var(--face-mid)",
+  faceShadow: "var(--face-mid-shadow)",
+  faceHoverShadow: "var(--face-mid-shadow-hover)",
   facePressedShadow: "var(--face-dark-pressed)",
   text: "text-neutral-100",
-  textShadow: "0 -1px 0 rgba(0,0,0,0.4)",
+  textShadow: "var(--emboss-inverse)",
   fill: "bg-white/[0.04]",
 };
 
@@ -103,38 +96,34 @@ const flatConfig: Record<
   }
 > = {
   primary: {
-    bg: "text-white",
-    background: "var(--face-dark)",
-    fill: "bg-white/[0.08]",
-    shadow: "var(--face-dark-shadow)",
-    hoverShadow:
-      "0 0 3px rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.4), 0 6px 14px -4px rgba(0,0,0,0.35), inset 0 2px 3px -2px rgba(255,255,255,0.135)",
-    pressedShadow: "var(--face-dark-pressed)",
+    bg: "text-ink-inverse",
+    background: "var(--face-inverse)",
+    fill: "bg-ink-inverse/[0.08]",
+    shadow: "var(--face-inverse-shadow)",
+    hoverShadow: "var(--face-inverse-float-shadow)",
+    pressedShadow: "var(--face-inverse-pressed)",
   },
   secondary: {
-    bg: "text-neutral-800",
-    background: "var(--face-light)",
-    fill: "bg-neutral-900/[0.035]",
-    shadow: "var(--face-light-shadow)",
-    hoverShadow:
-      "0 0 3px rgba(17,17,17,0.136), 0 2px 4px rgba(17,17,17,0.08), 0 6px 14px -4px rgba(17,17,17,0.1), inset 0 2px 3px -2px rgba(255,255,255,1)",
-    pressedShadow: "var(--face-light-pressed)",
+    bg: "text-ink-soft",
+    background: "var(--face)",
+    fill: "bg-ink/[0.035]",
+    shadow: "var(--face-shadow)",
+    hoverShadow: "var(--face-float-shadow)",
+    pressedShadow: "var(--face-pressed)",
   },
   ghost: {
-    bg: "bg-transparent text-neutral-500 hover:text-neutral-800",
-    fill: "bg-neutral-900/[0.05]",
+    bg: "bg-transparent text-ink-muted hover:text-ink-soft",
+    fill: "bg-ink/[0.05]",
     shadow: "none",
-    hoverShadow: "inset 0 0 2px rgba(17,17,17,0.09)",
-    pressedShadow: "inset 0 1px 2px rgba(17,17,17,0.08)",
+    hoverShadow: "var(--ghost-shadow-hover)",
+    pressedShadow: "var(--ghost-shadow-pressed)",
   },
   outline: {
-    bg: "bg-transparent text-neutral-700",
-    fill: "bg-neutral-900/[0.035]",
-    shadow: "inset 0 0 2px rgba(17,17,17,0.15)",
-    hoverShadow:
-      "inset 0 0 2px rgba(17,17,17,0.24), 0 1px 2px rgba(17,17,17,0.05)",
-    pressedShadow:
-      "inset 0 0 2px rgba(17,17,17,0.24), inset 0 1px 2px rgba(17,17,17,0.06)",
+    bg: "bg-transparent text-ink-label",
+    fill: "bg-ink/[0.035]",
+    shadow: "var(--outline-shadow)",
+    hoverShadow: "var(--outline-shadow-hover)",
+    pressedShadow: "var(--outline-shadow-pressed)",
   },
 };
 
@@ -264,7 +253,7 @@ export function Button({
         className={[
           "group/btn relative inline-flex cursor-pointer select-none whitespace-nowrap",
           shellRadius[size],
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
           "disabled:opacity-40 disabled:pointer-events-none",
           fullWidth ? "w-full" : "",
           className,
@@ -331,7 +320,7 @@ export function Button({
       className={[
         "btn-face group/btn relative overflow-hidden inline-flex items-center justify-center gap-1.5 font-medium cursor-pointer select-none whitespace-nowrap",
         "transition-colors duration-200 ease-out",
-        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
         "disabled:opacity-40 disabled:pointer-events-none",
         cfg.bg,
         flatSizeStyles[size],

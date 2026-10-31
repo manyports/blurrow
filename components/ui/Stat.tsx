@@ -43,16 +43,16 @@ export function Stat({ value, label, prefix = "", suffix = "", trend, className 
     <div className={["flex flex-col gap-0.5", className].join(" ")}>
       <div className="flex items-baseline gap-1.5">
         <span
-          className="text-[32px] font-semibold text-neutral-900 leading-none tabular-nums"
+          className="text-[32px] font-semibold text-ink leading-none tabular-nums"
           style={{ letterSpacing: "-0.03em" }}
         >
           {prefix}{displayed}{suffix}
         </span>
         {trend && (
-          <span className="text-[12px] text-neutral-500 font-medium">{trend}</span>
+          <span className="text-[12px] text-ink-muted font-medium">{trend}</span>
         )}
       </div>
-      <span className="text-[12px] text-neutral-500">{label}</span>
+      <span className="text-[12px] text-ink-muted">{label}</span>
     </div>
   );
 }
@@ -65,7 +65,7 @@ interface StatRowProps {
 export function StatRow({ children, className = "" }: StatRowProps) {
   const arr = React.Children.toArray(children);
   return (
-    <div className={["grid grid-cols-2 gap-6 sm:flex sm:divide-x sm:divide-neutral-200 sm:gap-0", className].join(" ")}>
+    <div className={["grid grid-cols-2 gap-6 sm:flex sm:divide-x sm:divide-line-strong sm:gap-0", className].join(" ")}>
       {arr.map((child, i) => (
         <div
           key={i}

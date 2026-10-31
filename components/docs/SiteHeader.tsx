@@ -10,6 +10,7 @@ import { Kbd } from "@/components/ui/Kbd";
 import { formatStars } from "@/lib/format";
 import { container, repo } from "@/lib/site";
 import { docsNav } from "./nav";
+import { ThemeToggle, useSiteTheme } from "./ThemeToggle";
 
 interface NavItem {
   label: string;
@@ -35,11 +36,10 @@ function currentFor(pathname: string) {
    column as the page beneath it, so its edges line up with the content
    on every page. Once the page scrolls under it, it frosts; scrolling
    down tucks it away, scrolling up brings it back.                    */
-const barShadow = "var(--card-light-shadow)";
-const barShadowScrolled =
-  "0 1px 3px rgba(17,17,17,0.04), 0 8px 24px -6px rgba(17,17,17,0.12), 0 0 0 0.5px rgba(17,17,17,0.06), inset 0 2px 3px -2px rgba(255,255,255,1)";
+const barShadow = "var(--card-shadow)";
+const barShadowScrolled = "var(--bar-shadow-scrolled)";
 const linkClass =
-  "relative z-10 inline-flex items-center gap-1.5 h-8 px-3.5 rounded-[9px] text-[13.5px] font-medium tracking-[-0.01em] transition-colors duration-200 cursor-pointer outline-none focus-visible:text-neutral-900";
+  "relative z-10 inline-flex items-center gap-1.5 h-8 px-3.5 rounded-[9px] text-[13.5px] font-medium tracking-[-0.01em] transition-colors duration-200 cursor-pointer outline-none focus-visible:text-ink";
 
 function SearchIcon() {
   return (
@@ -58,6 +58,7 @@ export function SiteHeader({ stars }: { stars: number | null }) {
   const [visible, setVisible] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [tucked, setTucked] = useState(false);
+  const theme = useSiteTheme();
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -153,7 +154,7 @@ export function SiteHeader({ stars }: { stars: number | null }) {
           {/* Content scrolling up fades out before it reaches the bar's gap */}
           <div
             aria-hidden
-            className="absolute inset-x-0 top-0 h-[calc(100%+12px)] bg-gradient-to-b from-[#EBEBEB] via-[#EBEBEB]/85 to-transparent transition-opacity duration-300"
+            className="absolute inset-x-0 top-0 h-[calc(100%+12px)] bg-gradient-to-b from-page via-page/85 to-transparent transition-opacity duration-300"
             style={{ opacity: scrolled ? 1 : 0 }}
           />
           <div
@@ -168,15 +169,15 @@ export function SiteHeader({ stars }: { stars: number | null }) {
             <span
               aria-hidden
               className="absolute inset-0 rounded-[inherit] transition-opacity duration-300"
-              style={{ background: "var(--card-light)", opacity: scrolled ? 0.74 : 1 }}
+              style={{ background: "var(--card)", opacity: scrolled ? 0.74 : 1 }}
             />
 
             <Link
               href="/"
-              className="group/brand relative shrink-0 justify-self-start flex items-center rounded-[6px] outline-none focus-visible:outline-2 focus-visible:outline-neutral-900"
+              className="group/brand relative shrink-0 justify-self-start flex items-center rounded-[6px] outline-none focus-visible:outline-2 focus-visible:outline-ink"
             >
-              <span className="text-[15px] font-semibold tracking-[-0.03em] text-neutral-900 transition-opacity duration-150 group-hover/brand:opacity-60">
-                blurrow<span className="text-neutral-400 font-medium">/ui</span>
+              <span className="text-[15px] font-semibold tracking-[-0.03em] text-ink transition-opacity duration-150 group-hover/brand:opacity-60">
+                blurrow<span className="text-ink-faint font-medium">/ui</span>
               </span>
             </Link>
 
@@ -193,7 +194,7 @@ export function SiteHeader({ stars }: { stars: number | null }) {
                   left: thumb.left,
                   width: thumb.width,
                   opacity: thumb.on ? 1 : 0,
-                  background: "var(--face-light)",
+                  background: "var(--face)",
                   boxShadow: "var(--thumb-shadow)",
                   transition: thumb.glide
                     ? "left 340ms var(--ease-out-soft), width 340ms var(--ease-out-soft), opacity 200ms ease-out"
@@ -211,7 +212,7 @@ export function SiteHeader({ stars }: { stars: number | null }) {
                   onMouseEnter={() => moveTo(i)}
                   onFocus={() => moveTo(i)}
                   onBlur={rest}
-                  className={[linkClass, target === i ? "text-neutral-900" : "text-neutral-500"].join(" ")}
+                  className={[linkClass, target === i ? "text-ink" : "text-ink-muted"].join(" ")}
                 >
                   {item.label}
                 </Link>
@@ -219,14 +220,16 @@ export function SiteHeader({ stars }: { stars: number | null }) {
             </nav>
 
             <div className="relative hidden md:flex items-center gap-2 justify-self-end">
+              {/* The docs follow your theme; the landing page keeps its own lamp */}
+              {inDocs && <ThemeToggle dark={theme.dark} onToggle={theme.toggle} />}
               {/* A raised key to the repo: the star count, when there is one */}
               <a
                 href={repo.url}
                 target="_blank"
                 rel="noopener"
                 aria-label={stars ? `star blurrow on github, ${stars} stars` : "star blurrow on github"}
-                className="h-9 px-3 rounded-[11px] flex items-center gap-1.5 text-[13px] font-medium text-neutral-700 hover:text-neutral-900 transition-colors"
-                style={{ background: "var(--face-light)", boxShadow: "var(--tile-light-shadow)" }}
+                className="h-9 px-3 rounded-[11px] flex items-center gap-1.5 text-[13px] font-medium text-ink-label hover:text-ink transition-colors"
+                style={{ background: "var(--face)", boxShadow: "var(--tile-shadow)" }}
               >
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                   <path d="M12 2.8l2.83 5.74 6.33.92-4.58 4.46 1.08 6.3L12 17.25l-5.66 2.97 1.08-6.3L2.84 9.46l6.33-.92L12 2.8z" />
@@ -236,7 +239,7 @@ export function SiteHeader({ stars }: { stars: number | null }) {
               <button
                 type="button"
                 onClick={() => setSearchOpen(true)}
-                className="field h-9 w-48 lg:w-56 rounded-[11px] flex items-center gap-2 px-3 text-[13px] text-neutral-400 cursor-pointer"
+                className="field h-9 w-48 lg:w-56 rounded-[11px] flex items-center gap-2 px-3 text-[13px] text-ink-faint cursor-pointer"
               >
                 <SearchIcon />
                 <span className="flex-1 text-left">find a component…</span>
@@ -246,12 +249,13 @@ export function SiteHeader({ stars }: { stars: number | null }) {
 
             {/* Mobile: search and the menu key, each a small raised key */}
             <div className="relative md:hidden justify-self-end flex items-center gap-2">
+              {inDocs && <ThemeToggle dark={theme.dark} onToggle={theme.toggle} className="rounded-[10px]" />}
               <button
                 type="button"
                 aria-label="search components"
                 onClick={() => setSearchOpen(true)}
-                className="w-9 h-9 rounded-[10px] flex items-center justify-center text-neutral-700 cursor-pointer active:scale-95 transition-[scale] duration-150"
-                style={{ background: "var(--face-light)", boxShadow: "var(--tile-light-shadow)" }}
+                className="w-9 h-9 rounded-[10px] flex items-center justify-center text-ink-label cursor-pointer active:scale-95 transition-[scale] duration-150"
+                style={{ background: "var(--face)", boxShadow: "var(--tile-shadow)" }}
               >
                 <SearchIcon />
               </button>
@@ -259,7 +263,7 @@ export function SiteHeader({ stars }: { stars: number | null }) {
               <button
                 type="button"
                 className="relative w-9 h-9 rounded-[10px] cursor-pointer active:scale-95 transition-[scale] duration-150"
-                style={{ background: "var(--face-light)", boxShadow: "var(--tile-light-shadow)" }}
+                style={{ background: "var(--face)", boxShadow: "var(--tile-shadow)" }}
                 onClick={() => (visible ? closeMenu() : openMenu())}
                 aria-label={visible ? "close menu" : "open menu"}
                 aria-expanded={visible}
@@ -269,7 +273,7 @@ export function SiteHeader({ stars }: { stars: number | null }) {
                   <span
                     key={side}
                     aria-hidden
-                    className="absolute left-1/2 top-1/2 w-[15px] h-[1.5px] -ml-[7.5px] -mt-[0.75px] rounded-full bg-neutral-800"
+                    className="absolute left-1/2 top-1/2 w-[15px] h-[1.5px] -ml-[7.5px] -mt-[0.75px] rounded-full bg-ink-soft"
                     style={{
                       transform: visible ? `rotate(${side * 45}deg)` : `translateY(${side * 3}px)`,
                       transition: "transform 360ms var(--ease-out-soft)",
@@ -289,7 +293,7 @@ export function SiteHeader({ stars }: { stars: number | null }) {
             aria-hidden
             onClick={closeMenu}
             className="absolute inset-0 backdrop-blur-md transition-opacity duration-300"
-            style={{ background: "rgba(235,235,235,0.6)", opacity: visible ? 1 : 0 }}
+            style={{ background: "var(--menu-scrim)", opacity: visible ? 1 : 0 }}
           />
 
           <div
@@ -338,51 +342,51 @@ export function SiteHeader({ stars }: { stars: number | null }) {
                 <nav aria-label="main" className="flex flex-col p-2">
                   {navItems.map((item, i) => (
                     <React.Fragment key={item.href}>
-                      {i > 0 && <span aria-hidden className="h-px mx-4 bg-neutral-900/[0.06]" />}
+                      {i > 0 && <span aria-hidden className="h-px mx-4 bg-ink/[0.06]" />}
                       <Link
                         href={item.href}
                         onClick={closeMenu}
                         aria-current={i === currentIndex ? "page" : undefined}
-                        className="group/row flex items-center justify-between gap-3 px-4 py-3.5 rounded-[12px] text-[22px] font-medium tracking-[-0.035em] text-neutral-900 active:bg-neutral-900/[0.04] transition-colors"
+                        className="group/row flex items-center justify-between gap-3 px-4 py-3.5 rounded-[12px] text-[22px] font-medium tracking-[-0.035em] text-ink active:bg-ink/[0.04] transition-colors"
                         style={{
                           animation: visible ? `menu-item-in 380ms cubic-bezier(0.22,1,0.36,1) ${90 + i * 50}ms both` : "none",
                         }}
                       >
                         <span className="flex items-center gap-2.5">
-                          {i === currentIndex && <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-neutral-900" />}
+                          {i === currentIndex && <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-ink" />}
                           {item.label}
                         </span>
-                        <svg aria-hidden className="text-neutral-300" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <svg aria-hidden className="text-ink-ghost" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                         </svg>
                       </Link>
                     </React.Fragment>
                   ))}
-                  <span aria-hidden className="h-px mx-4 bg-neutral-900/[0.06]" />
+                  <span aria-hidden className="h-px mx-4 bg-ink/[0.06]" />
                   <a
                     href={repo.url}
                     target="_blank"
                     rel="noopener"
                     onClick={closeMenu}
-                    className="flex items-center justify-between gap-3 px-4 py-3.5 rounded-[12px] text-[22px] font-medium tracking-[-0.035em] text-neutral-900 active:bg-neutral-900/[0.04] transition-colors"
+                    className="flex items-center justify-between gap-3 px-4 py-3.5 rounded-[12px] text-[22px] font-medium tracking-[-0.035em] text-ink active:bg-ink/[0.04] transition-colors"
                     style={{
                       animation: visible ? `menu-item-in 380ms cubic-bezier(0.22,1,0.36,1) ${90 + navItems.length * 50}ms both` : "none",
                     }}
                   >
                     star on github
-                    <span className="text-[15px] text-neutral-400 tabular-nums">{stars ? `★ ${formatStars(stars)}` : "★"}</span>
+                    <span className="text-[15px] text-ink-faint tabular-nums">{stars ? `★ ${formatStars(stars)}` : "★"}</span>
                   </a>
                 </nav>
 
                 {/* Inside the docs, the sidebar comes along so every page is reachable */}
                 {inDocs && (
                   <div
-                    className="px-6 pt-4 pb-6 border-t border-neutral-900/[0.06] grid grid-cols-2 gap-x-6 gap-y-5"
+                    className="px-6 pt-4 pb-6 border-t border-ink/[0.06] grid grid-cols-2 gap-x-6 gap-y-5"
                     style={{ animation: visible ? "menu-item-in 380ms cubic-bezier(0.22,1,0.36,1) 260ms both" : "none" }}
                   >
                     {docsNav.slice(1).map((section) => (
                       <div key={section.title} className="flex flex-col gap-1.5">
-                        <p className="text-[12px] text-neutral-400">{section.title}</p>
+                        <p className="text-[12px] text-ink-faint">{section.title}</p>
                         {section.links.map((l) => (
                           <Link
                             key={l.href}
@@ -391,7 +395,7 @@ export function SiteHeader({ stars }: { stars: number | null }) {
                             aria-current={pathname === l.href ? "page" : undefined}
                             className={[
                               "text-[14px] py-0.5",
-                              pathname === l.href ? "font-medium text-neutral-900" : "text-neutral-600",
+                              pathname === l.href ? "font-medium text-ink" : "text-ink-body",
                             ].join(" ")}
                           >
                             {l.title}

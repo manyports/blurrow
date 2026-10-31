@@ -43,16 +43,16 @@ export function CardShell({
         className,
       ].join(" ")}
       style={{
-        background: dark ? "var(--card-bezel-dark)" : "var(--card-bezel-light)",
-        boxShadow: dark ? "var(--card-dark-shadow)" : "var(--card-light-shadow)",
-        ["--rim" as string]: dark ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,1)",
+        background: dark ? "var(--card-bezel-dark)" : "var(--card-bezel)",
+        boxShadow: dark ? "var(--card-dark-shadow)" : "var(--card-shadow)",
+        ["--rim" as string]: dark ? "var(--card-dark-rim)" : "var(--card-rim)",
       } as React.CSSProperties}
     >
       <div
         className={["relative flex-1 min-h-0 rounded-[18px] overflow-hidden flex flex-col", faceClassName].join(" ")}
         style={{
-          background: dark ? "var(--card-dark)" : "var(--card-light)",
-          boxShadow: dark ? "var(--card-face-dark-shadow)" : "var(--card-face-light-shadow)",
+          background: dark ? "var(--card-dark)" : "var(--card)",
+          boxShadow: dark ? "var(--card-face-dark-shadow)" : "var(--card-face-shadow)",
         }}
       >
         {children}
@@ -66,7 +66,7 @@ export function CardShell({
               // rails come out the same height and line up across a row
               "min-h-10 flex items-center gap-2 text-[12.5px]",
               railKind === "text" ? "pl-[18px] pr-3 gap-2.5" : "",
-              dark ? "text-neutral-400" : "text-neutral-500",
+              dark ? "text-neutral-400" : "text-ink-muted",
             ].join(" ")}
           >
             {rail}

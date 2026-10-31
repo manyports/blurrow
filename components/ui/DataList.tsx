@@ -21,7 +21,7 @@ export function DataList({ items, columns = 1, className = "" }: DataListProps) 
         className={[
           // 1px gaps over a hairline-coloured face draw the grid lines, so
           // borders never double up whatever the item count
-          "grid gap-px bg-neutral-900/[0.05] rounded-[13px] overflow-hidden",
+          "grid gap-px bg-ink/[0.05] rounded-[13px] overflow-hidden",
           columns === 2 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1",
         ].join(" ")}
         style={{ boxShadow: "var(--panel-face-shadow)" }}
@@ -30,15 +30,15 @@ export function DataList({ items, columns = 1, className = "" }: DataListProps) 
           <div
             key={i}
             className={[
-              "flex flex-col gap-1.5 px-5 py-4 bg-white",
+              "flex flex-col gap-1.5 px-5 py-4 bg-panel-face",
               // An odd last cell in two columns spans the row instead of leaving a hole
               columns === 2 && items.length % 2 === 1 && i === items.length - 1 ? "sm:col-span-2" : "",
             ].join(" ")}
           >
-            <dt className="text-[12px] text-neutral-500">
+            <dt className="text-[12px] text-ink-muted">
               {item.label}
             </dt>
-            <dd className="min-h-6 flex items-center text-[14px] font-medium text-neutral-900 tracking-[-0.01em] tabular-nums">
+            <dd className="min-h-6 flex items-center text-[14px] font-medium text-ink tracking-[-0.01em] tabular-nums">
               {item.value}
             </dd>
           </div>

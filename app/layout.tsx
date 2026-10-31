@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { ToastProvider } from "@/components/ui/Toast";
 import { SiteHeader } from "@/components/docs/SiteHeader";
 import { getStars } from "@/lib/github";
+import { themeScript } from "@/lib/theme";
 import { author, homeTitle, siteDescription, siteName, siteUrl, socialDescription, socialTitle } from "@/lib/site";
 import "./globals.css";
 
@@ -65,8 +66,12 @@ export default async function RootLayout({
 }>) {
   const stars = await getStars();
   return (
-    <html lang="en" className={`${archivo.variable} h-full antialiased`}>
-      <body className="min-h-full bg-[#EBEBEB] font-sans text-neutral-900">
+    <html lang="en" className={`${archivo.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        {/* Sets data-theme before the first paint, so a dark page never flashes light */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="min-h-full bg-page font-sans text-ink">
         <ToastProvider>
           <SiteHeader stars={stars} />
           {children}

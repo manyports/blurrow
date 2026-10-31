@@ -16,7 +16,7 @@ export default function TabsSegmented() {
           { key: "month", label: "month" },
         ]}
       />
-      <p className="text-[13px] text-neutral-500">showing the {view} view</p>
+      <p className="text-[13px] text-ink-muted">showing the {view} view</p>
     </div>
   );
 }

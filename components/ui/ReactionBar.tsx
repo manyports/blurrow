@@ -68,14 +68,14 @@ export function ReactionBar({
             aria-label={`${reaction.label}, ${reaction.count}`}
             className={[
               "inline-flex items-center gap-1.5 rounded-[11px] pl-2.5 pr-3 py-[7px] text-[13px] font-medium cursor-pointer",
-              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900",
-              reaction.active ? "text-white" : "text-neutral-600 hover:text-neutral-900",
+              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
+              reaction.active ? "text-ink-inverse" : "text-ink-body hover:text-ink",
             ].join(" ")}
             style={{
               /* Off is a raised face; on is the dark face — pressed in and lit */
-              background: reaction.active ? "var(--face-dark)" : "var(--face-light)",
-              boxShadow: reaction.active ? "var(--face-dark-shadow)" : "var(--face-light-shadow)",
-              textShadow: reaction.active ? "0 -1px 0 rgba(0,0,0,0.4)" : "0 1px 0 rgba(255,255,255,0.9)",
+              background: reaction.active ? "var(--face-inverse)" : "var(--face)",
+              boxShadow: reaction.active ? "var(--face-inverse-shadow)" : "var(--face-shadow)",
+              textShadow: reaction.active ? "var(--emboss-inverse)" : "var(--emboss)",
               transform: isAnimating ? "scale(1.08)" : "scale(1)",
               transition:
                 "transform 250ms var(--ease-spring), color 200ms ease, box-shadow 200ms ease",

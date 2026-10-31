@@ -37,13 +37,13 @@ export function Avatar({
   return (
     <div
       className={[
-        "relative shrink-0 rounded-full overflow-hidden flex items-center justify-center font-semibold text-neutral-600 select-none",
+        "relative shrink-0 rounded-full overflow-hidden flex items-center justify-center font-semibold text-ink-body select-none",
         sizeStyles[size],
         className,
       ]
         .filter(Boolean)
         .join(" ")}
-      style={{ background: "var(--face-light)" }}
+      style={{ background: "var(--face)" }}
     >
       {src ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -55,7 +55,7 @@ export function Avatar({
         aria-hidden
         className="pointer-events-none absolute inset-0 rounded-full"
         style={{
-          boxShadow: "inset 0 2px 3px -2px rgba(255,255,255,0.45), inset 0 0 2px rgba(17,17,17,0.12), inset 0 -2px 3px -2px rgba(17,17,17,0.04)",
+          boxShadow: "var(--avatar-rim)",
         }}
       />
     </div>
@@ -91,7 +91,7 @@ export function AvatarGroup({
         <div
           key={i}
           className={[
-            "ring-2 ring-white rounded-full",
+            "ring-2 ring-panel-face rounded-full",
             i > 0 ? overlapStyles[size] : "",
           ].join(" ")}
         >
@@ -101,7 +101,7 @@ export function AvatarGroup({
       {overflow > 0 && (
         <div
           className={[
-            "ring-2 ring-white rounded-full flex items-center justify-center font-semibold text-neutral-600 select-none",
+            "ring-2 ring-panel-face rounded-full flex items-center justify-center font-semibold text-ink-body select-none",
             overlapStyles[size],
             sizeStyles[size],
           ].join(" ")}

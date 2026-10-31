@@ -42,12 +42,12 @@ export function Toggle({
       {(label || description) && (
         <div className="flex flex-col gap-0.5 min-w-0">
           {label && (
-            <span id={`${uid}-label`} className="text-[13px] font-medium text-neutral-900 leading-snug">
+            <span id={`${uid}-label`} className="text-[13px] font-medium text-ink leading-snug">
               {label}
             </span>
           )}
           {description && (
-            <span id={`${uid}-desc`} className="text-[12px] text-neutral-500 leading-relaxed">
+            <span id={`${uid}-desc`} className="text-[12px] text-ink-muted leading-relaxed">
               {description}
             </span>
           )}
@@ -68,14 +68,12 @@ export function Toggle({
         className={[
           "relative shrink-0 w-[46px] h-[26px] rounded-[13px] cursor-pointer",
           "transition-[background-color,box-shadow] duration-200 ease-out",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900",
-          isOn ? "bg-neutral-900" : "bg-neutral-200/70",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
+          isOn ? "bg-track-on" : "bg-track",
         ].join(" ")}
         style={{
           /* The track is a recessed channel; the knob is a raised face inside it */
-          boxShadow: isOn
-            ? "inset 0 1px 3px rgba(0,0,0,0.5), inset 0 0 2px rgba(0,0,0,0.3), 0 1px 2px -1px rgba(255,255,255,0.48)"
-            : "inset 0 1px 2px rgba(17,17,17,0.12), inset 0 0 2px rgba(17,17,17,0.12), 0 1px 2px -1px rgba(255,255,255,0.64)",
+          boxShadow: isOn ? "var(--track-on-shadow)" : "var(--track-shadow)",
         }}
       >
         <span
@@ -85,9 +83,8 @@ export function Toggle({
             left: 3,
             /* The knob stretches while held, like a finger dragging it */
             width: pressed ? 24 : 20,
-            background: "var(--face-light)",
-            boxShadow:
-              "0 0 3px rgba(17,17,17,0.119), 0 1px 2px rgba(0,0,0,0.14), 0 3px 6px -1px rgba(0,0,0,0.12), inset 0 2px 3px -2px rgba(255,255,255,1), inset 0 -2px 3px -2px rgba(0,0,0,0.04)",
+            background: "var(--face)",
+            boxShadow: "var(--knob-shadow)",
             transform: `translateX(${isOn ? (pressed ? 16 : 20) : 0}px) translateY(-50%)`,
             transition:
               "transform 260ms var(--ease-spring), width 200ms var(--ease-out-soft)",

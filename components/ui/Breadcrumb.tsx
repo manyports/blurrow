@@ -28,7 +28,7 @@ export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
                   stroke="currentColor"
                   strokeWidth="2"
                   viewBox="0 0 24 24"
-                  className="text-neutral-300 shrink-0"
+                  className="text-ink-ghost shrink-0"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
@@ -38,7 +38,7 @@ export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
                   aria-current={isLast ? "page" : undefined}
                   className={[
                     "text-[12.5px] px-1.5 py-0.5 truncate",
-                    isLast ? "font-medium text-neutral-900" : "text-neutral-500",
+                    isLast ? "font-medium text-ink" : "text-ink-muted",
                   ].join(" ")}
                 >
                   {item.label}
@@ -46,7 +46,7 @@ export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
               ) : (
                 <a
                   href={item.href}
-                  className="text-[12.5px] text-neutral-500 hover:text-neutral-900 px-1.5 py-0.5 rounded-[6px] hover:bg-neutral-900/[0.05] transition-colors truncate"
+                  className="text-[12.5px] text-ink-muted hover:text-ink px-1.5 py-0.5 rounded-[6px] hover:bg-ink/[0.05] transition-colors truncate"
                 >
                   {item.label}
                 </a>

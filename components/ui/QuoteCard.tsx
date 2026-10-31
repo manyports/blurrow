@@ -33,18 +33,18 @@ export function QuoteCard({
           alt=""
           loading="lazy"
           className="w-7 h-7 rounded-full object-cover shrink-0"
-          style={{ boxShadow: dark ? "0 0 0 0.5px rgba(255,255,255,0.084)" : "0 0 0 0.5px rgba(17,17,17,0.048)" }}
+          style={{ boxShadow: dark ? "0 0 0 0.5px var(--photo-edge-dark)" : "0 0 0 0.5px var(--photo-edge)" }}
         />
       ) : (
         <span
           aria-hidden
           className={[
             "w-7 h-7 rounded-full flex items-center justify-center text-[11.5px] font-semibold shrink-0",
-            dark ? "text-white" : "text-neutral-700",
+            dark ? "text-white" : "text-ink-label",
           ].join(" ")}
           style={{
-            background: dark ? "var(--tile-dark)" : "var(--face-light)",
-            boxShadow: dark ? "var(--tile-dark-shadow)" : "var(--tile-light-shadow)",
+            background: dark ? "var(--tile-dark)" : "var(--tile)",
+            boxShadow: dark ? "var(--tile-dark-shadow)" : "var(--tile-shadow)",
           }}
         >
           {initial}
@@ -54,7 +54,7 @@ export function QuoteCard({
         <cite
           className={[
             "not-italic font-semibold tracking-[-0.008em]",
-            dark ? "text-white" : "text-neutral-900",
+            dark ? "text-white" : "text-ink",
           ].join(" ")}
         >
           {author}
@@ -72,7 +72,7 @@ export function QuoteCard({
           width="22"
           height="17"
           viewBox="0 0 56 44"
-          className={["shrink-0 mb-auto", dark ? "text-white/25" : "text-neutral-300"].join(" ")}
+          className={["shrink-0 mb-auto", dark ? "text-white/25" : "text-ink-ghost"].join(" ")}
         >
           <path
             fill="currentColor"
@@ -82,7 +82,7 @@ export function QuoteCard({
         <blockquote
           className={[
             "m-0 pt-8 text-[19px] leading-[1.55] tracking-[-0.015em] text-pretty",
-            dark ? "text-neutral-50" : "text-neutral-900",
+            dark ? "text-neutral-50" : "text-ink",
           ].join(" ")}
         >
           {quote}

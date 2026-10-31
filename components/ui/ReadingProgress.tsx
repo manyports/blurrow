@@ -42,8 +42,8 @@ export function ReadingProgress({ className = "" }: ReadingProgressProps) {
         style={{
           // transform instead of width: no layout on every scroll frame
           transform: `scaleX(${progress / 100})`,
-          background: "linear-gradient(90deg, #0a0a0a 0%, #262626 100%)",
-          boxShadow: "0 0 8px rgba(17,17,17,0.3)",
+          background: "var(--progress-bar)",
+          boxShadow: "var(--progress-bar-glow)",
         }}
       />
     </div>

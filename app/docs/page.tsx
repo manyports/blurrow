@@ -56,11 +56,11 @@ export default function IntroductionPage() {
         </P>
         <P>
           it&apos;s open source under the mit license, on{" "}
-          <a href={repo.url} target="_blank" rel="noopener" className="link-slide font-medium text-neutral-900">
+          <a href={repo.url} target="_blank" rel="noopener" className="link-slide font-medium text-ink">
             github
           </a>{" "}
           and{" "}
-          <a href={npmUrl} target="_blank" rel="noopener" className="link-slide font-medium text-neutral-900">
+          <a href={npmUrl} target="_blank" rel="noopener" className="link-slide font-medium text-ink">
             npm
           </a>
           . issues, ideas and pull requests are all welcome.
@@ -76,9 +76,9 @@ export default function IntroductionPage() {
               className="rounded-[20px] p-1.5"
               style={{ background: "var(--panel-bezel)", boxShadow: "var(--panel-shadow)" }}
             >
-              <div className="h-full rounded-[15px] bg-white p-5" style={{ boxShadow: "var(--panel-face-shadow)" }}>
-                <p className="text-[14.5px] font-semibold tracking-[-0.01em] text-neutral-900">{p.title}</p>
-                <p className="mt-1.5 text-[13.5px] leading-[1.6] text-neutral-500">{p.body}</p>
+              <div className="h-full rounded-[15px] bg-panel-face p-5" style={{ boxShadow: "var(--panel-face-shadow)" }}>
+                <p className="text-[14.5px] font-semibold tracking-[-0.01em] text-ink">{p.title}</p>
+                <p className="mt-1.5 text-[13.5px] leading-[1.6] text-ink-muted">{p.body}</p>
               </div>
             </div>
           ))}

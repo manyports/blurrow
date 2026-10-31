@@ -6,37 +6,34 @@ import { CloseButton } from "./CloseButton";
 type BannerVariant = "default" | "accent" | "warning";
 
 /* A banner is a dark bezel holding a dark face — the same build as the
-   primary button, stretched to full width.                            */
+   primary button, stretched to full width. On a dark page it stays a
+   dark strip (the mid material) rather than a full-width pale bar.    */
 const variantStyles: Record<
   BannerVariant,
   { bezel: string; bezelShadow: string; face: string; faceShadow: string; text: string; tone: "light" | "dark" }
 > = {
   default: {
-    bezel: "var(--bezel-dark)",
-    bezelShadow: "var(--bezel-dark-shadow)",
-    face: "var(--face-dark)",
-    faceShadow: "var(--face-dark-shadow)",
+    bezel: "var(--banner-bezel)",
+    bezelShadow: "var(--banner-bezel-shadow)",
+    face: "var(--banner-face)",
+    faceShadow: "var(--banner-face-shadow)",
     text: "text-white",
     tone: "dark",
   },
   accent: {
-    bezel: "linear-gradient(180deg, #4c2a99 0%, #2e1065 100%)",
-    bezelShadow:
-      "0 0 0 0.5px rgba(46,16,101,0.36), 0 4px 12px -4px rgba(76,29,149,0.45), inset 0 2px 3px -2px rgba(255,255,255,0.09)",
-    face: "linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%)",
-    faceShadow:
-      "0 0 3px rgba(46,16,101,0.35), 0 1px 2px rgba(46,16,101,0.4), inset 0 2px 3px -2px rgba(255,255,255,0.165)",
+    bezel: "var(--bezel-violet)",
+    bezelShadow: "var(--bezel-violet-shadow)",
+    face: "var(--face-violet)",
+    faceShadow: "var(--face-violet-shadow)",
     text: "text-white",
     tone: "dark",
   },
   warning: {
-    bezel: "linear-gradient(180deg, #fde68a 0%, #f5c84b 100%)",
-    bezelShadow:
-      "0 0 0 0.5px rgba(180,83,9,0.15), 0 4px 12px -4px rgba(217,119,6,0.3), inset 0 2px 3px -2px rgba(255,255,255,0.45)",
-    face: "linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%)",
-    faceShadow:
-      "0 0 3px rgba(180,83,9,0.255), 0 1px 2px rgba(180,83,9,0.12), inset 0 2px 3px -2px rgba(255,255,255,1)",
-    text: "text-amber-900",
+    bezel: "var(--bezel-warning)",
+    bezelShadow: "var(--bezel-warning-shadow)",
+    face: "var(--face-warning)",
+    faceShadow: "var(--face-warning-shadow)",
+    text: "text-warning-ink",
     tone: "light",
   },
 };

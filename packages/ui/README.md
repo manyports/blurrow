@@ -73,7 +73,7 @@ const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo" });
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={archivo.variable}>
-      <body className="bg-[#EBEBEB] font-sans text-neutral-900 antialiased">
+      <body className="bg-page font-sans text-ink antialiased">
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
@@ -82,6 +82,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```
 
 **4. toasts.** `ToastProvider` above is only needed if you use `useToast()`.
+
+## dark mode
+
+every colour, shadow and gradient is a css variable with a light and a dark value. put `data-theme="dark"` on `<html>` (or the class `dark`), or on any element to darken just that part. `data-theme="system"` follows the os setting, and an explicit `light` or `dark` always wins. `bg-page` and `text-ink` let your own page follow along. more in [the docs](https://www.blurrow.org/docs/installation#dark-mode).
 
 ## the cli
 

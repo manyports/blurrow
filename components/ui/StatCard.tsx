@@ -76,7 +76,7 @@ function Sparkline({ data, dark }: { data: number[]; dark?: boolean }) {
   // The fill runs off both edges of the face so it reads as part of the surface
   const area = `M0,${pts[0][1].toFixed(1)} ${line.replace(/^M/, "L")} L${W},${pts[pts.length - 1][1].toFixed(1)} L${W},${H} L0,${H} Z`;
 
-  const stroke = dark ? "#ffffff" : "#171717";
+  const stroke = dark ? "var(--spark-dark)" : "var(--spark)";
   const gradId = `spark-fade-${uid.replace(/:/g, "")}`;
   const [lx, ly] = pts[pts.length - 1];
 
@@ -86,22 +86,22 @@ function Sparkline({ data, dark }: { data: number[]; dark?: boolean }) {
       className="relative h-14"
       // Fades in from the left so the line arrives rather than starts at a hard edge
       style={{
-        maskImage: "linear-gradient(90deg, transparent 0%, #000 18%)",
-        WebkitMaskImage: "linear-gradient(90deg, transparent 0%, #000 18%)",
+        maskImage: "linear-gradient(90deg, transparent 0%, black 18%)",
+        WebkitMaskImage: "linear-gradient(90deg, transparent 0%, black 18%)",
       }}
     >
       <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="absolute inset-0 w-full h-full overflow-visible">
         <defs>
           <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={stroke} stopOpacity={dark ? 0.2 : 0.08} />
-            <stop offset="100%" stopColor={stroke} stopOpacity="0" />
+            <stop offset="0%" style={{ stopColor: stroke }} stopOpacity={dark ? 0.2 : 0.08} />
+            <stop offset="100%" style={{ stopColor: stroke }} stopOpacity="0" />
           </linearGradient>
         </defs>
         <path d={area} fill={`url(#${gradId})`} />
         <path
           d={line}
           fill="none"
-          stroke={stroke}
+          style={{ stroke }}
           strokeOpacity={dark ? 0.85 : 0.9}
           strokeWidth={1.5}
           strokeLinecap="round"
@@ -116,7 +116,7 @@ function Sparkline({ data, dark }: { data: number[]; dark?: boolean }) {
           left: `${(lx / W) * 100}%`,
           top: `${(ly / H) * 100}%`,
           background: stroke,
-          boxShadow: dark ? "0 0 0 3px rgba(255,255,255,0.14)" : "0 0 0 3px rgba(17,17,17,0.08)",
+          boxShadow: dark ? "0 0 0 3px var(--spark-dark-halo)" : "0 0 0 3px var(--spark-halo)",
         }}
       />
     </div>
@@ -124,9 +124,9 @@ function Sparkline({ data, dark }: { data: number[]; dark?: boolean }) {
 }
 
 const deltaTone: Record<DeltaDirection, { light: string; dark: string; label: string }> = {
-  up: { light: "text-emerald-700", dark: "text-emerald-400", label: "up" },
-  down: { light: "text-red-600", dark: "text-red-400", label: "down" },
-  neutral: { light: "text-neutral-600", dark: "text-neutral-300", label: "unchanged" },
+  up: { light: "text-success", dark: "text-emerald-400", label: "up" },
+  down: { light: "text-danger", dark: "text-red-400", label: "down" },
+  neutral: { light: "text-ink-body", dark: "text-neutral-300", label: "unchanged" },
 };
 
 function DeltaArrow({ direction }: { direction: DeltaDirection }) {
@@ -171,8 +171,8 @@ export function StatCard({
         dark ? deltaTone[delta.direction].dark : deltaTone[delta.direction].light,
       ].join(" ")}
       style={{
-        background: dark ? "var(--tile-dark)" : "var(--face-light)",
-        boxShadow: dark ? "var(--tile-dark-shadow)" : "var(--tile-light-shadow)",
+        background: dark ? "var(--tile-dark)" : "var(--tile)",
+        boxShadow: dark ? "var(--tile-dark-shadow)" : "var(--tile-shadow)",
       }}
     >
       <DeltaArrow direction={delta.direction} />
@@ -192,11 +192,11 @@ export function StatCard({
               aria-hidden
               className={[
                 "w-7 h-7 rounded-[9px] flex items-center justify-center shrink-0",
-                dark ? "text-neutral-100" : "text-neutral-600",
+                dark ? "text-neutral-100" : "text-ink-body",
               ].join(" ")}
               style={{
-                background: dark ? "var(--tile-dark)" : "var(--face-light)",
-                boxShadow: dark ? "var(--tile-dark-shadow)" : "var(--tile-light-shadow)",
+                background: dark ? "var(--tile-dark)" : "var(--tile)",
+                boxShadow: dark ? "var(--tile-dark-shadow)" : "var(--tile-shadow)",
               }}
             >
               {icon}
@@ -205,7 +205,7 @@ export function StatCard({
           <p
             className={[
               "text-[14px] font-medium tracking-[-0.01em] truncate",
-              dark ? "text-neutral-300" : "text-neutral-700",
+              dark ? "text-neutral-300" : "text-ink-label",
             ].join(" ")}
           >
             {label}
@@ -220,7 +220,7 @@ export function StatCard({
         aria-hidden
         className={[
           "px-6 mt-5 text-[44px] font-semibold tabular-nums tracking-[-0.045em] leading-none",
-          dark ? "text-white" : "text-neutral-900",
+          dark ? "text-white" : "text-ink",
         ].join(" ")}
       >
         {prefix}
@@ -230,7 +230,7 @@ export function StatCard({
           <span
             className={[
               "ml-1 text-[17px] font-medium tracking-[-0.01em]",
-              dark ? "text-neutral-500" : "text-neutral-400",
+              dark ? "text-neutral-500" : "text-ink-faint",
             ].join(" ")}
           >
             {suffix.trim()}
@@ -238,7 +238,7 @@ export function StatCard({
         )}
       </p>
       {hint && (
-        <p className={["px-6 mt-2.5 text-[13px] truncate", dark ? "text-neutral-500" : "text-neutral-500"].join(" ")}>
+        <p className={["px-6 mt-2.5 text-[13px] truncate", dark ? "text-neutral-500" : "text-ink-muted"].join(" ")}>
           {hint}
         </p>
       )}

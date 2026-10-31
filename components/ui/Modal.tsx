@@ -85,7 +85,7 @@ export function Modal({
         style={{ background: "var(--panel-bezel)", boxShadow: "var(--modal-shadow)" }}
       >
         <div
-          className="bg-white rounded-[16px] overflow-hidden"
+          className="bg-panel-face rounded-[16px] overflow-hidden"
           style={{ boxShadow: "var(--panel-face-shadow)" }}
         >
           <div className="pl-6 pr-4 pt-5 pb-4 flex items-start gap-4">
@@ -93,13 +93,13 @@ export function Modal({
               {title && (
                 <h2
                   id={`${uid}-title`}
-                  className="text-[16px] font-semibold text-neutral-900 tracking-[-0.015em] leading-snug"
+                  className="text-[16px] font-semibold text-ink tracking-[-0.015em] leading-snug"
                 >
                   {title}
                 </h2>
               )}
               {description && (
-                <p id={`${uid}-desc`} className="text-[13px] text-neutral-500 leading-relaxed">
+                <p id={`${uid}-desc`} className="text-[13px] text-ink-muted leading-relaxed">
                   {description}
                 </p>
               )}
@@ -107,15 +107,15 @@ export function Modal({
             <CloseButton label="Close dialog" onClick={onClose} />
           </div>
 
-          {children && <div className="px-6 pb-5 text-[13.5px] text-neutral-600 leading-relaxed">{children}</div>}
+          {children && <div className="px-6 pb-5 text-[13.5px] text-ink-body leading-relaxed">{children}</div>}
 
           {/* Footer sits in the bezel tone so actions read as a separate tray */}
           {actions && (
             <div
               className="px-5 py-3.5 flex items-center justify-end gap-2"
               style={{
-                background: "linear-gradient(180deg, #fafafa 0%, #f6f6f6 100%)",
-                boxShadow: "inset 0 1px 0 rgba(17,17,17,0.06)",
+                background: "var(--panel-tray)",
+                boxShadow: "inset 0 1px 0 var(--hairline)",
               }}
             >
               {actions}

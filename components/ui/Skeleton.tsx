@@ -44,7 +44,7 @@ export function Skeleton({
         className={["rounded-[20px] p-1.5", className].join(" ")}
         style={{ background: "var(--panel-bezel)", boxShadow: "var(--panel-shadow)" }}
       >
-        <div className="bg-white rounded-[15px] p-1.5" style={{ boxShadow: "var(--panel-face-shadow)" }}>
+        <div className="bg-panel-face rounded-[15px] p-1.5" style={{ boxShadow: "var(--panel-face-shadow)" }}>
           <div className={[base, "w-full rounded-[11px]"].join(" ")} style={{ ...well, height: height ?? 160 }} />
           <div className="px-3.5 pt-4 pb-3.5 flex flex-col gap-2.5">
             <div className={[base, "h-3.5 w-3/5"].join(" ")} style={well} />

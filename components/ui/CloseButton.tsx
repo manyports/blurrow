@@ -38,7 +38,7 @@ export function CloseButton({
         "focus-visible:outline-2 focus-visible:outline-offset-2",
         dark
           ? "text-white/45 hover:text-white focus-visible:outline-white"
-          : "text-neutral-400 hover:text-neutral-900 focus-visible:outline-neutral-900",
+          : "text-ink-faint hover:text-ink focus-visible:outline-ink",
         s.box,
         className,
       ].join(" ")}
@@ -49,7 +49,7 @@ export function CloseButton({
           "absolute inset-0 rounded-[inherit] opacity-0 group-hover/close:opacity-100 transition-opacity duration-150",
           dark
             ? "[background:var(--tile-dark)] [box-shadow:var(--tile-dark-shadow)]"
-            : "[background:var(--face-light)] [box-shadow:var(--face-light-shadow)]",
+            : "[background:var(--face)] [box-shadow:var(--face-shadow)]",
         ].join(" ")}
       />
       <svg
