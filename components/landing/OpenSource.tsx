@@ -1,130 +1,253 @@
-import { formatStars } from "@/lib/github";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { npmUrl, repo } from "@/lib/site";
+import { playClick } from "./click";
 
-function GitHubIcon() {
+function Star({ size = 14 }: { size?: number }) {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M12 .5a11.5 11.5 0 00-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 015.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0012 .5z" />
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M12 2.8l2.83 5.74 6.33.92-4.58 4.46 1.08 6.3L12 17.25l-5.66 2.97 1.08-6.3L2.84 9.46l6.33-.92L12 2.8z" />
     </svg>
   );
 }
 
-function NpmIcon() {
+/* Lettering pressed into the plate, as on the instrument at the top */
+function Engraved({ children }: { children: React.ReactNode }) {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path fillRule="evenodd" d="M3 3h18v18H3V3zm4 4v10h5V9.5h2.5V17H17V7H7z" />
-    </svg>
+    <span className="text-[11px] font-medium tracking-[0.06em] text-ink-faint" style={{ textShadow: "var(--emboss-soft)" }}>
+      {children}
+    </span>
   );
 }
 
-function LinkRow({
-  href,
-  icon,
-  label,
-  detail,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  label: React.ReactNode;
-  detail?: React.ReactNode;
-}) {
+const CELL_H = 64;
+
+/* A mechanical counter: each digit sits in its own sunken window on a
+   strip of 0–9, and the strips roll to the count the first time the
+   counter is seen, the far-right wheel travelling last.            */
+function Odometer({ value }: { value: number | null }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && setSeen(true), { threshold: 0.6 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // as many windows as the count needs, and one more resting at zero, so
+  // it reads as a counter without shouting how far it has to go
+  const count = String(value ?? 0);
+  const digits = count.padStart(count.length + 1, "0").split("").map(Number);
+  const firstSignificant = digits.findIndex((d) => d !== 0);
+
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener"
-      className="group rounded-[12px] px-4 py-3.5 flex items-center gap-3 transition-transform duration-200 hover:-translate-y-px active:translate-y-px outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900"
-      style={{ background: "var(--face-light)", boxShadow: "var(--thumb-shadow)" }}
-    >
-      <span className="text-neutral-700">{icon}</span>
-      <span className="flex-1 text-[14.5px] font-medium text-neutral-900">{label}</span>
-      {detail && <span className="text-[13px] text-neutral-500 tabular-nums">{detail}</span>}
-      <span aria-hidden className="text-neutral-300 transition-[transform,color] duration-300 group-hover:translate-x-0.5 group-hover:text-neutral-900">
-        →
-      </span>
-    </a>
+    <div ref={ref} role="img" aria-label={`${value ?? 0} stars`} className="flex gap-1.5">
+      {digits.map((d, i) => (
+        <span
+          key={i}
+          className="relative block w-[46px] overflow-hidden rounded-[11px]"
+          style={{ height: CELL_H, background: "var(--field)", boxShadow: "var(--field-shadow)" }}
+        >
+          <span
+            className="absolute inset-x-0 top-0 flex flex-col"
+            style={{
+              transform: `translateY(${-(seen ? d : 0) * CELL_H}px)`,
+              transition: `transform 1400ms cubic-bezier(0.2, 0.9, 0.25, 1) ${i * 140}ms`,
+            }}
+          >
+            {Array.from({ length: 10 }, (_, n) => (
+              <span
+                key={n}
+                className={[
+                  "grid shrink-0 place-items-center text-[30px] font-medium tabular-nums tracking-[-0.02em]",
+                  // the zeros in front of the count are quieter than the count
+                  firstSignificant < 0 || i < firstSignificant ? "text-ink-ghost" : "text-ink",
+                ].join(" ")}
+                style={{ height: CELL_H }}
+              >
+                {n}
+              </span>
+            ))}
+          </span>
+          {/* glass over the window: a little light at the top, shade at the foot */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.06) 100%)" }}
+          />
+        </span>
+      ))}
+    </div>
   );
 }
 
-/* The one thing we'd love people to do here, so it's built like the
-   kit's primary button: a dark face in a dark bezel. The star fills
-   gold when you reach for it, staying put, and a band of light crosses the face
-   every few seconds so it's noticed without shouting.             */
-function StarCta({ stars }: { stars: number | null }) {
+function StarKey() {
+  const [pressed, setPressed] = useState(false);
   return (
     <a
       href={repo.url}
       target="_blank"
       rel="noopener"
-      className="group block rounded-[18px] p-[4px] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900"
-      style={{ background: "var(--bezel-dark)", boxShadow: "var(--bezel-dark-shadow)" }}
+      aria-label="star blurrow on github"
+      onPointerDown={() => {
+        setPressed(true);
+        playClick({ pitch: 1.1, volume: 0.12 });
+      }}
+      onPointerUp={() => setPressed(false)}
+      onPointerLeave={() => setPressed(false)}
+      className="group block rounded-[18px] p-[3px] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+      style={{ background: "var(--bezel)", boxShadow: "var(--bezel-shadow)" }}
     >
-      <style href="blurrow-star-sweep" precedence="default">{`
-        @keyframes blurrow-star-sweep { 0%, 72% { transform: translateX(-120%); } 100% { transform: translateX(420%); } }
-        @media (prefers-reduced-motion: reduce) { .blurrow-star-sweep { display: none; } }
-      `}</style>
       <span
-        className="relative flex items-center gap-4 overflow-hidden rounded-[14px] px-4 py-4 sm:px-5 sm:py-5 transition-[transform,box-shadow] duration-200 group-hover:-translate-y-px group-active:translate-y-px"
-        style={{ background: "var(--face-dark)", boxShadow: "var(--face-dark-shadow)" }}
+        className="flex h-[58px] items-center gap-2.5 rounded-[15px] px-5 text-[15px] font-medium text-ink transition-[box-shadow,transform] duration-150"
+        style={{
+          background: "var(--face)",
+          boxShadow: pressed ? "var(--face-pressed)" : "var(--face-shadow)",
+          transform: pressed ? "translateY(1px)" : "none",
+          textShadow: "var(--emboss)",
+        }}
       >
-        <span
-          aria-hidden
-          className="blurrow-star-sweep pointer-events-none absolute inset-y-0 left-0 w-1/4"
-          style={{
-            background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.09) 50%, transparent 100%)",
-            animation: "blurrow-star-sweep 5.5s cubic-bezier(0.4, 0, 0.2, 1) infinite",
-          }}
-        />
-        <span
-          aria-hidden
-          className="relative w-11 h-11 shrink-0 rounded-[12px] flex items-center justify-center text-neutral-300 transition-colors duration-300 group-hover:text-amber-300"
-          style={{ background: "var(--tile-dark)", boxShadow: "var(--tile-dark-shadow)" }}
-        >
-          <span className="transition-[filter] duration-300 group-hover:[filter:drop-shadow(0_0_6px_rgba(252,211,77,0.65))]">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2.8l2.83 5.74 6.33.92-4.58 4.46 1.08 6.3L12 17.25l-5.66 2.97 1.08-6.3L2.84 9.46l6.33-.92L12 2.8z" />
-            </svg>
-          </span>
+        <span className="text-amber-500 transition-[filter,transform] duration-300 ease-[var(--ease-spring)] group-hover:scale-110 group-hover:[filter:drop-shadow(0_0_6px_rgba(245,158,11,0.55))]">
+          <Star size={18} />
         </span>
-        <span className="relative flex-1 min-w-0 flex flex-col gap-0.5">
-          <span className="text-[16.5px] font-medium tracking-[-0.015em] text-white" style={{ textShadow: "0 -1px 0 rgba(0,0,0,0.45)" }}>
-            star blurrow on github
-          </span>
-          <span className="text-[13px] text-neutral-400">it&apos;s the easiest way to help other people find it</span>
-        </span>
-        <span
-          className="relative shrink-0 rounded-[10px] px-3 py-2 text-[13px] font-medium text-neutral-200 tabular-nums"
-          style={{ background: "var(--tile-dark)", boxShadow: "var(--tile-dark-shadow)" }}
-        >
-          {stars ? `★ ${formatStars(stars)}` : "be the first"}
-        </span>
+        star it
       </span>
     </a>
   );
 }
 
-/* The project's front door: it's open, here's how to help. Links rest in
-   a well as raised rows, the same as the drafts tray above.           */
-export function OpenSource({ stars }: { stars: number | null }) {
+/* A few parts people might want, to start from instead of a blank field */
+const suggestions = ["a stepper", "a kanban board", "a rich text toolbar", "a calendar heatmap"];
+
+/* A small raised key that drops its words into the field */
+function SuggestionKey({ label, onPick }: { label: string; onPick: () => void }) {
+  const [pressed, setPressed] = useState(false);
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] gap-6 lg:gap-14 py-14 border-t border-neutral-900/[0.08]">
-      <div className="flex flex-col gap-4">
-        <h2 className="text-[clamp(26px,2.8vw,34px)] font-medium leading-[1.1] tracking-[-0.035em] text-neutral-900">
-          open source, and open to you
-        </h2>
-        <p className="text-[15.5px] leading-[1.65] text-neutral-600 max-w-[46ch] text-pretty">
-          blurrow is free and mit licensed. found a bug, want a component that isn&apos;t here, or have an idea for one
-          that is? issues and pull requests are very welcome.
-        </p>
-      </div>
-      <div
-        className="rounded-[22px] p-2.5 flex flex-col gap-2 self-start"
-        style={{ background: "var(--well)", boxShadow: "var(--well-shadow)" }}
-      >
-        <StarCta stars={stars} />
-        <LinkRow href={`${repo.url}/issues/new`} icon={<GitHubIcon />} label="open an issue or share an idea" />
-        <LinkRow href={`${repo.url}/pulls`} icon={<GitHubIcon />} label="send a pull request" />
-        <LinkRow href={npmUrl} icon={<NpmIcon />} label="@blurrow/ui on npm" />
+    <button
+      type="button"
+      onClick={onPick}
+      onPointerDown={() => {
+        setPressed(true);
+        playClick({ pitch: 1.3, volume: 0.07 });
+      }}
+      onPointerUp={() => setPressed(false)}
+      onPointerLeave={() => setPressed(false)}
+      className="h-8 cursor-pointer rounded-[10px] px-3 text-[12.5px] font-medium text-ink-label transition-[box-shadow,transform,color] duration-150 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+      style={{
+        background: "var(--face)",
+        boxShadow: pressed ? "var(--face-pressed)" : "var(--key-shadow)",
+        transform: pressed ? "translateY(1px)" : "none",
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
+/* Built the way the hero is: the words on the page's left edge, and under
+   them one object made of the kit's parts. Two modules on one plate:
+   asking for a part, and the stars, on a counter that rolls.      */
+export function OpenSource({ stars }: { stars: number | null }) {
+  const [idea, setIdea] = useState("");
+
+  const send = () => {
+    if (!idea.trim()) {
+      document.getElementById("blurrow-idea")?.focus();
+      return;
+    }
+    const params = new URLSearchParams({ title: idea.trim(), body: "_sent from blurrow.org_" });
+    window.open(`${repo.url}/issues/new?${params}`, "_blank", "noopener");
+  };
+
+  const footLink = "underline decoration-ink-ghost underline-offset-[3px] transition-colors hover:text-ink-body";
+
+  return (
+    <section className="flex flex-col">
+      <h2 className="text-[clamp(36px,5vw,64px)] font-medium leading-[1] tracking-[-0.05em] text-neutral-900">
+        tell me what to build next.
+      </h2>
+      <p className="mt-6 max-w-[46ch] text-[17px] leading-[1.6] text-neutral-600 text-pretty">
+        if a part you need is missing, or one of them feels off, write it below. it opens as an issue on github with
+        your words as its title.
+      </p>
+
+      <div className="mt-14 rounded-[36px] p-2 sm:mt-16 sm:p-2.5" style={{ background: "var(--card-bezel)", boxShadow: "var(--card-shadow)" }}>
+        <div className="rounded-[29px]" style={{ background: "var(--card)", boxShadow: "var(--card-face-shadow)" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+            {/* ── asking for a part ── */}
+            <form
+              aria-label="request a part"
+              className="flex flex-col gap-5 p-5 sm:p-7"
+              onSubmit={(e) => {
+                e.preventDefault();
+                send();
+              }}
+            >
+              <div className="flex items-center justify-between gap-4">
+                <Engraved>request a part</Engraved>
+                <Engraved>opens on github</Engraved>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div className="min-w-0 flex-1">
+                  <Input
+                    id="blurrow-idea"
+                    layered
+                    aria-label="what should blurrow have?"
+                    placeholder="a stepper for checkout flows"
+                    value={idea}
+                    onChange={(e) => setIdea(e.target.value)}
+                    maxLength={120}
+                    fullWidth
+                  />
+                </div>
+                <Button type="submit" size="lg">
+                  send
+                </Button>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="mr-1 text-[12.5px] text-ink-muted">or start from</span>
+                {suggestions.map((sug) => (
+                  <SuggestionKey
+                    key={sug}
+                    label={sug}
+                    onPick={() => {
+                      setIdea(sug);
+                      document.getElementById("blurrow-idea")?.focus();
+                    }}
+                  />
+                ))}
+              </div>
+            </form>
+
+            {/* ── the stars ── */}
+            <div className="flex flex-col gap-5 border-t p-5 sm:p-7 lg:border-l lg:border-t-0" style={{ borderColor: "var(--divider)" }}>
+              <div className="flex items-center justify-between gap-4">
+                <Engraved>stars on github</Engraved>
+              </div>
+              <div className="flex flex-wrap items-center gap-4">
+                <Odometer value={stars} />
+                <StarKey />
+              </div>
+              <p className="text-[12.5px] leading-[1.5] text-ink-muted">a star is how other people find blurrow, and it tells me to keep going.</p>
+            </div>
+          </div>
+
+          {/* the foot of the plate */}
+          <div className="border-t px-5 py-3.5 text-[11px] font-medium tracking-[0.06em] text-ink-faint sm:px-7" style={{ borderColor: "var(--divider)", textShadow: "var(--emboss-soft)" }}>
+            <a href={`${repo.url}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noopener" className={footLink}>
+              how to contribute
+            </a>{" "}
+            ·{" "}
+            <a href={npmUrl} target="_blank" rel="noopener" className={footLink}>
+              npm
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );

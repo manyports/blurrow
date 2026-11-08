@@ -1,61 +1,57 @@
 import Link from "next/link";
+import { Caveat } from "next/font/google";
 import { CodeBlock } from "@/components/ui/CodeBlock";
-import { Anatomy } from "@/components/landing/Anatomy";
+import { Tabs } from "@/components/ui/Tabs";
+import { JsonLd } from "@/components/docs/JsonLd";
 import { Footer } from "@/components/landing/Footer";
-import { LightRig } from "@/components/landing/LightRig";
-import { LightsOut } from "@/components/landing/LightsOut";
-import { RaisedSunken } from "@/components/landing/RaisedSunken";
-import { MotionDemo } from "@/components/landing/MotionDemo";
+import { Finale } from "@/components/landing/Finale";
+import { Hero } from "@/components/landing/Hero";
+import { HowItsMade } from "@/components/landing/HowItsMade";
 import { OpenSource } from "@/components/landing/OpenSource";
 import { examples } from "@/examples";
 import { getEntry, registry } from "@/lib/registry";
 import { getStars } from "@/lib/github";
-import { JsonLd } from "@/components/docs/JsonLd";
 import { authorLd } from "@/lib/seo";
 import { initCommand, npmUrl, pkg, repo, siteDescription, siteName, siteUrl } from "@/lib/site";
 
-/* Nine components on the sheet. Captions say what each one does when
-   you use it, in the plainest words that are still true.            */
-const specimens = [
-  { slug: "button", example: "button-variants", note: "four flavours. the face lifts when you hover and sinks when you press." },
-  { slug: "toggle", example: "toggle-with-description", note: "for settings that should kick in right away." },
-  { slug: "input", example: "input-with-icon", note: "click in and the field rises to meet you." },
-  { slug: "tabs", example: "tabs-segmented", note: "the thumb slides over to whichever tab you pick." },
-  { slug: "pagination", example: "pagination-demo", note: "same well and thumb as the tabs, so they feel related." },
-  { slug: "radio-group", example: "radio-group-demo", note: "the dot travels over to your choice." },
-  { slug: "select", example: "select-demo", note: "looks like a field, opens a little panel of options." },
-  { slug: "stat-card", example: "stat-card-demo", note: "counts up to its number when it shows up." },
-  { slug: "alert", example: "alert-demo", note: "for telling people how things went, in four moods." },
+/* The parts case: a raised case with sunken compartments, each holding a
+   live part, sized to what's in it. Spans are 12ths on large screens. */
+const parts: { slug: string; example: string; span: string }[] = [
+  { slug: "radio-cards", example: "radio-cards-demo", span: "lg:col-span-5 lg:row-span-2" },
+  { slug: "otp-input", example: "otp-input-demo", span: "lg:col-span-7" },
+  { slug: "slider", example: "slider-range", span: "lg:col-span-4" },
+  { slug: "toggle", example: "toggle-with-description", span: "lg:col-span-3" },
+  { slug: "color-picker", example: "color-picker-inline", span: "lg:col-span-4 lg:row-span-2" },
+  { slug: "button", example: "button-variants", span: "lg:col-span-8" },
+  { slug: "tabs", example: "tabs-segmented", span: "lg:col-span-4" },
+  { slug: "date-picker", example: "date-picker-demo", span: "lg:col-span-4" },
+  { slug: "file-upload", example: "file-upload-demo", span: "lg:col-span-7" },
+  { slug: "stat-card", example: "stat-card-demo", span: "lg:col-span-5" },
 ];
 
+/* The pencil the page's drawings and notes are written in. Self-hosted
+   at build time, and only this page asks for it.                  */
+const hand = Caveat({ subsets: ["latin"], variable: "--font-hand", weight: ["500", "600"] });
 
-function Heading({ children, id }: { children: React.ReactNode; id?: string }) {
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return <p className="text-[13px] font-medium text-neutral-500">{children}</p>;
+}
+
+function Title({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <h2 id={id} className="text-[clamp(26px,2.8vw,34px)] font-medium leading-[1.1] tracking-[-0.035em] text-neutral-900">
+    <h2 className={["text-[clamp(36px,5vw,64px)] font-medium leading-[1] tracking-[-0.05em] text-neutral-900 text-balance", className].join(" ")}>
       {children}
     </h2>
   );
 }
 
-function Body({ children }: { children: React.ReactNode }) {
-  return <p className="text-[15.5px] leading-[1.65] text-neutral-600 max-w-[46ch] text-pretty">{children}</p>;
-}
-
-/* Text on the left, the thing it describes on the right */
-function Row({ title, children, figure }: { title: string; children: React.ReactNode; figure: React.ReactNode }) {
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] gap-6 lg:gap-14 py-12 border-t border-neutral-900/[0.08]">
-      <div className="flex flex-col gap-3">
-        <h3 className="text-[17px] font-semibold tracking-[-0.015em] text-neutral-900">{title}</h3>
-        {children}
-      </div>
-      <div className="min-w-0">{figure}</div>
-    </div>
-  );
+function Lede({ children }: { children: React.ReactNode }) {
+  return <p className="max-w-[42ch] text-[17px] leading-[1.6] text-neutral-600 text-pretty">{children}</p>;
 }
 
 export default async function Home() {
   const stars = await getStars();
+  const count = registry.length;
   const ld = {
     "@context": "https://schema.org",
     "@graph": [
@@ -82,119 +78,123 @@ export default async function Home() {
   return (
     <>
       <JsonLd data={ld} />
-      <main className="mx-auto max-w-[1200px] px-4 sm:px-6">
-        {/* ── Opening ──────────────────────────────────────────── */}
-        <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-12 lg:gap-16 items-center pt-14 sm:pt-20 pb-20">
-          <div className="flex flex-col gap-6">
-            <h1 className="text-[clamp(38px,5vw,60px)] font-medium leading-[1.02] tracking-[-0.045em] text-balance">
-              <span className="text-neutral-900">buttons you want to press,</span>{" "}
-              <span className="text-neutral-400">fields you want to fill in.</span>
-            </h1>
-            <p className="flex items-center gap-2 text-[14px] tracking-[-0.005em]">
-              <span className="font-medium text-neutral-900">blurrow/ui</span>
-              <span aria-hidden className="w-1 h-1 rounded-full bg-neutral-300" />
-              <a
-                href="https://manyports.com"
-                target="_blank"
-                rel="noopener"
-                className="link-slide text-neutral-500 hover:text-neutral-900 transition-colors"
-              >
-                @manyports
-              </a>
-            </p>
-            <Body>
-              hi! this is the kit i made for blogs, now its own little library. it&apos;s {registry.length} react
-              components that share the same materials and the same light, so everything you build with them feels like
-              it belongs together.
-            </Body>
+      <main className={["mx-auto max-w-[1240px] px-4 sm:px-6", hand.variable].join(" ")}>
+        <Hero />
+
+        {/* ── One object, taken through how it's made ──────────── */}
+        <section id="how-its-made" className="scroll-mt-24 pt-28 sm:pt-40">
+          <div className="flex flex-col gap-5 lg:max-w-[58%]">
+            <Eyebrow>how it&apos;s made</Eyebrow>
+            <Title>bezels, faces, and one lamp. that&apos;s the kit.</Title>
           </div>
-          <Anatomy />
+          <div className="mt-6 lg:mt-0">
+            <HowItsMade />
+          </div>
         </section>
 
-        {/* ── Specimen sheet ───────────────────────────────────── */}
-        <section id="favourites" className="flex flex-col gap-8 pb-24 scroll-mt-24">
-          <div className="flex items-end justify-between gap-6">
-            <Heading>a few favourites</Heading>
-            <Link href="/docs/components" className="link-slide shrink-0 text-[14px] font-medium text-neutral-900">
-              see all {registry.length}
-            </Link>
+        {/* ── The parts case ───────────────────────────────────── */}
+        <section id="favourites" className="scroll-mt-24 pt-24 sm:pt-32">
+          <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-14">
+            <div className="flex flex-col gap-5">
+              <Eyebrow>the parts</Eyebrow>
+              <Title>{count} parts. one case.</Title>
+            </div>
+            <div className="flex flex-col gap-4">
+              <Lede>
+                because they&apos;re all cut from the same materials, any two look like they came out of the same box. here
+                are ten, working. the rest are in the docs, each with its source.
+              </Lede>
+              <Link href="/docs/components" className="link-slide self-start text-[15px] font-medium text-neutral-900">
+                open the whole case →
+              </Link>
+            </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-neutral-900/[0.08]">
-            {specimens.map((s) => {
-              const entry = getEntry(s.slug)!;
-              const Example = examples[s.example];
-              return (
-                <div key={s.slug} className="flex flex-col border-r border-b border-neutral-900/[0.08] p-6">
-                  <div className="flex-1 min-h-[150px] sm:min-h-[220px] flex items-center justify-center py-4 sm:py-6">
-                    <Example />
-                  </div>
-                  <div className="flex flex-col gap-1 pt-4">
+
+          {/* A raised case; every compartment is a well with a part resting in it */}
+          <div
+            className="mt-12 rounded-[34px] p-2.5 sm:mt-16 sm:p-3"
+            style={{ background: "var(--panel-bezel)", boxShadow: "var(--panel-shadow)" }}
+          >
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3 lg:grid-cols-12">
+              {parts.map((p) => {
+                const entry = getEntry(p.slug)!;
+                const Example = examples[p.example];
+                return (
+                  <div
+                    key={p.slug}
+                    className={["group/part relative flex flex-col rounded-[24px] p-5 sm:p-6", p.span].join(" ")}
+                    style={{ background: "var(--well)", boxShadow: "var(--well-shadow)" }}
+                  >
+                    <div className="flex min-h-[170px] flex-1 items-center justify-center py-8">
+                      <Example />
+                    </div>
+                    {/* stamped into the floor of the compartment */}
                     <Link
-                      href={`/docs/components/${s.slug}`}
-                      className="self-start text-[14px] font-medium text-neutral-900 hover:underline underline-offset-4 decoration-neutral-300"
+                      href={`/docs/components/${p.slug}`}
+                      className="flex items-center justify-between gap-3 rounded-[8px] text-[12.5px] font-medium text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-900"
+                      style={{ textShadow: "0 1px 0 rgba(255,255,255,0.85)" }}
                     >
                       {entry.name}
+                      <span aria-hidden className="opacity-0 transition-[opacity,transform] duration-300 group-hover/part:translate-x-0.5 group-hover/part:opacity-100">
+                        →
+                      </span>
                     </Link>
-                    <p className="text-[13px] leading-[1.5] text-neutral-500">{s.note}</p>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* ── How it's built ───────────────────────────────────── */}
-        <section id="how-its-made" className="flex flex-col pb-12 scroll-mt-24">
-          <div className="pb-10">
-            <Heading>how it&apos;s made</Heading>
-          </div>
-
-          <Row title="raised and sunken" figure={<RaisedSunken />}>
-            <Body>
-              if you can press it, it sits above the surface. if you can type into it, it sits below. that way you can tell
-              a button from a text field before you&apos;ve read a single word.
-            </Body>
-            <Body>try it: name a draft and save it. it drops into the tray below, a raised thing resting in a well.</Body>
-          </Row>
-
-          <Row title="one light source" figure={<LightRig />}>
-            <Body>
-              every shadow in the kit pretends there&apos;s a lamp right above your screen. move it and you can see
-              what it&apos;s doing: shadows fall away from it, and the edges facing it catch the light.
-            </Body>
-            <Body>
-              in the kit it never moves, so a light card and a dark card cast the same shadow and get along fine on the
-              same page.
-            </Body>
-          </Row>
-
-          <Row title="moving, not blinking" figure={<MotionDemo />}>
-            <Body>
-              nothing in the kit pops into place. when something changes, it travels there, the way a real object
-              would.
-            </Body>
-            <Body>
-              pick a period. the tab&apos;s thumb slides over, every bar grows into its new height a beat after the one
-              before it, and the total counts its way to the new number.
-            </Body>
-          </Row>
-        </section>
-
-        <OpenSource stars={stars} />
-
-        {/* ── Using it: a dark room with a pull cord ───────────── */}
-        <section id="get-started" className="pt-6 pb-16 scroll-mt-24">
-          <LightsOut>
-            <h2 className="text-[clamp(32px,5vw,56px)] font-medium leading-[1.02] tracking-[-0.045em] text-neutral-900 text-balance">
-              ready when you are!
-            </h2>
-            <p className="text-[16px] leading-[1.6] text-neutral-500 max-w-[40ch]">
-              one command sets everything up, and the whole kit is yours to use :)
-            </p>
-            <div className="w-full max-w-md text-left">
-              <CodeBlock language="bash" code={initCommand} />
+                );
+              })}
             </div>
-          </LightsOut>
+          </div>
+        </section>
+
+        {/* ── Getting it ───────────────────────────────────────── */}
+        <section id="install" className="scroll-mt-24 pt-28 sm:pt-40">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+            <div className="flex flex-col gap-5">
+              <Eyebrow>getting it</Eyebrow>
+              <Title>one command. or the source.</Title>
+              <Lede>
+                take it as a package, or copy the parts you want into your own repo and bend them. the cli does both, and
+                never writes over a file you&apos;ve changed. react 19, tailwind v4, no runtime dependencies.
+              </Lede>
+            </div>
+            <div className="lg:pt-3">
+              <Tabs
+                tabs={[
+                  {
+                    key: "package",
+                    label: "as a package",
+                    content: (
+                      <CodeBlock
+                        language="bash"
+                        title="terminal"
+                        code={`${initCommand}\n# installs it, adds the styles, the font and toasts\n\n# then, anywhere:\n# import { Button } from "${pkg}";`}
+                      />
+                    ),
+                  },
+                  {
+                    key: "source",
+                    label: "as source you own",
+                    content: (
+                      <CodeBlock
+                        language="bash"
+                        title="terminal"
+                        code={`npx ${pkg} add button date-picker toast\n# copies them in, with anything they lean on\n\nnpx ${pkg} diff\n# shows what you've changed since`}
+                      />
+                    ),
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="pt-28 sm:pt-40">
+          <OpenSource stars={stars} />
+        </section>
+
+        {/* ── The end ──────────────────────────────────────────── */}
+        <section id="get-started" className="scroll-mt-24 pb-28 pt-32 sm:pt-44">
+          <Finale command={initCommand} />
         </section>
       </main>
 
