@@ -1,6 +1,6 @@
 {
   "name": "@blurrow/ui",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "tactile react components: buttons you want to press, fields you want to fill in. comes with a cli: npx @blurrow/ui init",
   "license": "MIT",
   "author": "manyports (https://manyports.com)",
