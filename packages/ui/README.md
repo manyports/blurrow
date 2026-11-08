@@ -4,7 +4,7 @@
 
 # @blurrow/ui
 
-48 react components that look and feel like physical things. buttons sit in a bezel and sink when you press them, text fields are cut into the surface, and every shadow agrees on where the light is coming from.
+62 react components that look and feel like physical things. buttons sit in a bezel and sink when you press them, text fields are cut into the surface, and every shadow agrees on where the light is coming from.
 
 free, mit licensed, and built for react 19 and tailwind css v4. made with care by [@manyports](https://manyports.com).
 

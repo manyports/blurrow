@@ -18,7 +18,7 @@
 
 <br>
 
-blurrow is a set of 48 react components that look and feel like physical things. buttons sit in a bezel and sink when you press them. text fields are cut into the surface. every shadow agrees on where the light is coming from, so a page built from these parts holds together without you having to think about it.
+blurrow is a set of 62 react components that look and feel like physical things. buttons sit in a bezel and sink when you press them. text fields are cut into the surface. every shadow agrees on where the light is coming from, so a page built from these parts holds together without you having to think about it.
 
 i made it for my blog, [blogs](https://github.com/manyports/blogs), and kept polishing it until it felt wrong to keep it to myself. it's free, mit licensed, and built for react 19 and tailwind css v4.
 

@@ -9,6 +9,7 @@ import React, {
   useCallback,
   useId,
 } from "react";
+import { Portal } from "./Floating";
 import { Kbd } from "./Kbd";
 import { useModalBehavior } from "./useModalBehavior";
 
@@ -169,7 +170,8 @@ export function CommandPalette({
   let itemIndex = 0;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[min(20vh,140px)] px-4">
+    <Portal>
+    <div className="fixed inset-0 z-90 flex items-start justify-center pt-[min(20vh,140px)] px-4">
       {/* Backdrop */}
       <div
         className={[
@@ -349,5 +351,6 @@ export function CommandPalette({
         </div>
       </div>
     </div>
+    </Portal>
   );
 }

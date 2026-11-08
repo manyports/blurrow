@@ -222,6 +222,7 @@
   --divider: rgba(17, 17, 17, 0.07);
   --groove: color-mix(in oklab, oklch(20.5% 0 0) 8%, transparent);
   --groove-lip: 1px 0 0 rgba(255, 255, 255, 0.9);
+  --groove-lip-below: 0 1px 0 rgba(255, 255, 255, 0.9);
   --scrollbar: rgba(17, 17, 17, 0.15);
   --dots: rgba(17, 17, 17, 0.07);
   --shimmer: rgba(255, 255, 255, 0.55);
@@ -460,6 +461,7 @@
   --divider: rgba(255, 255, 255, 0.07);
   --groove: rgba(0, 0, 0, 0.45);
   --groove-lip: 1px 0 0 rgba(255, 255, 255, 0.06);
+  --groove-lip-below: 0 1px 0 rgba(255, 255, 255, 0.06);
   --scrollbar: rgba(255, 255, 255, 0.16);
   --dots: rgba(255, 255, 255, 0.07);
   --shimmer: rgba(255, 255, 255, 0.07);
@@ -710,6 +712,7 @@
     --divider: rgba(255, 255, 255, 0.07);
     --groove: rgba(0, 0, 0, 0.45);
     --groove-lip: 1px 0 0 rgba(255, 255, 255, 0.06);
+    --groove-lip-below: 0 1px 0 rgba(255, 255, 255, 0.06);
     --scrollbar: rgba(255, 255, 255, 0.16);
     --dots: rgba(255, 255, 255, 0.07);
     --shimmer: rgba(255, 255, 255, 0.07);
@@ -1005,13 +1008,16 @@
     outline: none;
     box-shadow: var(--field-shadow-focus);
   }
-  .field[aria-invalid='true'] {
+  .field[aria-invalid='true'],
+  .field[data-invalid] {
     box-shadow: var(--field-shadow-error);
   }
-  .field[aria-invalid='true']:hover {
+  .field[aria-invalid='true']:hover,
+  .field[data-invalid]:hover {
     box-shadow: var(--field-shadow-error-hover);
   }
-  .field[aria-invalid='true']:focus {
+  .field[aria-invalid='true']:focus,
+  .field[data-invalid][data-open] {
     box-shadow: var(--field-shadow-error-focus);
   }
 }
@@ -1111,6 +1117,15 @@
 }
 .animate-input-shimmer {
   animation: input-shimmer 850ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ── OTP slot caret ──────────────────────────────────────────────── */
+@keyframes otp-caret {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+.animate-otp-caret {
+  animation: otp-caret 1s steps(1, end) infinite;
 }
 
 @keyframes select-in {

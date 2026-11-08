@@ -40,7 +40,7 @@ export function Checkbox({
     <div
       className={[
         "flex items-center justify-between gap-4 select-none",
-        disabled ? "opacity-40 pointer-events-none" : "cursor-pointer",
+        disabled ? "opacity-40 pointer-events-none" : "cursor-pointer group/checkbox",
         className,
       ].join(" ")}
       onClick={toggle}
@@ -65,8 +65,11 @@ export function Checkbox({
         aria-describedby={description ? `${uid}-desc` : undefined}
         disabled={disabled}
         className={[
-          "shrink-0 w-[22px] h-[22px] rounded-[7px] flex items-center justify-center cursor-pointer",
+          "shrink-0 w-[22px] h-[22px] rounded-[7px] flex items-center justify-center cursor-pointer text-ink-inverse",
           "transition-[box-shadow,transform,scale] duration-200 ease-out active:scale-90",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
+          // an empty box answers the pointer like any other field
+          active ? "" : "group-hover/checkbox:[box-shadow:var(--field-shadow-hover)]",
         ].join(" ")}
         style={{
           background: active ? "var(--face-inverse)" : "var(--field)",
@@ -77,14 +80,16 @@ export function Checkbox({
           indeterminate ? (
             <span className="animate-checkbox-in">
               <svg width="10" height="2" viewBox="0 0 10 2" fill="none">
-                <rect width="10" height="2" rx="1" fill="white" />
+                <rect width="10" height="2" rx="1" fill="currentColor" />
               </svg>
             </span>
           ) : (
-            <svg width="13" height="10" viewBox="0 0 13 10" fill="none">
+            /* The mark is pressed into the face: it takes the inverse ink, so it
+               reads on the dark face in light mode and the pale one in dark */
+            <svg width="13" height="10" viewBox="0 0 13 10" fill="none" style={{ filter: "drop-shadow(var(--emboss-inverse))" }}>
               <path
                 d="M1.5 5l3.5 3.5L11.5 1"
-                stroke="white"
+                stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"

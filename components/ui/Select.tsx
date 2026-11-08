@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useId } from "react";
+import { Portal } from "./Floating";
+import { useFloatingPanel } from "./useFloatingPanel";
 
 interface SelectOption {
   value: string;
@@ -33,40 +35,19 @@ export function Select({
   fullWidth = false,
   className = "",
 }: SelectProps) {
-  const [open, setOpen] = useState(false);
-  // The list stays mounted while it folds away, and only unfolds once painted
-  const [mounted, setMounted] = useState(false);
-  const [entered, setEntered] = useState(false);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [active, setActive] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const uid = useId();
+  // The list is portalled to the body and pinned under the field
+  const { open, mounted, close, show, setFloating, panelStyle } = useFloatingPanel(ref, {
+    matchWidth: true,
+    onEscape: () => buttonRef.current?.focus(),
+  });
 
   const selectedIndex = options.findIndex((o) => o.value === value);
   const selected = options[selectedIndex];
-
-  const close = () => {
-    setOpen(false);
-    setEntered(false);
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => setMounted(false), 200);
-  };
-
-  useEffect(() => () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-  }, []);
-
-  useEffect(() => {
-    function onOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        close();
-      }
-    }
-    document.addEventListener("mousedown", onOutside);
-    return () => document.removeEventListener("mousedown", onOutside);
-  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -77,10 +58,7 @@ export function Select({
 
   const openList = () => {
     setActive(selectedIndex >= 0 ? selectedIndex : 0);
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-    setOpen(true);
-    setMounted(true);
-    requestAnimationFrame(() => requestAnimationFrame(() => setEntered(true)));
+    show();
   };
 
   const pick = (index: number) => {
@@ -214,23 +192,14 @@ export function Select({
         </button>
 
         {mounted && (
+          <Portal>
           <div
-            className="absolute left-0 z-50 mt-2 p-1.5 rounded-[16px] origin-top"
+            ref={setFloating}
+            className="p-1.5 rounded-[16px]"
             style={{
-              minWidth: "100%",
+              ...panelStyle,
               maxWidth: "min(420px, calc(100vw - 2rem))",
               width: "max-content",
-              background: "var(--panel-bezel)",
-              boxShadow: "var(--overlay-shadow)",
-              /* Unfolds downward out of the field: a clip reveals it top to
-                 bottom while it fades and settles. The clip's sides reach
-                 past the panel so its shadow is never cut off.             */
-              opacity: entered ? 1 : 0,
-              transform: entered ? "none" : "translateY(-4px) scale(0.98)",
-              clipPath: entered ? "inset(-48px -48px -48px -48px)" : "inset(-48px -48px 55% -48px)",
-              transition: entered
-                ? "opacity 180ms ease-out, transform 360ms var(--ease-out-soft), clip-path 360ms var(--ease-out-soft)"
-                : "opacity 160ms ease-in, transform 200ms ease-in, clip-path 200ms ease-in",
             }}
           >
             <div
@@ -286,6 +255,7 @@ export function Select({
               })}
             </div>
           </div>
+          </Portal>
         )}
       </div>
 

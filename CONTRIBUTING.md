@@ -69,6 +69,8 @@ these are what make the parts hold together. a pull request that breaks one will
 - **a face and a bezel.** the bezel never moves. the face lifts a pixel on hover and sinks flush on press.
 - **tokens live in `styles.css`.** use the existing materials (`--bezel-light`, `--face-light`, `--field`, `--well`, the card and panel tokens, and their dark versions) instead of writing new shadows inline. if you need a new one, add it there, with every state built from the same layers so it animates instead of snapping (the field tokens show how).
 - **light and dark agree.** a dark face uses the dark tokens and casts the same shadow as a light one.
+- **anything that floats goes through `Portal`.** menus, popovers, pickers and dialogs render at the end of `<body>` (see `Floating.tsx`), so a transformed or `isolate`d parent can't trap them under the page. `useFloatingPanel` does the positioning, flipping and outside-click handling for field-anchored panels.
+- **colours come from the semantic tokens** (`text-ink-*`, `bg-panel-face`, `--face`, `--key-shadow`, `--face-inverse`…), never `neutral-*` or `white`, so a component is right in both themes without a `dark:` variant.
 - **lowercase, plain words.** labels, descriptions and docs copy are lowercase and short.
 - **no new dependencies** in the components without asking first.
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { Portal } from "./Floating";
 import { CloseButton } from "./CloseButton";
 import { useModalBehavior } from "./useModalBehavior";
 
@@ -54,6 +55,7 @@ export function Modal({
   if (!mounted) return null;
 
   return (
+    <Portal>
     <div className="fixed inset-0 z-90 flex items-center justify-center p-4">
       <div
         aria-hidden
@@ -123,5 +125,6 @@ export function Modal({
         </div>
       </div>
     </div>
+    </Portal>
   );
 }

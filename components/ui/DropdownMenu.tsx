@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect, useId, useCallback, ReactNode } from "react";
 import { Kbd } from "./Kbd";
+import { ENTER_FROM, LAYER, Portal, useAnchoredPosition } from "./Floating";
 
 type DropdownMenuPosition =
   | "bottom-start"
@@ -27,22 +28,6 @@ interface DropdownMenuProps {
   className?: string;
 }
 
-const positionStyles: Record<DropdownMenuPosition, string> = {
-  "bottom-start": "top-full left-0 mt-2 origin-top-left",
-  "bottom-end": "top-full right-0 mt-2 origin-top-right",
-  "top-start": "bottom-full left-0 mb-2 origin-bottom-left",
-  "top-end": "bottom-full right-0 mb-2 origin-bottom-right",
-};
-
-const enterFrom: Record<DropdownMenuPosition, string> = {
-  "bottom-start": "-translate-y-1.5",
-  "bottom-end": "-translate-y-1.5",
-  "top-start": "translate-y-1.5",
-  "top-end": "translate-y-1.5",
-};
-
-const ITEMS = '[role="menu"] [role="menuitem"]:not([disabled])';
-
 export function DropdownMenu({
   trigger,
   items,
@@ -53,54 +38,27 @@ export function DropdownMenu({
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
-  // Where the menu actually opens: the requested side unless that runs off-screen
-  const [placement, setPlacement] = useState(position);
-  const [shift, setShift] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
   const uid = useId();
+  const [v, h] = position.split("-") as ["top" | "bottom", "start" | "end"];
+  // Portalled and pinned to the trigger; flips up or over when it runs out of room
+  const { setFloating, side } = useAnchoredPosition(ref, { open: mounted, side: v, align: h });
+  const attachMenu = useCallback(
+    (el: HTMLDivElement | null) => {
+      menuRef.current = el;
+      setFloating(el);
+    },
+    [setFloating],
+  );
 
-  /* Found through the wrapper: attachMenu only reads the node it's handed,
-     so the compiler can keep it memoized                                */
-  const enabledItems = () => Array.from(ref.current?.querySelectorAll<HTMLElement>(ITEMS) ?? []);
+  const enabledItems = () => Array.from(menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled])') ?? []);
 
   const focusItem = (index: number) => {
     const list = enabledItems();
     if (list.length === 0) return;
     list[(index + list.length) % list.length].focus();
   };
-
-  /* Measured as soon as the menu is attached, before it fades in.
-     offsetWidth/Height ignore the enter transform, so the numbers are the
-     menu's settled size.                                                */
-  const attachMenu = useCallback((menu: HTMLDivElement | null) => {
-    // The wrapper the menu hangs from, the same node as ref
-    const anchor = menu?.parentElement;
-    if (!menu || !anchor) return;
-    const gap = 8;
-    const a = anchor.getBoundingClientRect();
-    const w = menu.offsetWidth;
-    const h = menu.offsetHeight;
-    const vw = document.documentElement.clientWidth;
-    const vh = window.innerHeight;
-
-    let [v, side] = position.split("-") as ["top" | "bottom", "start" | "end"];
-    const fitsStart = a.left + w <= vw - gap;
-    const fitsEnd = a.right - w >= gap;
-    if (side === "end" && !fitsEnd && fitsStart) side = "start";
-    else if (side === "start" && !fitsStart && fitsEnd) side = "end";
-
-    const fitsBelow = a.bottom + gap + h <= vh - gap;
-    const fitsAbove = a.top - gap - h >= gap;
-    if (v === "bottom" && !fitsBelow && fitsAbove) v = "top";
-    else if (v === "top" && !fitsAbove && fitsBelow) v = "bottom";
-
-    // Neither side fits (narrow screens): slide it back inside the viewport
-    const left = side === "start" ? a.left : a.right - w;
-    const nudge = Math.max(gap - left, 0) - Math.max(left + w - (vw - gap), 0);
-
-    setPlacement(`${v}-${side}` as DropdownMenuPosition);
-    setShift(nudge);
-  }, [position]);
 
   /* Mounted and faded out during render; the effect only times the rest */
   if (open && !mounted) setMounted(true);
@@ -112,7 +70,7 @@ export function DropdownMenu({
         requestAnimationFrame(() => {
           setVisible(true);
           // Land on the first item so arrow keys work straight away
-          ref.current?.querySelector<HTMLElement>(ITEMS)?.focus();
+          enabledItems()[0]?.focus();
         })
       );
     } else {
@@ -123,9 +81,9 @@ export function DropdownMenu({
 
   useEffect(() => {
     function onOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
+      const t = e.target as Node;
+      if (ref.current?.contains(t) || menuRef.current?.contains(t)) return;
+      setOpen(false);
     }
     document.addEventListener("mousedown", onOutside);
     return () => document.removeEventListener("mousedown", onOutside);
@@ -178,11 +136,6 @@ export function DropdownMenu({
       <div
         data-menu-trigger
         onClick={() => {
-          if (!open) {
-            // Start each opening from the requested side; attachMenu flips if needed
-            setPlacement(position);
-            setShift(0);
-          }
           setOpen(!open);
         }}
         className="inline-flex cursor-pointer"
@@ -196,20 +149,24 @@ export function DropdownMenu({
           : trigger}
       </div>
       {mounted && (
+        <Portal>
         <div
           ref={attachMenu}
           id={`${uid}-menu`}
           role="menu"
           onKeyDown={onMenuKeyDown}
-          className={[
-            "absolute z-50 min-w-[200px] rounded-[16px] p-1.5",
-            "transition-[opacity,transform,scale,translate] duration-200 ease-[var(--ease-spring)]",
-            visible
-              ? "opacity-100 scale-100 translate-y-0"
-              : ["opacity-0 scale-[0.96]", enterFrom[placement]].join(" "),
-            positionStyles[placement],
-          ].join(" ")}
-          style={{ background: "var(--panel-bezel)", boxShadow: "var(--overlay-shadow)", marginLeft: shift || undefined }}
+          className="min-w-[200px] rounded-[16px] p-1.5 transition-[opacity,transform] duration-200 ease-[var(--ease-spring)]"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            zIndex: LAYER.floating,
+            transformOrigin: `${side === "top" ? "bottom" : "top"} ${h === "start" ? "left" : "right"}`,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "none" : `${ENTER_FROM[side]} scale(0.96)`,
+            background: "var(--panel-bezel)",
+            boxShadow: "var(--overlay-shadow)",
+          }}
         >
           <div
             className="bg-panel-face rounded-[11px] p-1 flex flex-col"
@@ -255,6 +212,7 @@ export function DropdownMenu({
             })}
           </div>
         </div>
+        </Portal>
       )}
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { Portal } from "./Floating";
 import { CloseButton } from "./CloseButton";
 import { useModalBehavior } from "./useModalBehavior";
 
@@ -69,6 +70,7 @@ export function Drawer({
   const isRight = side === "right";
 
   return (
+    <Portal>
     <div className="fixed inset-0 z-90">
       <div
         aria-hidden
@@ -159,5 +161,6 @@ export function Drawer({
         </div>
       </div>
     </div>
+    </Portal>
   );
 }

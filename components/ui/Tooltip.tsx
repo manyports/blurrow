@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useCallback, useEffect, useId } from "react";
+import { ENTER_FROM, LAYER, ORIGIN, Portal, useAnchoredPosition } from "./Floating";
 
 type TooltipPosition = "top" | "bottom" | "left" | "right";
 
@@ -11,20 +12,6 @@ interface TooltipProps {
   className?: string;
 }
 
-const origin: Record<TooltipPosition, string> = {
-  top: "origin-bottom",
-  bottom: "origin-top",
-  left: "origin-right",
-  right: "origin-left",
-};
-
-const enterTranslate: Record<TooltipPosition, string> = {
-  top: "translate-y-1",
-  bottom: "-translate-y-1",
-  left: "translate-x-1",
-  right: "-translate-x-1",
-};
-
 export function Tooltip({
   content,
   position = "top",
@@ -34,9 +21,7 @@ export function Tooltip({
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [coords, setCoords] = useState({ top: 0, left: 0 });
   const triggerRef = useRef<HTMLDivElement>(null);
-  const tooltipRef = useRef<HTMLDivElement>(null);
   const enterTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const exitTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoHideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -74,50 +59,9 @@ export function Tooltip({
     }
   }, [open]);
 
-  const measure = useCallback(() => {
-    if (!triggerRef.current || !tooltipRef.current) return;
-    const tr = triggerRef.current.getBoundingClientRect();
-    const tp = tooltipRef.current.getBoundingClientRect();
-    const gap = 7;
-
-    let top = 0;
-    let left = 0;
-
-    switch (position) {
-      case "top":
-        top = -(tp.height + gap);
-        left = (tr.width - tp.width) / 2;
-        break;
-      case "bottom":
-        top = tr.height + gap;
-        left = (tr.width - tp.width) / 2;
-        break;
-      case "left":
-        top = (tr.height - tp.height) / 2;
-        left = -(tp.width + gap);
-        break;
-      case "right":
-        top = (tr.height - tp.height) / 2;
-        left = tr.width + gap;
-        break;
-    }
-
-    const viewportPadding = 8;
-    const absLeft = triggerRef.current.getBoundingClientRect().left + left;
-    const overflowRight = absLeft + tp.width - (window.innerWidth - viewportPadding);
-    const overflowLeft = viewportPadding - absLeft;
-    if (overflowRight > 0) left -= overflowRight;
-    if (overflowLeft > 0) left += overflowLeft;
-
-    setCoords({ top, left });
-  }, [position]);
-
-  /* Measured as soon as the tooltip is attached, like DropdownMenu, so
-     it's placed before the first paint rather than after it           */
-  const attachTooltip = useCallback((el: HTMLDivElement | null) => {
-    tooltipRef.current = el;
-    if (el) measure();
-  }, [measure]);
+  /* Portalled to the body and placed before its first paint, flipping
+     to the other side when there's no room                           */
+  const { setFloating, side } = useAnchoredPosition(triggerRef, { open: mounted, side: position, align: "center", gap: 7 });
 
   useEffect(() => {
     if (!open) return;
@@ -188,21 +132,20 @@ export function Tooltip({
           })
         : children}
       {mounted && (
+        <Portal>
         <div
-          ref={attachTooltip}
+          ref={setFloating}
           id={`${uid}-tip`}
           role="tooltip"
-          className={[
-            "absolute z-50 px-2.5 py-1.5 rounded-[9px] text-ink-inverse text-[11.5px] font-medium whitespace-nowrap pointer-events-none",
-            "transition-[opacity,transform,scale,translate] duration-150 ease-[var(--ease-spring)]",
-            origin[position],
-            visible
-              ? "opacity-100 scale-100 translate-x-0 translate-y-0"
-              : ["opacity-0 scale-95", enterTranslate[position]].join(" "),
-          ].join(" ")}
+          className="px-2.5 py-1.5 rounded-[9px] text-ink-inverse text-[11.5px] font-medium whitespace-nowrap pointer-events-none transition-[opacity,transform] duration-150 ease-[var(--ease-spring)]"
           style={{
-            top: coords.top,
-            left: coords.left,
+            position: "fixed",
+            top: 0,
+            left: 0,
+            zIndex: LAYER.tooltip,
+            transformOrigin: ORIGIN[side],
+            opacity: visible ? 1 : 0,
+            transform: visible ? "none" : `${ENTER_FROM[side]} scale(0.95)`,
             background: "var(--face-inverse)",
             boxShadow: "var(--tooltip-shadow)",
             textShadow: "var(--emboss-inverse)",
@@ -210,6 +153,7 @@ export function Tooltip({
         >
           {content}
         </div>
+        </Portal>
       )}
     </div>
   );

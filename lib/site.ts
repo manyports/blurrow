@@ -19,9 +19,9 @@ export const siteName = "blurrow";
 /* Written for people reading a search result or a link preview. Kept
    under ~160 characters so it isn't cut off mid-thought.           */
 export const siteDescription =
-  "Buttons that sink when you press them, fields set into the page, and one light behind every shadow. 48 free, open-source React components for Tailwind CSS.";
+  "Buttons that sink when you press them, fields set into the page, and one light behind every shadow. 62 free, open-source React components for Tailwind CSS.";
 export const homeTitle = "blurrow | Tactile React components for Tailwind CSS";
 /* Link previews: no brand in the title, the headline does the work */
 export const socialTitle = "Buttons you want to press, fields you want to fill in";
 export const socialDescription =
-  "blurrow is a free kit of 48 React components with real depth: buttons in a bezel, fields cut into the surface, and shadows that all agree on one light.";
+  "blurrow is a free kit of 62 React components with real depth: buttons in a bezel, fields cut into the surface, and shadows that all agree on one light.";

@@ -17,6 +17,36 @@ import InputWithIcon from "./input-with-icon";
 import InputLayered from "./input-layered";
 import InputError from "./input-error";
 import InputDisabled from "./input-disabled";
+import NumberInputDemo from "./number-input-demo";
+import NumberInputUnits from "./number-input-units";
+import NumberInputError from "./number-input-error";
+import DatePickerDemo from "./date-picker-demo";
+import DatePickerLimits from "./date-picker-limits";
+import CalendarDemo from "./calendar-demo";
+import ColorPickerDemo from "./color-picker-demo";
+import ColorPickerInline from "./color-picker-inline";
+import ColorPickerSwatches from "./color-picker-swatches";
+import SliderDemo from "./slider-demo";
+import SliderRange from "./slider-range";
+import SliderMarks from "./slider-marks";
+import ComboboxDemo from "./combobox-demo";
+import ComboboxDescriptions from "./combobox-descriptions";
+import OtpInputDemo from "./otp-input-demo";
+import OtpInputAlphanumeric from "./otp-input-alphanumeric";
+import TimePickerDemo from "./time-picker-demo";
+import TimePicker12h from "./time-picker-12h";
+import DateRangePickerDemo from "./date-range-picker-demo";
+import DateRangePickerSingle from "./date-range-picker-single";
+import RadioCardsDemo from "./radio-cards-demo";
+import RadioCardsColumns from "./radio-cards-columns";
+import FileUploadDemo from "./file-upload-demo";
+import FileUploadSingle from "./file-upload-single";
+import ContextMenuDemo from "./context-menu-demo";
+import HoverCardDemo from "./hover-card-demo";
+import SpinnerDemo from "./spinner-demo";
+import SpinnerInButton from "./spinner-in-button";
+import SeparatorDemo from "./separator-demo";
+import SeparatorVertical from "./separator-vertical";
 import TextareaDemo from "./textarea-demo";
 import TextareaAutoResize from "./textarea-auto-resize";
 import TextareaError from "./textarea-error";
@@ -117,6 +147,36 @@ export const examples: Record<string, ComponentType> = {
   "input-layered": InputLayered,
   "input-error": InputError,
   "input-disabled": InputDisabled,
+  "number-input-demo": NumberInputDemo,
+  "number-input-units": NumberInputUnits,
+  "number-input-error": NumberInputError,
+  "date-picker-demo": DatePickerDemo,
+  "date-picker-limits": DatePickerLimits,
+  "calendar-demo": CalendarDemo,
+  "color-picker-demo": ColorPickerDemo,
+  "color-picker-inline": ColorPickerInline,
+  "color-picker-swatches": ColorPickerSwatches,
+  "slider-demo": SliderDemo,
+  "slider-range": SliderRange,
+  "slider-marks": SliderMarks,
+  "combobox-demo": ComboboxDemo,
+  "combobox-descriptions": ComboboxDescriptions,
+  "otp-input-demo": OtpInputDemo,
+  "otp-input-alphanumeric": OtpInputAlphanumeric,
+  "time-picker-demo": TimePickerDemo,
+  "time-picker-12h": TimePicker12h,
+  "date-range-picker-demo": DateRangePickerDemo,
+  "date-range-picker-single": DateRangePickerSingle,
+  "radio-cards-demo": RadioCardsDemo,
+  "radio-cards-columns": RadioCardsColumns,
+  "file-upload-demo": FileUploadDemo,
+  "file-upload-single": FileUploadSingle,
+  "context-menu-demo": ContextMenuDemo,
+  "hover-card-demo": HoverCardDemo,
+  "spinner-demo": SpinnerDemo,
+  "spinner-in-button": SpinnerInButton,
+  "separator-demo": SeparatorDemo,
+  "separator-vertical": SeparatorVertical,
   "textarea-demo": TextareaDemo,
   "textarea-auto-resize": TextareaAutoResize,
   "textarea-error": TextareaError,

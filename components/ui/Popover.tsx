@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useId } from "react";
+import { ENTER_FROM, LAYER, ORIGIN, Portal, useAnchoredPosition } from "./Floating";
 
 type PopoverPosition = "top" | "bottom" | "left" | "right";
 
@@ -10,29 +11,6 @@ interface PopoverProps {
   position?: PopoverPosition;
   className?: string;
 }
-
-/* Anchored with margins on a wrapper so the panel's own transform is free
-   for the enter motion, which scales out from the trigger side. */
-const positionStyles: Record<PopoverPosition, string> = {
-  top: "bottom-full left-1/2 -translate-x-1/2 pb-2",
-  bottom: "top-full left-1/2 -translate-x-1/2 pt-2",
-  left: "right-full top-1/2 -translate-y-1/2 pr-2",
-  right: "left-full top-1/2 -translate-y-1/2 pl-2",
-};
-
-const origin: Record<PopoverPosition, string> = {
-  top: "origin-bottom",
-  bottom: "origin-top",
-  left: "origin-right",
-  right: "origin-left",
-};
-
-const enterFrom: Record<PopoverPosition, string> = {
-  top: "translate-y-1.5",
-  bottom: "-translate-y-1.5",
-  left: "translate-x-1.5",
-  right: "-translate-x-1.5",
-};
 
 export function Popover({
   trigger,
@@ -44,8 +22,9 @@ export function Popover({
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
   const uid = useId();
+  // Portalled and pinned beside the trigger, flipping if there's no room
+  const { setFloating, floatingRef, side } = useAnchoredPosition(ref, { open: mounted, side: position, align: "center" });
 
   /* Mounted and faded out during render; the effect only times the rest */
   if (open && !mounted) setMounted(true);
@@ -53,22 +32,32 @@ export function Popover({
 
   useEffect(() => {
     if (open) {
-      requestAnimationFrame(() => requestAnimationFrame(() => setVisible(true)));
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          setVisible(true);
+          // The panel lives at the end of <body>; bring focus to it so Tab reaches its contents
+          const panel = floatingRef.current;
+          const first = panel?.querySelector<HTMLElement>(
+            'button:not([disabled]), [href], input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])',
+          );
+          (first ?? panel)?.focus({ preventScroll: true });
+        }),
+      );
     } else {
       const t = setTimeout(() => setMounted(false), 180);
       return () => clearTimeout(t);
     }
-  }, [open]);
+  }, [open, floatingRef]);
 
   useEffect(() => {
     function onOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
+      const t = e.target as Node;
+      if (ref.current?.contains(t) || floatingRef.current?.contains(t)) return;
+      setOpen(false);
     }
     document.addEventListener("mousedown", onOutside);
     return () => document.removeEventListener("mousedown", onOutside);
-  }, []);
+  }, [floatingRef]);
 
   useEffect(() => {
     if (!open) return;
@@ -94,20 +83,24 @@ export function Popover({
           : trigger}
       </div>
       {mounted && (
-        <div className={["absolute z-50", positionStyles[position]].join(" ")}>
+        <Portal>
           <div
-            ref={panelRef}
+            ref={setFloating}
             id={`${uid}-popover`}
             role="dialog"
-            className={[
-              "min-w-[220px] rounded-[16px] p-1.5",
-              "transition-[opacity,transform,scale,translate] duration-200 ease-[var(--ease-spring)]",
-              origin[position],
-              visible
-                ? "opacity-100 scale-100 translate-x-0 translate-y-0"
-                : ["opacity-0 scale-[0.96]", enterFrom[position]].join(" "),
-            ].join(" ")}
-            style={{ background: "var(--panel-bezel)", boxShadow: "var(--overlay-shadow)" }}
+            tabIndex={-1}
+            className="outline-none min-w-[220px] max-w-[calc(100vw-16px)] rounded-[16px] p-1.5 transition-[opacity,transform] duration-200 ease-[var(--ease-spring)]"
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              zIndex: LAYER.floating,
+              transformOrigin: ORIGIN[side],
+              opacity: visible ? 1 : 0,
+              transform: visible ? "none" : `${ENTER_FROM[side]} scale(0.96)`,
+              background: "var(--panel-bezel)",
+              boxShadow: "var(--overlay-shadow)",
+            }}
           >
             <div
               className="bg-panel-face rounded-[11px] p-3.5 text-[13px] text-ink-body leading-relaxed"
@@ -116,7 +109,7 @@ export function Popover({
               {children}
             </div>
           </div>
-        </div>
+        </Portal>
       )}
     </div>
   );
