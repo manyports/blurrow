@@ -15,7 +15,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("", 1, "weekly"),
     page("/docs", 0.9),
     page("/docs/installation", 0.9),
-    page("/docs/components", 0.9, "weekly"),
-    ...registry.map((e) => page(`/docs/components/${e.slug}`, 0.7)),
+    page("/privacy", 0.2),
   ];
 }
