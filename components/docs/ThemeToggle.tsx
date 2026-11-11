@@ -35,7 +35,7 @@ export function useSiteTheme() {
     const next: ThemeChoice = dark ? "light" : "dark";
     writeTheme(next);
   };
-  return { dark, toggle };
+  return { dark, choice, toggle, choose: writeTheme };
 }
 
 function Sun() {
@@ -55,28 +55,18 @@ function Moon() {
   );
 }
 
-/* The glyph shows the light you're in; pressing it turns the lamp the
-   other way, and the two glyphs swap with a quarter turn.
-
-   On the desktop bar it's a ghost key, like search beside it: quiet
-   until you point at it. On mobile it sits with the search and menu
-   keys, so it's a small raised key like them.                       */
-export function ThemeToggle({ dark, onToggle, variant = "ghost" }: { dark: boolean; onToggle: () => void; variant?: "ghost" | "key" }) {
-  const ghost = variant === "ghost";
+/* A small raised key, like the other keys in the bar. The glyph shows
+   the light you're in; pressing it turns the lamp the other way, and
+   the two glyphs swap with a quarter turn.                          */
+export function ThemeToggle({ dark, onToggle }: { dark: boolean; onToggle: () => void }) {
   return (
     <button
       type="button"
       onClick={onToggle}
       aria-label={dark ? "switch to light theme" : "switch to dark theme"}
       title={dark ? "light theme" : "dark theme"}
-      className={[
-        "relative w-9 h-9 flex items-center justify-center cursor-pointer",
-        "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
-        ghost
-          ? "rounded-[11px] text-ink-muted hover:text-ink hover:bg-surface-active/70 hover:[box-shadow:var(--ghost-shadow-hover)] active:[box-shadow:var(--ghost-shadow-pressed)] transition-[background-color,box-shadow,color] duration-150"
-          : "rounded-[10px] text-ink-label active:scale-95 transition-[scale] duration-150",
-      ].join(" ")}
-      style={ghost ? undefined : { background: "var(--face)", boxShadow: "var(--tile-shadow)" }}
+      className="relative w-9 h-9 rounded-[10px] flex items-center justify-center text-ink-label hover:text-ink cursor-pointer active:scale-95 transition-[color,scale] duration-150 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+      style={{ background: "var(--face)", boxShadow: "var(--tile-shadow)" }}
     >
       {[false, true].map((isMoon) => (
         <span
