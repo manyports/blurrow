@@ -12,7 +12,8 @@ import { examples } from "@/examples";
 import { getEntry, getNeighbours, registry } from "@/lib/registry";
 import { JsonLd } from "@/components/docs/JsonLd";
 import { authorLd, breadcrumbLd, pageMetadata, sentenceCase } from "@/lib/seo";
-import { pkg, siteUrl } from "@/lib/site";
+import { lastModified, pageSources } from "@/lib/lastmod";
+import { pkg, siteName, siteUrl } from "@/lib/site";
 import { getComponentFiles, getExports, getPropTypes, readExample } from "@/lib/source";
 
 /* Components that need a bigger stage than a button does */
@@ -30,13 +31,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // the component's own line, plus a short tail only while it still fits
   const base = sentenceCase(entry.description);
   const tail = [" Free to use, with a live preview, examples and the source.", " Free and open source."].find((t) => base.length + t.length <= 160) ?? "";
+  // google cuts titles around 60 characters, " | blurrow" included, so
+  // "CSS" is dropped only when the full name would push it past that
+  const full = `${name} component for React and Tailwind CSS`;
   return pageMetadata({
-    // google cuts titles around 60 characters, " | blurrow" included
-    title: `${name} component for React and Tailwind${name.length > 14 ? "" : " CSS"}`,
+    title: full.length + ` | ${siteName}`.length <= 60 ? full : full.slice(0, -" CSS".length),
     description: base + tail,
     path: `/docs/components/${slug}`,
     image: `/docs/components/${slug}/opengraph-image/banner`,
-    imageAlt: `Banner for the blurrow ${entry.name} component, with the command to add it: npx @blurrow/ui add ${slug}`,
+    // the same words the banner's own alt uses
+    imageAlt: `The blurrow ${entry.name} component: ${entry.description}`,
     type: "article",
   });
 }
@@ -55,6 +59,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
   const Hero = examples[hero.name];
   const stage = LARGE_STAGE.has(slug) ? "lg" : "md";
   const { prev, next } = getNeighbours(slug);
+  const modified = lastModified(pageSources.component(entry));
 
   const toc = [
     { key: "installation", label: "installation", level: 1 as const },
@@ -86,6 +91,8 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
             description: sentenceCase(entry.description),
             url: `${siteUrl}/docs/components/${slug}`,
             image: `${siteUrl}/docs/components/${slug}/opengraph-image/banner`,
+            ...(modified ? { dateModified: modified.toISOString() } : {}),
+            mainEntityOfPage: `${siteUrl}/docs/components/${slug}`,
             articleSection: entry.category,
             dependencies: `${pkg}, React 19, Tailwind CSS v4`,
             author: authorLd,

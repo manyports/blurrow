@@ -11,7 +11,8 @@ export const metadata: Metadata = pageMetadata({
   description:
     "Every blurrow component in one place, from buttons, inputs and selects to modals, toasts, tables and cards. Each has a live preview, examples and its source.",
   path: "/docs/components",
-  imageAlt: "The blurrow banner: a pendant lamp lighting a card of components in a dark room.",
+  imageAlt:
+    "The blurrow banner: the blurrow mark, a white key with a grey dish pressed into it, above the line: buttons you want to press, fields you want to fill in.",
 });
 
 export default function ComponentsIndexPage() {

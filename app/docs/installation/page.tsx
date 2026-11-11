@@ -14,7 +14,8 @@ export const metadata: Metadata = pageMetadata({
   description:
     "Set up blurrow with one command, or by hand: install the package, add its styles to your CSS, load the Archivo font and wrap your app in ToastProvider.",
   path: "/docs/installation",
-  imageAlt: "The blurrow banner, with the setup command npx @blurrow/ui init.",
+  imageAlt:
+    "The blurrow banner: the blurrow mark, a white key with a grey dish pressed into it, above the line: buttons you want to press, fields you want to fill in.",
 });
 
 const css = `@import "tailwindcss";
