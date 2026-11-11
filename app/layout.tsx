@@ -8,16 +8,14 @@ import { themeScript } from "@/lib/theme";
 import { author, homeTitle, siteDescription, siteName, siteUrl, socialDescription, socialTitle } from "@/lib/site";
 import "./globals.css";
 
+/* Only the three weights the site sets, as woff2: every face listed here
+   is preloaded on every page, so an unused one only slows the first
+   paint. (The .ttf copies are for the generated images in lib/og.)  */
 const archivo = localFont({
   src: [
-    { path: "./fonts/ttf/Archivo-Regular.ttf", weight: "400", style: "normal" },
-    { path: "./fonts/ttf/Archivo-Italic.ttf", weight: "400", style: "italic" },
-    { path: "./fonts/ttf/Archivo-Medium.ttf", weight: "500", style: "normal" },
-    { path: "./fonts/ttf/Archivo-MediumItalic.ttf", weight: "500", style: "italic" },
-    { path: "./fonts/ttf/Archivo-SemiBold.ttf", weight: "600", style: "normal" },
-    { path: "./fonts/ttf/Archivo-SemiBoldItalic.ttf", weight: "600", style: "italic" },
-    { path: "./fonts/ttf/Archivo-Bold.ttf", weight: "700", style: "normal" },
-    { path: "./fonts/ttf/Archivo-BoldItalic.ttf", weight: "700", style: "italic" },
+    { path: "./fonts/woff2/Archivo-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/woff2/Archivo-Medium.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/woff2/Archivo-SemiBold.woff2", weight: "600", style: "normal" },
   ],
   variable: "--font-archivo",
 });

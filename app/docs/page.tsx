@@ -11,7 +11,8 @@ export const metadata: Metadata = pageMetadata({
   description:
     "Where blurrow came from and the four ideas behind it: one light source, raised and sunken surfaces, a bezel holding a face, and motion that travels.",
   path: "/docs",
-  imageAlt: "The blurrow banner: a pendant lamp lighting a card of components in a dark room.",
+  imageAlt:
+    "The blurrow banner: the blurrow mark, a white key with a grey dish pressed into it, above the line: buttons you want to press, fields you want to fill in.",
 });
 
 const principles = [
