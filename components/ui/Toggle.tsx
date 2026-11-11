@@ -83,7 +83,7 @@ export function Toggle({
             left: 3,
             /* The knob stretches while held, like a finger dragging it */
             width: pressed ? 24 : 20,
-            background: "var(--face)",
+            background: "var(--knob, var(--face))",
             boxShadow: "var(--knob-shadow)",
             transform: `translateX(${isOn ? (pressed ? 16 : 20) : 0}px) translateY(-50%)`,
             transition:
