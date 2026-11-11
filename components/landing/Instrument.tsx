@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/Input";
 import { Slider } from "@/components/ui/Slider";
 import { Tabs } from "@/components/ui/Tabs";
 import { Toggle } from "@/components/ui/Toggle";
+import { usePageDark } from "@/components/docs/ThemeToggle";
 import { playClick } from "./click";
 
 /* Eight pads, a major scale from c to c. The click is the kit's own
@@ -79,7 +80,16 @@ function Pad({ note, lit, onPress }: { note: string; lit: boolean; onPress: () =
    thing turns into its dark materials.                             */
 export function Instrument() {
   const [name, setName] = useState("");
-  const [dark, setDark] = useState(false);
+  /* The finish follows the page until you pick one; flipping the
+     site's theme hands it back to the page                          */
+  const { dark: pageDark } = usePageDark();
+  const [picked, setPicked] = useState<boolean | null>(null);
+  const [lastPage, setLastPage] = useState(pageDark);
+  if (lastPage !== pageDark) {
+    setLastPage(pageDark);
+    setPicked(null);
+  }
+  const dark = picked ?? pageDark;
   const [volume, setVolume] = useState(60);
   const [sound, setSound] = useState(true);
   const [lit, setLit] = useState<number | null>(null);
@@ -100,7 +110,7 @@ export function Instrument() {
   const greeting = name.trim() ? `hello, ${name.trim().toLowerCase()}.` : "hello.";
 
   return (
-    <div data-theme={dark ? "dark" : "light"} className="rounded-[36px] p-2 sm:p-2.5" style={{ background: "var(--card-bezel)", boxShadow: "var(--card-shadow)" }}>
+    <div data-theme={picked === null ? undefined : picked ? "dark" : "light"} className="rounded-[36px] p-2 sm:p-2.5" style={{ background: "var(--card-bezel)", boxShadow: "var(--card-shadow)" }}>
       <div className="rounded-[29px]" style={{ background: "var(--card)", boxShadow: "var(--card-face-shadow)" }}>
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,10fr)_minmax(0,11fr)_minmax(0,9fr)]">
           {/* ── screen and the field that writes on it ── */}
@@ -120,11 +130,11 @@ export function Instrument() {
                 className="pointer-events-none absolute inset-x-0 top-0 h-1/2"
                 style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0))" }}
               />
-              <span className="text-[11px] tracking-[0.06em] text-neutral-500">blurrow · ui-62</span>
+              <span className="text-[11px] tracking-[0.06em] text-ink-muted">blurrow · ui-62</span>
               <span className="truncate text-[32px] font-medium leading-none tracking-[-0.04em] text-neutral-100">
                 {readout ?? greeting}
               </span>
-              <span className="text-[11px] tabular-nums tracking-[0.04em] text-neutral-500">
+              <span className="text-[11px] tabular-nums tracking-[0.04em] text-ink-muted">
                 vol {sound ? volume : "off"} · {dark ? "dark" : "light"} finish
               </span>
             </div>
@@ -157,8 +167,9 @@ export function Instrument() {
             <div className="flex flex-col gap-3">
               <Engraved>finish</Engraved>
               <Tabs
-                defaultTab="light"
-                onChange={(k) => setDark(k === "dark")}
+                key={String(pageDark)}
+                defaultTab={dark ? "dark" : "light"}
+                onChange={(k) => setPicked(k === "dark")}
                 tabs={[
                   { key: "light", label: "light" },
                   { key: "dark", label: "dark" },

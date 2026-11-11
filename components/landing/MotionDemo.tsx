@@ -51,8 +51,8 @@ export function MotionDemo() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <Tabs defaultTab="week" onChange={setKey} tabs={periods.map((p) => ({ key: p.key, label: p.label }))} />
         <div className="flex items-baseline gap-2 sm:flex-col sm:items-end sm:gap-0">
-          <p className="text-[28px] font-medium tracking-[-0.03em] text-neutral-900 tabular-nums">{total.toLocaleString("en-US")}</p>
-          <p className="text-[12.5px] text-neutral-500">readers this {period.label}</p>
+          <p className="text-[28px] font-medium tracking-[-0.03em] text-ink tabular-nums">{total.toLocaleString("en-US")}</p>
+          <p className="text-[12.5px] text-ink-muted">readers this {period.label}</p>
         </div>
       </div>
       <div

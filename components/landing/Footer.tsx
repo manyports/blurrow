@@ -27,18 +27,18 @@ export function Footer() {
   return (
     <footer className="mt-10">
       <div className="mx-auto max-w-[1240px] px-4 sm:px-6">
-        <div className="pt-14 pb-16 border-t border-neutral-900/[0.08] grid grid-cols-1 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-12">
+        <div className="pt-14 pb-16 border-t border-ink/[0.08] grid grid-cols-1 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-12">
           <div className="flex flex-col gap-5">
-            <p className="text-[22px] font-medium tracking-[-0.035em] text-neutral-900">
-              blurrow<span className="text-neutral-400">/ui</span>
+            <p className="text-[22px] font-medium tracking-[-0.035em] text-ink">
+              blurrow<span className="text-ink-faint">/ui</span>
             </p>
-            <p className="text-[15px] leading-[1.6] text-neutral-500 max-w-[40ch]">
+            <p className="text-[15px] leading-[1.6] text-ink-muted max-w-[40ch]">
               made with care by{" "}
-              <a href={author.site} target="_blank" rel="noopener" className="link-slide text-neutral-900">
+              <a href={author.site} target="_blank" rel="noopener" className="link-slide text-ink">
                 {author.handle}
               </a>
               . it&apos;s open source, so if something feels off, or wonderful,{" "}
-              <a href={`${repo.url}/issues/new`} target="_blank" rel="noopener" className="link-slide text-neutral-900">
+              <a href={`${repo.url}/issues/new`} target="_blank" rel="noopener" className="link-slide text-ink">
                 open an issue
               </a>{" "}
               and tell me about it.
@@ -47,22 +47,22 @@ export function Footer() {
           <div className="grid grid-cols-3 gap-6">
             {columns.map((c) => (
               <nav key={c.title} aria-label={c.title} className="flex flex-col gap-3">
-                <p className="text-[13px] text-neutral-400">{c.title}</p>
+                <p className="text-[13px] text-ink-faint">{c.title}</p>
                 {c.links.map((l) => (
-                  <Link key={l.href} href={l.href} className="link-slide self-start text-[14px] text-neutral-700 hover:text-neutral-900 transition-colors">
+                  <Link key={l.href} href={l.href} className="link-slide self-start text-[14px] text-ink-label hover:text-ink transition-colors">
                     {l.label}
                   </Link>
                 ))}
               </nav>
             ))}
             <nav aria-label="elsewhere" className="flex flex-col gap-3">
-              <p className="text-[13px] text-neutral-400">elsewhere</p>
+              <p className="text-[13px] text-ink-faint">elsewhere</p>
               {[
                 { href: repo.url, label: "github" },
                 { href: npmUrl, label: "npm" },
                 { href: author.site, label: author.siteLabel },
               ].map((l) => (
-                <a key={l.href} href={l.href} target="_blank" rel="noopener" className="link-slide self-start text-[14px] text-neutral-700 hover:text-neutral-900 transition-colors">
+                <a key={l.href} href={l.href} target="_blank" rel="noopener" className="link-slide self-start text-[14px] text-ink-label hover:text-ink transition-colors">
                   {l.label}
                 </a>
               ))}

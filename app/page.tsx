@@ -34,19 +34,19 @@ const parts: { slug: string; example: string; span: string }[] = [
 const hand = Caveat({ subsets: ["latin"], variable: "--font-hand", weight: ["500", "600"] });
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
-  return <p className="text-[13px] font-medium text-neutral-500">{children}</p>;
+  return <p className="text-[13px] font-medium text-ink-muted">{children}</p>;
 }
 
 function Title({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <h2 className={["text-[clamp(36px,5vw,64px)] font-medium leading-[1] tracking-[-0.05em] text-neutral-900 text-balance", className].join(" ")}>
+    <h2 className={["text-[clamp(36px,5vw,64px)] font-medium leading-[1] tracking-[-0.05em] text-ink text-balance", className].join(" ")}>
       {children}
     </h2>
   );
 }
 
 function Lede({ children }: { children: React.ReactNode }) {
-  return <p className="max-w-[42ch] text-[17px] leading-[1.6] text-neutral-600 text-pretty">{children}</p>;
+  return <p className="max-w-[42ch] text-[17px] leading-[1.6] text-ink-body text-pretty">{children}</p>;
 }
 
 export default async function Home() {
@@ -104,7 +104,7 @@ export default async function Home() {
                 because they&apos;re all cut from the same materials, any two look like they came out of the same box. here
                 are ten, working. the rest are in the docs, each with its source.
               </Lede>
-              <Link href="/docs/components" className="link-slide self-start text-[15px] font-medium text-neutral-900">
+              <Link href="/docs/components" className="link-slide self-start text-[15px] font-medium text-ink">
                 open the whole case →
               </Link>
             </div>
@@ -131,8 +131,8 @@ export default async function Home() {
                     {/* stamped into the floor of the compartment */}
                     <Link
                       href={`/docs/components/${p.slug}`}
-                      className="flex items-center justify-between gap-3 rounded-[8px] text-[12.5px] font-medium text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-900"
-                      style={{ textShadow: "0 1px 0 rgba(255,255,255,0.85)" }}
+                      className="flex items-center justify-between gap-3 rounded-[8px] text-[12.5px] font-medium text-ink-muted transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+                      style={{ textShadow: "var(--emboss)" }}
                     >
                       {entry.name}
                       <span aria-hidden className="opacity-0 transition-[opacity,transform] duration-300 group-hover/part:translate-x-0.5 group-hover/part:opacity-100">

@@ -147,18 +147,18 @@ export function HowItsMade() {
               step === i ? "opacity-100" : "opacity-[0.18]",
             ].join(" ")}
           >
-            <span className="text-[13px] tabular-nums text-neutral-400">
+            <span className="text-[13px] tabular-nums text-ink-faint">
               {String(i + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
             </span>
             <h3
               className={[
                 "max-w-[16ch] text-[clamp(28px,3.6vw,46px)] font-medium leading-[1.04] tracking-[-0.045em] transition-colors duration-500",
-                step === i ? "text-neutral-900" : "text-neutral-400",
+                step === i ? "text-ink" : "text-ink-faint",
               ].join(" ")}
             >
               {s.title}
             </h3>
-            <p className="max-w-[42ch] text-[16.5px] leading-[1.6] text-neutral-600 text-pretty">{s.body}</p>
+            <p className="max-w-[42ch] text-[16.5px] leading-[1.6] text-ink-body text-pretty">{s.body}</p>
             {/* the plate is short on a phone; its legend lives with the words */}
             <Legend parts={s.parts} className="mt-1 flex-col lg:hidden" />
           </div>

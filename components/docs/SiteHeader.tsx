@@ -263,10 +263,10 @@ export function SiteHeader({ stars }: { stars: number | null }) {
               </a>
             </nav>
 
-            {/* Theme (in the docs), then search as a ghost key: quiet until
-                you point at it, then a soft well comes up under it        */}
+            {/* Theme, then search, both ghost keys: quiet until you point
+                at them, then a soft well comes up under them             */}
             <div className="relative hidden md:flex items-center gap-2 justify-self-end">
-              {inDocs && <ThemeToggle dark={theme.dark} onToggle={theme.toggle} className="rounded-[11px]" />}
+              <ThemeToggle dark={theme.dark} onToggle={theme.toggle} variant="ghost" />
               <button
                 type="button"
                 onClick={() => setSearchOpen(true)}
@@ -281,7 +281,7 @@ export function SiteHeader({ stars }: { stars: number | null }) {
 
             {/* Mobile: search and the menu key, each a small raised key */}
             <div className="relative md:hidden justify-self-end flex items-center gap-2">
-              {inDocs && <ThemeToggle dark={theme.dark} onToggle={theme.toggle} className="rounded-[10px]" />}
+              <ThemeToggle dark={theme.dark} onToggle={theme.toggle} variant="key" />
               <button
                 type="button"
                 aria-label="search components"

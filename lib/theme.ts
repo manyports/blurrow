@@ -1,6 +1,5 @@
-/* The docs site's theme: the reader's choice, kept in localStorage and
-   written to <html data-theme>. The docs follow it; the landing page is
-   lit by its own lamp and stays light.                               */
+/* The site's theme: the reader's choice, kept in localStorage and
+   written to <html data-theme>. "system" follows the OS.            */
 
 export type ThemeChoice = "light" | "dark" | "system";
 
@@ -35,11 +34,9 @@ export function subscribeTheme(cb: () => void) {
   };
 }
 
-export const themedPath = (pathname: string) => pathname.startsWith("/docs");
-
-export function applyTheme(choice: ThemeChoice, pathname: string) {
-  document.documentElement.dataset.theme = themedPath(pathname) ? choice : "light";
+export function applyTheme(choice: ThemeChoice) {
+  document.documentElement.dataset.theme = choice;
 }
 
 /* Runs before first paint so a dark page never flashes light */
-export const themeScript = `try{var t=localStorage.getItem("${THEME_KEY}");if(t!=="light"&&t!=="dark")t="system";document.documentElement.dataset.theme=location.pathname.indexOf("/docs")===0?t:"light"}catch(e){}`;
+export const themeScript = `try{var t=localStorage.getItem("${THEME_KEY}");if(t!=="light"&&t!=="dark")t="system";document.documentElement.dataset.theme=t}catch(e){}`;
