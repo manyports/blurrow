@@ -33,6 +33,7 @@ export const pageSources = {
   docs: ["app/docs/page.tsx"],
   installation: ["app/docs/installation/page.tsx", "components/ui/styles.css"],
   components: ["app/docs/components/page.tsx", "lib/registry.ts"],
+  privacy: ["app/privacy/page.tsx"],
   component: (e: RegistryEntry) => [`components/ui/${e.file}.tsx`, ...e.examples.map((x) => `examples/${x.name}.tsx`)],
 };
 

@@ -17,5 +17,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/docs/installation", lastModified(pageSources.installation)),
     page("/docs/components", lastModified(pageSources.components)),
     ...registry.map((e) => page(`/docs/components/${e.slug}`, lastModified(pageSources.component(e)))),
+    page("/privacy", lastModified(pageSources.privacy)),
   ];
 }

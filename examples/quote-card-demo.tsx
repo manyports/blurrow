@@ -4,9 +4,9 @@ export default function QuoteCardDemo() {
   return (
     <div className="w-full max-w-sm">
       <QuoteCard
-        quote="the cleanest toolkit i've touched in years. it stays out of the way while i write."
-        author="ada lovelace"
-        role="analyst, engine co."
+        quote="write the first draft for yourself. write the second one for the reader."
+        author="june okafor"
+        role="editor, the long read"
       />
     </div>
   );

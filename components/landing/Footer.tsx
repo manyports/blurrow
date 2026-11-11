@@ -10,6 +10,7 @@ const columns = [
       { label: "introduction", href: "/docs" },
       { label: "installation", href: "/docs/installation" },
       { label: "all components", href: "/docs/components" },
+      { label: "privacy", href: "/privacy" },
     ],
   },
   {

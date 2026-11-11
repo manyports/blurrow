@@ -5,9 +5,9 @@ export default function QuoteCardDark() {
     <div className="w-full max-w-sm">
       <QuoteCard
         theme="dark"
-        quote="we replaced half our design system with this in a weekend."
-        author="grace hopper"
-        role="rear admiral, compilers"
+        quote="the best tools are the ones you stop noticing."
+        author="theo marsh"
+        role="woodworker, marsh & sons"
       />
     </div>
   );
