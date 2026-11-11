@@ -41,7 +41,7 @@ npx @blurrow/ui init
 that's the whole setup. it installs the package, adds two lines to your stylesheet, loads the archivo font, wraps your app in `ToastProvider` and writes a small `blurrow.json`. it shows you each change before it writes anything, and running it a second time won't hurt.
 
 <p align="center">
-  <img src=".github/readme/cli.png" alt="the blurrow cli setting up a next.js project" width="640">
+  <img src=".github/readme/cli.png" alt="the blurrow cli setting up a next.js project" width="100%">
 </p>
 
 then use whatever you like:
@@ -88,7 +88,7 @@ everything takes `--yes`, `--dry-run` and `--cwd <path>`. once the package is in
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset=".github/readme/anatomy-dark.png">
-    <img src=".github/readme/anatomy.png" alt="fig. 2, exploded view: a subscribe button pulled apart into its three layers, label, face and bezel" width="640">
+    <img src=".github/readme/anatomy.png" alt="fig. 2, exploded view: a subscribe button pulled apart into its three layers, label, face and bezel" width="560">
   </picture>
 </p>
 
@@ -96,19 +96,12 @@ every control is built from three layers: a bezel that never moves, a face that 
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset=".github/readme/raised-sunken-dark.png">
-    <img src=".github/readme/raised-sunken.png" alt="fig. 4, raised and sunken: a text field cut into the surface next to a key standing up on it" width="640">
+    <source media="(prefers-color-scheme: dark)" srcset=".github/readme/lighting-dark.png">
+    <img src=".github/readme/lighting.png" alt="two figures side by side. fig. 3, lighting: a lamp above a button, with the highlight on the edge facing it and the shadow falling away. fig. 4, raised and sunken: a text field cut into the surface next to a key standing up on it" width="100%">
   </picture>
 </p>
 
 things you press are raised. things you type into are sunken. you can tell a button from a field before you've read either of them.
-
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset=".github/readme/lighting-dark.png">
-    <img src=".github/readme/lighting.png" alt="fig. 3, lighting: a lamp above a button, with the highlight on the edge facing it and the shadow falling away" width="640">
-  </picture>
-</p>
 
 and every shadow is drawn as if one lamp is hanging right above your screen. top edges catch the light, bottom edges fall into shade. since the lamp stays put, everything on the page agrees on where the light is. on [the website](https://www.blurrow.org) you can watch it swing out of place for a moment and the highlights follow it.
 
