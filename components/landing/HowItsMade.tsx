@@ -75,94 +75,102 @@ function Legend({ parts, className = "" }: { parts: Part[]; className?: string }
   );
 }
 
-/* One object, and four short steps scrolling past it. The plate is
-   pinned the whole way: beside the text on a wide screen, across the
-   top on a phone, where it's shorter and the steps scroll up beneath
-   it. A step takes over when it reaches the middle of whatever part of
-   the screen the plate isn't using.                               */
+function StepText({ i, className = "" }: { i: number; className?: string }) {
+  const s = steps[i];
+  return (
+    <div className={["flex flex-col gap-4", className].join(" ")}>
+      <span className="text-[13px] tabular-nums text-ink-faint">
+        {String(i + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
+      </span>
+      <h3 className="max-w-[16ch] text-[clamp(28px,3.6vw,46px)] font-medium leading-[1.04] tracking-[-0.045em] text-ink">{s.title}</h3>
+      <p className="max-w-[42ch] text-[16.5px] leading-[1.6] text-ink-body text-pretty">{s.body}</p>
+    </div>
+  );
+}
+
+/* One object, and four short steps told beside it, as a deck: the
+   section pins to the screen with the plate on one side (on top, on a
+   phone) and the four steps side by side on the other, and scrolling
+   down slides them across, one page per step. Each page holds still
+   for the first half of its scroll, so it can be read, and the next
+   slides in over the second half. After the fourth, the page lets go.
+   The plate changes with whichever page is up.                     */
 export function HowItsMade() {
   const [step, setStep] = useState(0);
-  const refs = useRef<(HTMLDivElement | null)[]>([]);
+  return <Deck step={step} setStep={setStep} />;
+}
+
+/* Where the deck sits for a given amount of scroll through it, in
+   pages: a page holds for the first half of its stretch, then the next
+   slides in, eased, over the second.                               */
+function deckPosition(progress: number) {
+  const seg = Math.min(Math.floor(progress), steps.length - 1);
+  const t = Math.min(1, Math.max(0, (progress - seg - 0.5) / 0.5));
+  const eased = t * t * (3 - 2 * t);
+  return Math.min(seg + eased, steps.length - 1);
+}
+
+function Deck({ step, setStep }: { step: number; setStep: (n: number) => void }) {
+  const trackRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const stripRef = useRef<HTMLDivElement>(null);
 
-  /* On a phone each step is exactly as tall as the room left under the
-     pinned plate, so one step fills the view at a time instead of the
-     tail of one and the head of the next sharing it.               */
   useEffect(() => {
+    const track = trackRef.current;
     const pin = pinRef.current;
-    const root = rootRef.current;
-    if (!pin || !root) return;
-    const ro = new ResizeObserver(() => root.style.setProperty("--pin-h", `${pin.offsetHeight}px`));
-    ro.observe(pin);
-    return () => ro.disconnect();
-  }, []);
-
-  useEffect(() => {
-    let io: IntersectionObserver | null = null;
-    const watch = () => {
-      io?.disconnect();
-      // wide: the middle of the screen. narrow: the middle of the room under the plate,
-      // which is where a step sits once it fills that room
-      const wide = window.matchMedia("(min-width: 1024px)").matches;
-      io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) if (e.isIntersecting) setStep(Number((e.target as HTMLElement).dataset.step));
-        },
-        { rootMargin: wide ? "-50% 0px -50% 0px" : "-72% 0px -27% 0px" },
-      );
-      refs.current.forEach((el) => el && io!.observe(el));
+    const strip = stripRef.current;
+    if (!track || !pin || !strip) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const top = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--site-header-h")) || 0;
+      const run = track.offsetHeight - pin.offsetHeight;
+      const scrolled = Math.min(run, Math.max(0, top - track.getBoundingClientRect().top));
+      // one stretch of scroll per page; the last page has nothing to slide to
+      const progress = run > 0 ? (scrolled / run) * (steps.length - 1) : 0;
+      const at = still() ? Math.round(progress) : deckPosition(progress);
+      // the strip is moved directly, every frame, so it tracks the finger
+      strip.style.transform = `translate3d(${-at * 100}%, 0, 0)`;
+      setStep(Math.round(at));
     };
-    watch();
-    const mq = window.matchMedia("(min-width: 1024px)");
-    mq.addEventListener("change", watch);
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
-      io?.disconnect();
-      mq.removeEventListener("change", watch);
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [setStep]);
 
   return (
-    <div ref={rootRef} className="relative lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+    <div ref={trackRef} className="relative -mx-4 sm:-mx-6 lg:mx-0" style={{ height: `${steps.length * 100}svh` }}>
       <div
         ref={pinRef}
-        className="sticky top-[var(--site-header-h,0px)] z-10 -mx-4 bg-page px-4 pb-3 pt-3 transition-[top] duration-[420ms] ease-[var(--ease-out-soft)] sm:-mx-6 sm:px-6 lg:order-2 lg:mx-0 lg:h-[78vh] lg:min-h-[580px] lg:self-start lg:bg-transparent lg:p-0 lg:transition-none lg:top-[11vh]"
+        className="sticky top-[var(--site-header-h,0px)] flex h-[calc(100svh-var(--site-header-h,0px))] flex-col gap-5 overflow-hidden px-4 pb-6 pt-3 transition-[top,height] duration-[420ms] ease-[var(--ease-out-soft)] sm:px-6 lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-16 lg:px-0 lg:py-[5vh]"
       >
-        <Plate step={step} />
-        {/* on a phone, the steps fade out as they slide up under the plate */}
-        <span aria-hidden className="pointer-events-none absolute inset-x-0 -bottom-8 h-8 bg-gradient-to-b from-page to-transparent lg:hidden" />
-      </div>
-
-      <div className="lg:order-1">
-        {steps.map((s, i) => (
-          <div
-            key={s.title}
-            ref={(el) => {
-              refs.current[i] = el;
-            }}
-            data-step={i}
-            className={[
-              "flex min-h-[calc(100svh-var(--pin-h,50svh))] flex-col justify-center gap-4 py-8 transition-opacity duration-500 lg:min-h-[86vh] lg:py-10 lg:opacity-100",
-              // on a phone, only the step being shown is fully there
-              step === i ? "opacity-100" : "opacity-[0.18]",
-            ].join(" ")}
-          >
-            <span className="text-[13px] tabular-nums text-ink-faint">
-              {String(i + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
-            </span>
-            <h3
-              className={[
-                "max-w-[16ch] text-[clamp(28px,3.6vw,46px)] font-medium leading-[1.04] tracking-[-0.045em] transition-colors duration-500",
-                step === i ? "text-ink" : "text-ink-faint",
-              ].join(" ")}
-            >
-              {s.title}
-            </h3>
-            <p className="max-w-[42ch] text-[16.5px] leading-[1.6] text-ink-body text-pretty">{s.body}</p>
-            {/* the plate is short on a phone; its legend lives with the words */}
-            <Legend parts={s.parts} className="mt-1 flex-col lg:hidden" />
+        <div className="shrink-0 lg:order-2 lg:h-[min(78svh,760px)] lg:min-h-[520px]">
+          <Plate step={step} compact />
+        </div>
+        <div className="relative min-h-0 flex-1 overflow-hidden lg:order-1 lg:h-full lg:flex-none">
+          <div ref={stripRef} className="flex h-full will-change-transform">
+            {steps.map((s, i) => (
+              <div
+                key={s.title}
+                aria-hidden={i !== step}
+                className="flex w-full shrink-0 flex-col gap-4 overflow-hidden pr-10 transition-opacity duration-300 lg:justify-center"
+                style={{ opacity: i === step ? 1 : 0.35 }}
+              >
+                <StepText i={i} />
+                {/* on a desk the plate carries its own legend */}
+                <Legend parts={s.parts} className="mt-1 flex-col lg:hidden" />
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
@@ -203,7 +211,7 @@ function Marker({ n, show, className = "" }: { n: number; show: boolean; classNa
    plan view of the object on a faint grid, a legend for its numbered
    parts (wide screens; on a phone it sits with the words), and a pencil
    section through the same thing underneath.                      */
-function Plate({ step }: { step: number }) {
+function Plate({ step, compact = false }: { step: number; compact?: boolean }) {
   const apart = step === 1;
   const lighting = step === 2;
   const paired = step === 3;
@@ -365,7 +373,14 @@ function Plate({ step }: { step: number }) {
         <Legend parts={meta.parts} className="hidden px-6 pt-4 lg:flex" />
 
         {/* the same object, cut through and drawn by hand */}
-        <div className="mt-2.5 border-t px-4 pb-2 pt-2.5 sm:mt-4 sm:px-6 sm:pb-3 sm:pt-3" style={{ borderColor: "var(--divider)" }}>
+        {/* in the phone deck it gives its room to the words on a short screen */}
+        <div
+          className={[
+            "mt-2.5 border-t px-4 pb-2 pt-2.5 sm:mt-4 sm:px-6 sm:pb-3 sm:pt-3",
+            compact ? "[@media(max-height:760px)]:hidden" : "",
+          ].join(" ")}
+          style={{ borderColor: "var(--divider)" }}
+        >
           <Engraved>section</Engraved>
           <Section step={step} pressed={pressed} lamp={lampNow} />
         </div>

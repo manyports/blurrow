@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { CardShell } from "@/components/ui/CardShell";
 import { CommandPalette } from "@/components/ui/CommandPalette";
 import { Kbd } from "@/components/ui/Kbd";
+import { Tabs } from "@/components/ui/Tabs";
 import { formatStars } from "@/lib/format";
 import { container, repo } from "@/lib/site";
 import { docsNav } from "./nav";
@@ -29,15 +30,21 @@ function currentFor(pathname: string) {
   return -1;
 }
 
-/* The same bar as blogs: card material, a well of links with a thumb that
-   rests on the current page and follows the pointer. It spans the same
-   column as the page beneath it, so its edges line up with the content
-   on every page. Once the page scrolls under it, it frosts; scrolling
-   down tucks it away, scrolling up brings it back.                    */
+/* One bar, the same on every screen: a floating capsule in the card
+   material, the width of the page beneath it. The name on the left;
+   on a desk, the links sit in a sunken well in the middle with a raised
+   thumb that rests on the current page and follows the pointer, and
+   search is a field you can see, with the theme key beside it. On a
+   phone the links fold into a menu key, and every key is the same
+   small raised key. Once the page scrolls under it, it frosts;
+   scrolling down tucks it away, scrolling up brings it back.        */
 const barShadow = "var(--card-shadow)";
 const barShadowScrolled = "var(--bar-shadow-scrolled)";
 const linkClass =
-  "relative z-10 inline-flex items-center gap-1.5 h-9 px-3 rounded-[10px] text-[13.5px] font-medium tracking-[-0.01em] transition-colors duration-200 cursor-pointer outline-none focus-visible:text-ink";
+  "relative z-10 inline-flex items-center gap-1.5 h-8 px-3.5 rounded-[9px] text-[13.5px] font-medium tracking-[-0.01em] transition-colors duration-200 cursor-pointer outline-none focus-visible:text-ink";
+const keyClass =
+  "relative w-9 h-9 rounded-[10px] flex items-center justify-center text-ink-label cursor-pointer active:scale-95 transition-[scale] duration-150 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink";
+const keyStyle = { background: "var(--face)", boxShadow: "var(--tile-shadow)" };
 
 function SearchIcon() {
   return (
@@ -159,7 +166,7 @@ export function SiteHeader({ stars }: { stars: number | null }) {
             happens one level in                                          */}
         <div
           ref={barRef}
-          className="relative px-4 sm:px-6 pt-3 pb-2 md:pt-0 md:pb-0"
+          className="relative px-4 sm:px-6 pt-3 pb-2"
           style={{
             transform: tucked && !menuOpen ? "translateY(-110%)" : "none",
             transition: "transform 420ms var(--ease-out-soft)",
@@ -168,11 +175,11 @@ export function SiteHeader({ stars }: { stars: number | null }) {
           {/* Content scrolling up fades out before it reaches the bar's gap */}
           <div
             aria-hidden
-            className="absolute inset-x-0 top-0 h-[calc(100%+12px)] bg-gradient-to-b from-page via-page/85 to-transparent transition-opacity duration-300 md:h-full md:bg-none md:bg-page/80 md:backdrop-blur-xl md:backdrop-saturate-150"
+            className="absolute inset-x-0 top-0 h-[calc(100%+12px)] bg-gradient-to-b from-page via-page/85 to-transparent transition-opacity duration-300"
             style={{ opacity: scrolled ? 1 : 0 }}
           />
           <div
-            className="rim relative mx-auto rounded-[18px] pl-5 pr-2 py-2 grid grid-cols-[1fr_auto] items-center gap-4 md:grid-cols-[auto_1fr_auto] md:gap-10 md:h-16 md:p-0 md:rounded-none md:shadow-none! md:backdrop-blur-none md:before:hidden pointer-events-auto backdrop-blur-xl backdrop-saturate-150"
+            className="rim relative mx-auto h-[56px] rounded-[18px] pl-5 pr-2.5 grid grid-cols-[1fr_auto] md:grid-cols-[1fr_auto_1fr] items-center gap-4 pointer-events-auto backdrop-blur-xl backdrop-saturate-150"
             style={{
               maxWidth: (inDocs ? container.docs : container.site) - container.gutter * 2,
               boxShadow: scrolled ? barShadowScrolled : barShadow,
@@ -182,38 +189,34 @@ export function SiteHeader({ stars }: { stars: number | null }) {
             {/* Solid at rest, frosted once content passes beneath */}
             <span
               aria-hidden
-              className="absolute inset-0 rounded-[inherit] transition-opacity duration-300 md:hidden"
+              className="absolute inset-0 rounded-[inherit] transition-opacity duration-300"
               style={{ background: "var(--card)", opacity: scrolled ? 0.74 : 1 }}
             />
-            {/* On a desk there's no card: once the page passes under, a groove
-                is cut along the bar's foot, the width of the content       */}
-            <span
-              aria-hidden
-              className="absolute inset-x-0 bottom-0 hidden h-px transition-opacity duration-300 md:block"
-              style={{ background: "var(--groove)", boxShadow: "var(--groove-lip-below)", opacity: scrolled ? 1 : 0 }}
-            />
-
             <Link
               href="/"
               className="group/brand relative shrink-0 justify-self-start flex items-center rounded-[6px] outline-none focus-visible:outline-2 focus-visible:outline-ink"
             >
-              <span className="text-[15px] md:text-[17px] font-semibold tracking-[-0.035em] text-ink transition-opacity duration-150 group-hover/brand:opacity-60">
+              <span className="text-[16px] font-semibold tracking-[-0.035em] text-ink transition-opacity duration-150 group-hover/brand:opacity-60">
                 blurrow<span className="text-ink-faint font-medium">/ui</span>
               </span>
             </Link>
 
-            {/* Plain links beside the name. No well around them: the raised
-                thumb only comes up under the one you point at, or the page
-                you're on, so the bar stays quiet the rest of the time.     */}
-            <nav aria-label="main" className="relative hidden md:flex items-center gap-1 justify-self-start" onMouseLeave={rest}>
+            {/* The links, in a well cut into the bar. The raised thumb rests
+                on the page you're on and follows the pointer.             */}
+            <nav
+              aria-label="main"
+              className="relative hidden md:flex items-center gap-0.5 justify-self-center rounded-[12px] p-1"
+              style={{ background: "var(--well)", boxShadow: "var(--well-shadow)" }}
+              onMouseLeave={rest}
+            >
               <span
                 aria-hidden
-                className="pointer-events-none absolute rounded-[10px]"
+                className="pointer-events-none absolute rounded-[9px]"
                 style={{
                   left: thumb.left,
                   width: thumb.width,
-                  top: 0,
-                  bottom: 0,
+                  top: 4,
+                  bottom: 4,
                   opacity: thumb.on ? 1 : 0,
                   background: "var(--face)",
                   boxShadow: "var(--thumb-shadow)",
@@ -263,39 +266,30 @@ export function SiteHeader({ stars }: { stars: number | null }) {
               </a>
             </nav>
 
-            {/* Theme, then search, both ghost keys: quiet until you point
-                at them, then a soft well comes up under them             */}
+            {/* Desk: search as a field you can see (it's where you type),
+                then the theme key */}
             <div className="relative hidden md:flex items-center gap-2 justify-self-end">
-              <ThemeToggle dark={theme.dark} onToggle={theme.toggle} variant="ghost" />
               <button
                 type="button"
                 onClick={() => setSearchOpen(true)}
                 aria-label="search components"
-                className="group/search h-9 rounded-[11px] flex items-center gap-2 pl-3 pr-1.5 text-[13px] font-medium text-ink-muted cursor-pointer outline-none transition-[background-color,box-shadow,color] duration-150 hover:text-ink hover:bg-surface-active/70 hover:[box-shadow:var(--ghost-shadow-hover)] active:[box-shadow:var(--ghost-shadow-pressed)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                className="group/search h-9 w-[clamp(150px,16vw,210px)] rounded-[11px] flex items-center gap-2 pl-3 pr-1.5 text-[13px] text-ink-faint cursor-pointer outline-none transition-[box-shadow,color] duration-150 hover:text-ink-muted hover:[box-shadow:var(--field-shadow-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                style={{ background: "var(--field)", boxShadow: "var(--field-shadow)" }}
               >
                 <SearchIcon />
-                <span className="transition-colors group-hover/search:text-ink">search</span>
+                <span className="flex-1 text-left">search</span>
                 <Kbd>⌘K</Kbd>
               </button>
+              <ThemeToggle dark={theme.dark} onToggle={theme.toggle} />
             </div>
 
-            {/* Mobile: search and the menu key, each a small raised key */}
-            <div className="relative md:hidden justify-self-end flex items-center gap-2">
-              <ThemeToggle dark={theme.dark} onToggle={theme.toggle} variant="key" />
+            {/* Phone: one wide menu key; search and the theme live inside it.
+                Its two bars cross into a close mark.                     */}
+            <div className="relative md:hidden justify-self-end flex items-center">
               <button
                 type="button"
-                aria-label="search components"
-                onClick={() => setSearchOpen(true)}
-                className="w-9 h-9 rounded-[10px] flex items-center justify-center text-ink-label cursor-pointer active:scale-95 transition-[scale] duration-150"
-                style={{ background: "var(--face)", boxShadow: "var(--tile-shadow)" }}
-              >
-                <SearchIcon />
-              </button>
-              {/* Its two bars cross into a close mark */}
-              <button
-                type="button"
-                className="relative w-9 h-9 rounded-[10px] cursor-pointer active:scale-95 transition-[scale] duration-150"
-                style={{ background: "var(--face)", boxShadow: "var(--tile-shadow)" }}
+                className={[keyClass, "w-[58px]!"].join(" ")}
+                style={keyStyle}
                 onClick={() => (visible ? closeMenu() : openMenu())}
                 aria-label={visible ? "close menu" : "open menu"}
                 aria-expanded={visible}
@@ -305,7 +299,7 @@ export function SiteHeader({ stars }: { stars: number | null }) {
                   <span
                     key={side}
                     aria-hidden
-                    className="absolute left-1/2 top-1/2 w-[15px] h-[1.5px] -ml-[7.5px] -mt-[0.75px] rounded-full bg-ink-soft"
+                    className="absolute left-1/2 top-1/2 w-[18px] h-[1.5px] -ml-[9px] -mt-[0.75px] rounded-full bg-ink-soft"
                     style={{
                       transform: visible ? `rotate(${side * 45}deg)` : `translateY(${side * 3}px)`,
                       transition: "transform 360ms var(--ease-out-soft)",
@@ -409,6 +403,24 @@ export function SiteHeader({ stars }: { stars: number | null }) {
                     <span className="text-[15px] text-ink-faint tabular-nums">{stars ? `★ ${formatStars(stars)}` : "★"}</span>
                   </a>
                 </nav>
+
+                {/* The light, chosen here on a phone */}
+                <div
+                  className="flex items-center justify-between gap-4 border-t border-ink/[0.06] px-6 py-4"
+                  style={{ animation: visible ? `menu-item-in 380ms cubic-bezier(0.22,1,0.36,1) ${140 + navItems.length * 50}ms both` : "none" }}
+                >
+                  <span className="text-[14px] text-ink-muted">theme</span>
+                  {/* the sheet mounts fresh each time it opens, so it starts on the current choice */}
+                  <Tabs
+                    defaultTab={theme.choice}
+                    onChange={(k) => theme.choose(k as "light" | "dark" | "system")}
+                    tabs={[
+                      { key: "light", label: "light" },
+                      { key: "dark", label: "dark" },
+                      { key: "system", label: "auto" },
+                    ]}
+                  />
+                </div>
 
                 {/* Inside the docs, the sidebar comes along so every page is reachable */}
                 {inDocs && (

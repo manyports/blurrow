@@ -8,6 +8,7 @@ import { Finale } from "@/components/landing/Finale";
 import { Hero } from "@/components/landing/Hero";
 import { HowItsMade } from "@/components/landing/HowItsMade";
 import { OpenSource } from "@/components/landing/OpenSource";
+import { PartsCase } from "@/components/landing/PartsCase";
 import { examples } from "@/examples";
 import { getEntry, registry } from "@/lib/registry";
 import { getStars } from "@/lib/github";
@@ -110,40 +111,14 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* A raised case; every compartment is a well with a part resting in it */}
-          <div
-            className="mt-12 rounded-[34px] p-2.5 sm:mt-16 sm:p-3"
-            style={{ background: "var(--panel-bezel)", boxShadow: "var(--panel-shadow)" }}
-          >
-            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3 lg:grid-cols-12">
-              {parts.map((p) => {
-                const entry = getEntry(p.slug)!;
-                const Example = examples[p.example];
-                return (
-                  <div
-                    key={p.slug}
-                    className={["group/part relative flex flex-col rounded-[24px] p-5 sm:p-6", p.span].join(" ")}
-                    style={{ background: "var(--well)", boxShadow: "var(--well-shadow)" }}
-                  >
-                    <div className="flex min-h-[170px] flex-1 items-center justify-center py-8">
-                      <Example />
-                    </div>
-                    {/* stamped into the floor of the compartment */}
-                    <Link
-                      href={`/docs/components/${p.slug}`}
-                      className="flex items-center justify-between gap-3 rounded-[8px] text-[12.5px] font-medium text-ink-muted transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
-                      style={{ textShadow: "var(--emboss)" }}
-                    >
-                      {entry.name}
-                      <span aria-hidden className="opacity-0 transition-[opacity,transform] duration-300 group-hover/part:translate-x-0.5 group-hover/part:opacity-100">
-                        →
-                      </span>
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          {/* A raised case of compartments, each with a part resting in it;
+              a deck of cards on a phone */}
+          <PartsCase
+            parts={parts.map((p) => {
+              const Example = examples[p.example];
+              return { slug: p.slug, name: getEntry(p.slug)!.name, span: p.span, children: <Example /> };
+            })}
+          />
         </section>
 
         {/* ── Getting it ───────────────────────────────────────── */}
