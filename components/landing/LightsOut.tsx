@@ -130,7 +130,7 @@ export function LightsOut({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div ref={room} className="relative rounded-[28px] overflow-hidden min-h-[540px] sm:min-h-[580px] select-none" style={{ background: "#0e0e0e" }}>
+    <div ref={room} className="relative rounded-[28px] overflow-hidden min-h-[540px] sm:min-h-[580px] select-none" style={{ background: "#0e0e0e", boxShadow: "var(--room-edge)" }}>
       {/* The room with the light on */}
       <div
         ref={lit}
@@ -187,7 +187,7 @@ export function LightsOut({ children }: { children: React.ReactNode }) {
           }}
           className={[
             "-mt-px w-5 h-7 rounded-full touch-none outline-none focus-visible:outline-2 focus-visible:outline-offset-2",
-            on ? "focus-visible:outline-neutral-900" : "focus-visible:outline-white",
+            on ? "focus-visible:outline-ink" : "focus-visible:outline-white",
             dragging ? "cursor-grabbing" : "cursor-grab",
           ].join(" ")}
           style={{

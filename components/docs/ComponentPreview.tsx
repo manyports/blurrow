@@ -24,7 +24,7 @@ export function ComponentPreview({ name, code, children, size = "md" }: Componen
           content: (
             <div
               className="rounded-[20px] p-1.5"
-              style={{ background: "var(--panel-bezel)", boxShadow: "var(--panel-shadow)" }}
+              style={{ background: "var(--stage-bezel)", boxShadow: "var(--stage-bezel-shadow)" }}
             >
               <div
                 className={[

@@ -9,6 +9,12 @@ a note on numbers: the first commit is called "blurrow 1.0", but the package on 
 ### added
 
 - input: a `layered` variant that sits in a button's bezel, so a field and a button line up side by side ([#1](https://github.com/manyports/blurrow/pull/1)). it comes with a new example, "layered, next to a button".
+- `--knob`: the toggle's knob has its own colour now, so a theme can set it apart from other raised faces.
+
+### changed
+
+- dark theme, reworked: a deeper page, and edges drawn with faint light hairlines instead of black rings (which vanish on dark), so panels, cards and keys separate from what's behind them. the inverse key (primary buttons, checked boxes, inverse badges) is a clean pale key instead of a muddy grey one. fields and wells have a visible rim. a switched-on toggle keeps a pale knob instead of a dark one.
+- light theme: `--ink-muted` and `--ink-faint` are a step darker, so they pass contrast on the grey page (4.5:1 and 3:1). fields have a faint resting edge.
 
 ### site
 
@@ -18,6 +24,9 @@ these don't change the package, only the website:
 - vercel analytics.
 - a new readme with pictures, and a fresh package readme.
 - star counts on the landing page.
+- dark mode on the landing page, not just the docs. the hero's instrument follows the page's theme until you pick a finish.
+- the theme switch is a quiet ghost key beside search on desktop, and shows on every page.
+- a softer frame around component previews in dark mode.
 
 ## 0.2.0 (2026-10-30)
 

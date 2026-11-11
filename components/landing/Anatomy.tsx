@@ -9,7 +9,7 @@ function Marker({ n, show }: { n: number; show: boolean }) {
   return (
     <span
       aria-hidden
-      className="absolute -left-3 -top-3 w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-semibold text-neutral-700 tabular-nums"
+      className="absolute -left-3 -top-3 w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-semibold text-ink-label tabular-nums"
       style={{
         background: "var(--face-light)",
         boxShadow: "var(--tile-light-shadow)",
@@ -67,8 +67,8 @@ export function Anatomy() {
         ref={ref}
         className="relative h-[340px] sm:h-[420px] rounded-[24px] flex items-center justify-center overflow-hidden"
         style={{
-          background: "linear-gradient(180deg, #e9e9e9 0%, #e2e2e2 100%)",
-          boxShadow: "inset 0 0 2px rgba(17,17,17,0.12), inset 0 1px 3px rgba(17,17,17,0.06)",
+          background: "var(--demo-well)",
+          boxShadow: "var(--demo-well-shadow)",
           perspective: "1400px",
         }}
       >
@@ -90,7 +90,7 @@ export function Anatomy() {
             clipPath: "polygon(45.5% 0, 54.5% 0, 100% 100%, 0 100%)",
             background: "linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.28) 45%, rgba(255,255,255,0) 100%)",
             filter: "blur(10px)",
-            opacity: apart ? 1 : 0,
+            opacity: apart ? "var(--beam)" : 0,
             transition: "opacity 900ms ease",
           }}
         />
@@ -100,7 +100,7 @@ export function Anatomy() {
           className="absolute left-1/2 top-[56%] -translate-x-1/2 -translate-y-1/2 w-[420px] h-[220px] rounded-full pointer-events-none"
           style={{
             background: "radial-gradient(closest-side, rgba(255,255,255,0.9), rgba(255,255,255,0))",
-            opacity: apart ? 1 : 0,
+            opacity: apart ? "var(--beam)" : 0,
             transition: "opacity 900ms ease",
           }}
         />
@@ -126,7 +126,7 @@ export function Anatomy() {
             setPressed(false);
             if (!apart) playClick({ pitch: 1.25, volume: 0.1 });
           }}
-          className="relative z-10 w-[240px] h-[86px] sm:w-[300px] sm:h-[104px] cursor-pointer outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-900 rounded-[26px]"
+          className="relative z-10 w-[240px] h-[86px] sm:w-[300px] sm:h-[104px] cursor-pointer outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink rounded-[26px]"
           style={{
             transformStyle: "preserve-3d",
             transform: apart ? "rotateX(52deg) rotateZ(-30deg) scale(0.9)" : "none",
@@ -192,18 +192,18 @@ export function Anatomy() {
             setApart((a) => !a);
             playClick({ pitch: 0.8, volume: 0.12 });
           }}
-          className="absolute z-10 bottom-4 right-4 h-8 px-3 rounded-[9px] text-[12.5px] font-medium text-neutral-700 cursor-pointer transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900"
+          className="absolute z-10 bottom-4 right-4 h-8 px-3 rounded-[9px] text-[12.5px] font-medium text-ink-label cursor-pointer transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
           style={{ background: "var(--face-light)", boxShadow: "var(--face-light-shadow)" }}
         >
           {apart ? "put it back" : "take it apart"}
         </button>
       </div>
-      <figcaption className="text-[13px] leading-[1.55] text-neutral-500 max-w-[52ch]">
+      <figcaption className="text-[13px] leading-[1.55] text-ink-muted max-w-[52ch]">
         our primary button, in three layers:{" "}
         {parts.map((p, i) => (
           <span key={p}>
             {i > 0 && ", "}
-            <span className="text-neutral-800">
+            <span className="text-ink-soft">
               {i + 1} {p.toLowerCase()}
             </span>
           </span>

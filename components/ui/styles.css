@@ -236,8 +236,11 @@
   --ink-soft: oklch(26.9% 0 0);
   --ink-label: oklch(37.1% 0 0);
   --ink-body: oklch(43.9% 0 0);
-  --ink-muted: oklch(55.6% 0 0);
-  --ink-faint: oklch(70.8% 0 0);
+  /* muted and faint are set as light as they can go and still read on
+     the grey page: 4.5:1 for muted (body text), 3:1 for faint (labels
+     and meta). ghost is for disabled and decorative marks only.       */
+  --ink-muted: oklch(51% 0 0);
+  --ink-faint: oklch(61% 0 0);
   --ink-ghost: oklch(87% 0 0);
   /* Ink on the inverse face: primary keys, checked boxes, tooltips */
   --ink-inverse: #ffffff;
@@ -281,6 +284,7 @@
   --key-shadow:
     0 0 3px rgba(17, 17, 17, 0.136), 0 1.5px 1px rgba(17, 17, 17, 0.12),
     0 2px 3px -1px rgba(17, 17, 17, 0.1), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+  --knob: var(--face);
   --knob-shadow:
     0 0 3px rgba(17, 17, 17, 0.119), 0 1px 2px rgba(0, 0, 0, 0.14),
     0 3px 6px -1px rgba(0, 0, 0, 0.12), inset 0 2px 3px -2px rgba(255, 255, 255, 1),
@@ -360,11 +364,11 @@
   --field-hover: linear-gradient(180deg, #eeeeee 0%, #f5f5f5 100%);
   --field-shadow:
     inset 0 0 2px rgba(17, 17, 17, 0.15), inset 0 1px 2px rgba(17, 17, 17, 0.06),
-    0 1px 2px -1px rgba(255, 255, 255, 0.72), inset 0 0 0 1px rgba(17, 17, 17, 0),
+    0 1px 2px -1px rgba(255, 255, 255, 0.72), inset 0 0 0 1px rgba(17, 17, 17, 0.05),
     0 0 0 0 rgba(17, 17, 17, 0);
   --field-shadow-hover:
     inset 0 0 2px rgba(17, 17, 17, 0.25), inset 0 1px 2px rgba(17, 17, 17, 0.07),
-    0 1px 2px -1px rgba(255, 255, 255, 0.72), inset 0 0 0 1px rgba(17, 17, 17, 0.04),
+    0 1px 2px -1px rgba(255, 255, 255, 0.72), inset 0 0 0 1px rgba(17, 17, 17, 0.09),
     0 0 0 3px rgba(17, 17, 17, 0.025);
   --field-shadow-focus:
     inset 0 0 2px rgba(17, 17, 17, 0.06), inset 0 1px 2px rgba(17, 17, 17, 0.02),
@@ -448,17 +452,21 @@
   color-scheme: dark;
   /* Surfaces: the page is the deepest layer (never pure black); each
      thing raised off it is a step lighter, each well cut into it a step
-     darker. The lamp hasn't moved: highlights stay on top edges.     */
-  --page: #111111;
-  --panel-face: #202020;
-  --panel-tray: linear-gradient(180deg, #1b1b1b 0%, #191919 100%);
-  --palette-tray: linear-gradient(180deg, #1d1d1d 0%, #1b1b1b 100%);
-  --surface-hover: #262626;
-  --surface-active: #2b2b2b;
-  --line: rgba(255, 255, 255, 0.06);
-  --line-strong: rgba(255, 255, 255, 0.1);
-  --hairline: rgba(255, 255, 255, 0.06);
-  --divider: rgba(255, 255, 255, 0.07);
+     darker. The lamp hasn't moved: highlights stay on top edges.
+
+     In the dark a black outline disappears, so edges here are drawn
+     the way the lamp would show them: a faint light hairline around
+     what's raised, a brighter one along its top.                     */
+  --page: #0c0c0c;
+  --panel-face: #1e1e1e;
+  --panel-tray: linear-gradient(180deg, #191919 0%, #171717 100%);
+  --palette-tray: linear-gradient(180deg, #1b1b1b 0%, #191919 100%);
+  --surface-hover: #272727;
+  --surface-active: #2d2d2d;
+  --line: rgba(255, 255, 255, 0.07);
+  --line-strong: rgba(255, 255, 255, 0.12);
+  --hairline: rgba(255, 255, 255, 0.08);
+  --divider: rgba(255, 255, 255, 0.08);
   --groove: rgba(0, 0, 0, 0.45);
   --groove-lip: 1px 0 0 rgba(255, 255, 255, 0.06);
   --groove-lip-below: 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -477,7 +485,7 @@
   --ink-body: oklch(80% 0 0);
   --ink-muted: oklch(70.8% 0 0);
   --ink-faint: oklch(58% 0 0);
-  --ink-ghost: oklch(42% 0 0);
+  --ink-ghost: oklch(48% 0 0);
   --ink-inverse: oklch(20.5% 0 0);
   --emboss: 0 -1px 0 rgba(0, 0, 0, 0.4);
   --emboss-soft: 0 -1px 0 rgba(0, 0, 0, 0.3);
@@ -503,7 +511,9 @@
 
   /* Raised: the mid material — the secondary key he drew for dark cards */
   --bezel: var(--bezel-mid);
-  --bezel-shadow: var(--bezel-mid-shadow);
+  --bezel-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05), 0 1px 2px rgba(0, 0, 0, 0.5),
+    0 4px 10px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --face: var(--face-mid);
   --face-shadow: var(--face-mid-shadow);
   --face-shadow-hover: var(--face-mid-shadow-hover);
@@ -523,24 +533,26 @@
     0 3px 6px -1px rgba(0, 0, 0, 0.35), inset 0 2px 3px -2px rgba(255, 255, 255, 0.14),
     inset 0 -2px 3px -2px rgba(0, 0, 0, 0.2);
 
-  /* Inverse: a pale key on the dark page, toned down so it doesn't glare */
-  --bezel-inverse: linear-gradient(180deg, #e4e4e4 0%, #a9a9a9 100%);
+  /* Inverse: the light key, built like the light theme's own (a pale
+     bezel close in tone to its face) and a step off pure white so it
+     doesn't glare. Its seam is soft: a hard dark ring round a pale
+     face is what made it look like a disabled control.              */
+  --bezel-inverse: linear-gradient(180deg, #e9e9e9 0%, #c9c9c9 100%);
   --bezel-inverse-shadow:
-    0 0 0 0.5px rgba(0, 0, 0, 0.6), 0 1px 1px rgba(0, 0, 0, 0.4),
-    0 4px 12px -4px rgba(0, 0, 0, 0.6), inset 0 2px 3px -2px rgba(255, 255, 255, 0.9),
-    inset 0 -2px 3px -2px rgba(0, 0, 0, 0.12);
-  --face-inverse: linear-gradient(180deg, #f2f2f2 0%, #e6e6e6 55%, #d9d9d9 100%);
+    0 1px 1px rgba(0, 0, 0, 0.5), 0 4px 12px -4px rgba(0, 0, 0, 0.7),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 0.9), inset 0 -2px 3px -2px rgba(0, 0, 0, 0.08);
+  --face-inverse: linear-gradient(180deg, #fafafa 0%, #f0f0f0 55%, #e6e6e6 100%);
   --face-inverse-shadow:
-    0 0 3px rgba(0, 0, 0, 0.45), 0 1px 4px -1px rgba(0, 0, 0, 0.4),
-    inset 0 2px 3px -2px rgba(255, 255, 255, 1), inset 0 -2px 3px -2px rgba(0, 0, 0, 0.1);
+    0 0 2px rgba(0, 0, 0, 0.16), 0 1px 3px -1px rgba(0, 0, 0, 0.18),
+    inset 0 2px 3px -2px rgba(255, 255, 255, 1), inset 0 -2px 3px -2px rgba(0, 0, 0, 0.06);
   --face-inverse-shadow-hover:
-    0 0 3px rgba(0, 0, 0, 0.5), 0 2px 3px rgba(0, 0, 0, 0.45),
-    0 4px 8px -2px rgba(0, 0, 0, 0.4), inset 0 2px 3px -2px rgba(255, 255, 255, 1),
-    inset 0 -2px 3px -2px rgba(0, 0, 0, 0.1);
-  --face-inverse-pressed: 0 0 3px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(0, 0, 0, 0.22);
+    0 0 2px rgba(0, 0, 0, 0.2), 0 2px 3px rgba(0, 0, 0, 0.22),
+    0 4px 8px -2px rgba(0, 0, 0, 0.2), inset 0 2px 3px -2px rgba(255, 255, 255, 1),
+    inset 0 -2px 3px -2px rgba(0, 0, 0, 0.06);
+  --face-inverse-pressed: 0 0 2px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.16);
   --face-inverse-float-shadow:
-    0 0 3px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.45),
-    0 6px 14px -4px rgba(0, 0, 0, 0.45), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+    0 0 2px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.45),
+    0 6px 14px -4px rgba(0, 0, 0, 0.5), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
   --inverse-lip: rgba(255, 255, 255, 0.6);
   --dot-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
   --fill-shadow: inset 0 2px 3px -2px rgba(255, 255, 255, 0.9), 0 0 2px rgba(0, 0, 0, 0.5);
@@ -596,21 +608,21 @@
     inset 0 2px 3px -2px rgba(253, 230, 138, 0.16);
 
   /* Fields: a step darker than whatever holds them */
-  --field-from: #090909;
-  --field-to: #0d0d0d;
-  --field-hover-from: #070707;
-  --field-hover-to: #0b0b0b;
-  --field-focus: #151515;
-  --field: linear-gradient(180deg, #090909 0%, #0d0d0d 100%);
-  --field-hover: linear-gradient(180deg, #070707 0%, #0b0b0b 100%);
+  --field-from: #050505;
+  --field-to: #090909;
+  --field-hover-from: #040404;
+  --field-hover-to: #080808;
+  --field-focus: #141414;
+  --field: linear-gradient(180deg, #050505 0%, #090909 100%);
+  --field-hover: linear-gradient(180deg, #040404 0%, #080808 100%);
   --field-shadow:
-    inset 0 0 2px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.5),
-    0 1px 2px -1px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.09),
+    inset 0 0 2px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.07), inset 0 0 0 1px rgba(255, 255, 255, 0.12),
     0 0 0 0 rgba(255, 255, 255, 0);
   --field-shadow-hover:
-    inset 0 0 2px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(0, 0, 0, 0.55),
-    0 1px 2px -1px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-    0 0 0 3px rgba(255, 255, 255, 0.025);
+    inset 0 0 2px rgba(0, 0, 0, 0.85), inset 0 1px 2px rgba(0, 0, 0, 0.65),
+    0 1px 0 rgba(255, 255, 255, 0.07), inset 0 0 0 1px rgba(255, 255, 255, 0.17),
+    0 0 0 3px rgba(255, 255, 255, 0.03);
   --field-shadow-focus:
     inset 0 0 2px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.2),
     0 1px 2px -1px rgba(255, 255, 255, 0), inset 0 0 0 1px rgba(255, 255, 255, 0.42),
@@ -630,48 +642,50 @@
   --track: rgba(0, 0, 0, 0.4);
   --track-shadow:
     inset 0 1px 2px rgba(0, 0, 0, 0.6), inset 0 0 2px rgba(0, 0, 0, 0.6),
-    0 1px 2px -1px rgba(255, 255, 255, 0.09);
-  --track-on: #e6e6e6;
+    0 1px 0 rgba(255, 255, 255, 0.07), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --track-on: #9a9a9a;
   --track-on-shadow:
-    inset 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 0 2px rgba(0, 0, 0, 0.25),
-    0 1px 2px -1px rgba(255, 255, 255, 0.09);
+    inset 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 0 2px rgba(0, 0, 0, 0.3),
+    0 1px 0 rgba(255, 255, 255, 0.07);
+  /* A pale knob in a dark channel: a dark one read as a hole */
+  --knob: var(--face-inverse);
 
   /* Wells */
-  --well: linear-gradient(180deg, #0a0a0a 0%, #0e0e0e 100%);
+  --well: linear-gradient(180deg, #060606 0%, #0a0a0a 100%);
   --well-shadow:
-    inset 0 0 2px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.6),
-    0 1px 2px -1px rgba(255, 255, 255, 0.09), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    inset 0 0 2px rgba(0, 0, 0, 0.75), inset 0 1px 2px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.06), inset 0 0 0 1px rgba(255, 255, 255, 0.07);
 
   /* Panels */
-  --panel-bezel: linear-gradient(180deg, #1c1c1c 0%, #161616 100%);
+  --panel-bezel: linear-gradient(180deg, #171717 0%, #121212 100%);
   --panel-shadow:
-    0 0 0 0.5px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4),
-    0 4px 12px -4px rgba(0, 0, 0, 0.5), inset 0 2px 3px -2px rgba(255, 255, 255, 0.07);
+    0 0 0 1px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.5),
+    0 4px 12px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   --panel-face-shadow:
-    0 0 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4),
-    inset 0 2px 3px -2px rgba(255, 255, 255, 0.08);
+    0 0 0 1px rgba(255, 255, 255, 0.05), 0 1px 3px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
   --overlay-shadow:
-    0 0 0 0.5px rgba(0, 0, 0, 0.7), 0 4px 12px -4px rgba(0, 0, 0, 0.55),
-    0 16px 40px -12px rgba(0, 0, 0, 0.7), inset 0 2px 3px -2px rgba(255, 255, 255, 0.07);
+    0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 12px -4px rgba(0, 0, 0, 0.6),
+    0 16px 40px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.07);
   --modal-shadow:
-    0 0 0 0.5px rgba(0, 0, 0, 0.7), 0 8px 24px -8px rgba(0, 0, 0, 0.6),
-    0 32px 80px -16px rgba(0, 0, 0, 0.8), inset 0 2px 3px -2px rgba(255, 255, 255, 0.07);
+    0 0 0 1px rgba(255, 255, 255, 0.08), 0 8px 24px -8px rgba(0, 0, 0, 0.7),
+    0 32px 80px -16px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.07);
   --scrim: rgba(0, 0, 0, 0.6);
 
   /* Cards: his dark card, lifted a few steps so it rises off the page */
   --card:
     radial-gradient(90% 60% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 75%),
     radial-gradient(140% 100% at 30% 0%, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 65%),
-    linear-gradient(180deg, #1a1a1a 0%, #141414 100%);
-  --card-bezel: linear-gradient(180deg, #1d1d1d 0%, #161616 100%);
+    linear-gradient(180deg, #1b1b1b 0%, #151515 100%);
+  --card-bezel: linear-gradient(180deg, #1c1c1c 0%, #151515 100%);
   --card-shadow:
-    0 0 0 0.5px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.3),
-    0 4px 12px -2px rgba(0, 0, 0, 0.35), 0 12px 28px -8px rgba(0, 0, 0, 0.45),
-    inset 0 2px 3px -2px rgba(255, 255, 255, 0.075);
+    0 0 0 1px rgba(255, 255, 255, 0.06), 0 1px 3px rgba(0, 0, 0, 0.4),
+    0 4px 12px -2px rgba(0, 0, 0, 0.45), 0 12px 28px -8px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
   --card-shadow-hover:
-    0 0 0 0.5px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.35),
-    0 10px 28px -6px rgba(0, 0, 0, 0.45), 0 28px 64px -16px rgba(0, 0, 0, 0.5),
-    inset 0 2px 3px -2px rgba(255, 255, 255, 0.09);
+    0 0 0 1px rgba(255, 255, 255, 0.08), 0 2px 6px rgba(0, 0, 0, 0.45),
+    0 10px 28px -6px rgba(0, 0, 0, 0.55), 0 28px 64px -16px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09);
   --card-face-shadow: var(--card-face-dark-shadow);
   --card-rim: rgba(255, 255, 255, 0.1);
   --rim-default: rgba(255, 255, 255, 0.1);
@@ -699,17 +713,21 @@
     color-scheme: dark;
     /* Surfaces: the page is the deepest layer (never pure black); each
        thing raised off it is a step lighter, each well cut into it a step
-       darker. The lamp hasn't moved: highlights stay on top edges.     */
-    --page: #111111;
-    --panel-face: #202020;
-    --panel-tray: linear-gradient(180deg, #1b1b1b 0%, #191919 100%);
-    --palette-tray: linear-gradient(180deg, #1d1d1d 0%, #1b1b1b 100%);
-    --surface-hover: #262626;
-    --surface-active: #2b2b2b;
-    --line: rgba(255, 255, 255, 0.06);
-    --line-strong: rgba(255, 255, 255, 0.1);
-    --hairline: rgba(255, 255, 255, 0.06);
-    --divider: rgba(255, 255, 255, 0.07);
+       darker. The lamp hasn't moved: highlights stay on top edges.
+
+       In the dark a black outline disappears, so edges here are drawn
+       the way the lamp would show them: a faint light hairline around
+       what's raised, a brighter one along its top.                     */
+    --page: #0c0c0c;
+    --panel-face: #1e1e1e;
+    --panel-tray: linear-gradient(180deg, #191919 0%, #171717 100%);
+    --palette-tray: linear-gradient(180deg, #1b1b1b 0%, #191919 100%);
+    --surface-hover: #272727;
+    --surface-active: #2d2d2d;
+    --line: rgba(255, 255, 255, 0.07);
+    --line-strong: rgba(255, 255, 255, 0.12);
+    --hairline: rgba(255, 255, 255, 0.08);
+    --divider: rgba(255, 255, 255, 0.08);
     --groove: rgba(0, 0, 0, 0.45);
     --groove-lip: 1px 0 0 rgba(255, 255, 255, 0.06);
     --groove-lip-below: 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -728,7 +746,7 @@
     --ink-body: oklch(80% 0 0);
     --ink-muted: oklch(70.8% 0 0);
     --ink-faint: oklch(58% 0 0);
-    --ink-ghost: oklch(42% 0 0);
+    --ink-ghost: oklch(48% 0 0);
     --ink-inverse: oklch(20.5% 0 0);
     --emboss: 0 -1px 0 rgba(0, 0, 0, 0.4);
     --emboss-soft: 0 -1px 0 rgba(0, 0, 0, 0.3);
@@ -754,7 +772,9 @@
 
     /* Raised: the mid material — the secondary key he drew for dark cards */
     --bezel: var(--bezel-mid);
-    --bezel-shadow: var(--bezel-mid-shadow);
+    --bezel-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.05), 0 1px 2px rgba(0, 0, 0, 0.5),
+      0 4px 10px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     --face: var(--face-mid);
     --face-shadow: var(--face-mid-shadow);
     --face-shadow-hover: var(--face-mid-shadow-hover);
@@ -774,24 +794,26 @@
       0 3px 6px -1px rgba(0, 0, 0, 0.35), inset 0 2px 3px -2px rgba(255, 255, 255, 0.14),
       inset 0 -2px 3px -2px rgba(0, 0, 0, 0.2);
 
-    /* Inverse: a pale key on the dark page, toned down so it doesn't glare */
-    --bezel-inverse: linear-gradient(180deg, #e4e4e4 0%, #a9a9a9 100%);
+    /* Inverse: the light key, built like the light theme's own (a pale
+       bezel close in tone to its face) and a step off pure white so it
+       doesn't glare. Its seam is soft: a hard dark ring round a pale
+       face is what made it look like a disabled control.              */
+    --bezel-inverse: linear-gradient(180deg, #e9e9e9 0%, #c9c9c9 100%);
     --bezel-inverse-shadow:
-      0 0 0 0.5px rgba(0, 0, 0, 0.6), 0 1px 1px rgba(0, 0, 0, 0.4),
-      0 4px 12px -4px rgba(0, 0, 0, 0.6), inset 0 2px 3px -2px rgba(255, 255, 255, 0.9),
-      inset 0 -2px 3px -2px rgba(0, 0, 0, 0.12);
-    --face-inverse: linear-gradient(180deg, #f2f2f2 0%, #e6e6e6 55%, #d9d9d9 100%);
+      0 1px 1px rgba(0, 0, 0, 0.5), 0 4px 12px -4px rgba(0, 0, 0, 0.7),
+      inset 0 2px 3px -2px rgba(255, 255, 255, 0.9), inset 0 -2px 3px -2px rgba(0, 0, 0, 0.08);
+    --face-inverse: linear-gradient(180deg, #fafafa 0%, #f0f0f0 55%, #e6e6e6 100%);
     --face-inverse-shadow:
-      0 0 3px rgba(0, 0, 0, 0.45), 0 1px 4px -1px rgba(0, 0, 0, 0.4),
-      inset 0 2px 3px -2px rgba(255, 255, 255, 1), inset 0 -2px 3px -2px rgba(0, 0, 0, 0.1);
+      0 0 2px rgba(0, 0, 0, 0.16), 0 1px 3px -1px rgba(0, 0, 0, 0.18),
+      inset 0 2px 3px -2px rgba(255, 255, 255, 1), inset 0 -2px 3px -2px rgba(0, 0, 0, 0.06);
     --face-inverse-shadow-hover:
-      0 0 3px rgba(0, 0, 0, 0.5), 0 2px 3px rgba(0, 0, 0, 0.45),
-      0 4px 8px -2px rgba(0, 0, 0, 0.4), inset 0 2px 3px -2px rgba(255, 255, 255, 1),
-      inset 0 -2px 3px -2px rgba(0, 0, 0, 0.1);
-    --face-inverse-pressed: 0 0 3px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(0, 0, 0, 0.22);
+      0 0 2px rgba(0, 0, 0, 0.2), 0 2px 3px rgba(0, 0, 0, 0.22),
+      0 4px 8px -2px rgba(0, 0, 0, 0.2), inset 0 2px 3px -2px rgba(255, 255, 255, 1),
+      inset 0 -2px 3px -2px rgba(0, 0, 0, 0.06);
+    --face-inverse-pressed: 0 0 2px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.16);
     --face-inverse-float-shadow:
-      0 0 3px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.45),
-      0 6px 14px -4px rgba(0, 0, 0, 0.45), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
+      0 0 2px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.45),
+      0 6px 14px -4px rgba(0, 0, 0, 0.5), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
     --inverse-lip: rgba(255, 255, 255, 0.6);
     --dot-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
     --fill-shadow: inset 0 2px 3px -2px rgba(255, 255, 255, 0.9), 0 0 2px rgba(0, 0, 0, 0.5);
@@ -847,21 +869,21 @@
       inset 0 2px 3px -2px rgba(253, 230, 138, 0.16);
 
     /* Fields: a step darker than whatever holds them */
-    --field-from: #090909;
-    --field-to: #0d0d0d;
-    --field-hover-from: #070707;
-    --field-hover-to: #0b0b0b;
-    --field-focus: #151515;
-    --field: linear-gradient(180deg, #090909 0%, #0d0d0d 100%);
-    --field-hover: linear-gradient(180deg, #070707 0%, #0b0b0b 100%);
+    --field-from: #050505;
+    --field-to: #090909;
+    --field-hover-from: #040404;
+    --field-hover-to: #080808;
+    --field-focus: #141414;
+    --field: linear-gradient(180deg, #050505 0%, #090909 100%);
+    --field-hover: linear-gradient(180deg, #040404 0%, #080808 100%);
     --field-shadow:
-      inset 0 0 2px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.5),
-      0 1px 2px -1px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.09),
+      inset 0 0 2px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(0, 0, 0, 0.6),
+      0 1px 0 rgba(255, 255, 255, 0.07), inset 0 0 0 1px rgba(255, 255, 255, 0.12),
       0 0 0 0 rgba(255, 255, 255, 0);
     --field-shadow-hover:
-      inset 0 0 2px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(0, 0, 0, 0.55),
-      0 1px 2px -1px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-      0 0 0 3px rgba(255, 255, 255, 0.025);
+      inset 0 0 2px rgba(0, 0, 0, 0.85), inset 0 1px 2px rgba(0, 0, 0, 0.65),
+      0 1px 0 rgba(255, 255, 255, 0.07), inset 0 0 0 1px rgba(255, 255, 255, 0.17),
+      0 0 0 3px rgba(255, 255, 255, 0.03);
     --field-shadow-focus:
       inset 0 0 2px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.2),
       0 1px 2px -1px rgba(255, 255, 255, 0), inset 0 0 0 1px rgba(255, 255, 255, 0.42),
@@ -881,48 +903,50 @@
     --track: rgba(0, 0, 0, 0.4);
     --track-shadow:
       inset 0 1px 2px rgba(0, 0, 0, 0.6), inset 0 0 2px rgba(0, 0, 0, 0.6),
-      0 1px 2px -1px rgba(255, 255, 255, 0.09);
-    --track-on: #e6e6e6;
+      0 1px 0 rgba(255, 255, 255, 0.07), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    --track-on: #9a9a9a;
     --track-on-shadow:
-      inset 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 0 2px rgba(0, 0, 0, 0.25),
-      0 1px 2px -1px rgba(255, 255, 255, 0.09);
+      inset 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 0 2px rgba(0, 0, 0, 0.3),
+      0 1px 0 rgba(255, 255, 255, 0.07);
+    /* A pale knob in a dark channel: a dark one read as a hole */
+    --knob: var(--face-inverse);
 
     /* Wells */
-    --well: linear-gradient(180deg, #0a0a0a 0%, #0e0e0e 100%);
+    --well: linear-gradient(180deg, #060606 0%, #0a0a0a 100%);
     --well-shadow:
-      inset 0 0 2px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.6),
-      0 1px 2px -1px rgba(255, 255, 255, 0.09), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+      inset 0 0 2px rgba(0, 0, 0, 0.75), inset 0 1px 2px rgba(0, 0, 0, 0.6),
+      0 1px 0 rgba(255, 255, 255, 0.06), inset 0 0 0 1px rgba(255, 255, 255, 0.07);
 
     /* Panels */
-    --panel-bezel: linear-gradient(180deg, #1c1c1c 0%, #161616 100%);
+    --panel-bezel: linear-gradient(180deg, #171717 0%, #121212 100%);
     --panel-shadow:
-      0 0 0 0.5px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4),
-      0 4px 12px -4px rgba(0, 0, 0, 0.5), inset 0 2px 3px -2px rgba(255, 255, 255, 0.07);
+      0 0 0 1px rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.5),
+      0 4px 12px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     --panel-face-shadow:
-      0 0 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4),
-      inset 0 2px 3px -2px rgba(255, 255, 255, 0.08);
+      0 0 0 1px rgba(255, 255, 255, 0.05), 0 1px 3px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
     --overlay-shadow:
-      0 0 0 0.5px rgba(0, 0, 0, 0.7), 0 4px 12px -4px rgba(0, 0, 0, 0.55),
-      0 16px 40px -12px rgba(0, 0, 0, 0.7), inset 0 2px 3px -2px rgba(255, 255, 255, 0.07);
+      0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 12px -4px rgba(0, 0, 0, 0.6),
+      0 16px 40px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.07);
     --modal-shadow:
-      0 0 0 0.5px rgba(0, 0, 0, 0.7), 0 8px 24px -8px rgba(0, 0, 0, 0.6),
-      0 32px 80px -16px rgba(0, 0, 0, 0.8), inset 0 2px 3px -2px rgba(255, 255, 255, 0.07);
+      0 0 0 1px rgba(255, 255, 255, 0.08), 0 8px 24px -8px rgba(0, 0, 0, 0.7),
+      0 32px 80px -16px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.07);
     --scrim: rgba(0, 0, 0, 0.6);
 
     /* Cards: his dark card, lifted a few steps so it rises off the page */
     --card:
       radial-gradient(90% 60% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 75%),
       radial-gradient(140% 100% at 30% 0%, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 65%),
-      linear-gradient(180deg, #1a1a1a 0%, #141414 100%);
-    --card-bezel: linear-gradient(180deg, #1d1d1d 0%, #161616 100%);
+      linear-gradient(180deg, #1b1b1b 0%, #151515 100%);
+    --card-bezel: linear-gradient(180deg, #1c1c1c 0%, #151515 100%);
     --card-shadow:
-      0 0 0 0.5px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.3),
-      0 4px 12px -2px rgba(0, 0, 0, 0.35), 0 12px 28px -8px rgba(0, 0, 0, 0.45),
-      inset 0 2px 3px -2px rgba(255, 255, 255, 0.075);
+      0 0 0 1px rgba(255, 255, 255, 0.06), 0 1px 3px rgba(0, 0, 0, 0.4),
+      0 4px 12px -2px rgba(0, 0, 0, 0.45), 0 12px 28px -8px rgba(0, 0, 0, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
     --card-shadow-hover:
-      0 0 0 0.5px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.35),
-      0 10px 28px -6px rgba(0, 0, 0, 0.45), 0 28px 64px -16px rgba(0, 0, 0, 0.5),
-      inset 0 2px 3px -2px rgba(255, 255, 255, 0.09);
+      0 0 0 1px rgba(255, 255, 255, 0.08), 0 2px 6px rgba(0, 0, 0, 0.45),
+      0 10px 28px -6px rgba(0, 0, 0, 0.55), 0 28px 64px -16px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.09);
     --card-face-shadow: var(--card-face-dark-shadow);
     --card-rim: rgba(255, 255, 255, 0.1);
     --rim-default: rgba(255, 255, 255, 0.1);

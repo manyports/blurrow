@@ -9,10 +9,10 @@ export function Hero() {
       <div className="flex flex-col items-start">
         {/* Each clause starts its own line at every width; the split is the design */}
         <h1 className="text-[clamp(34px,5.6vw,80px)] font-medium leading-[1.02] tracking-[-0.05em]">
-          <span className="block text-balance text-neutral-900">buttons you want to press,</span>
-          <span className="block text-balance text-neutral-400">fields you want to fill in.</span>
+          <span className="block text-balance text-ink">buttons you want to press,</span>
+          <span className="block text-balance text-ink-faint">fields you want to fill in.</span>
         </h1>
-        <p className="mt-7 max-w-[44ch] text-[17px] leading-[1.55] text-neutral-600 text-pretty sm:text-[18px]">
+        <p className="mt-7 max-w-[44ch] text-[17px] leading-[1.55] text-ink-body text-pretty sm:text-[18px]">
           every part is cut from the same few materials and lit by the same light, so whatever you build with them
           feels made, not assembled.
         </p>

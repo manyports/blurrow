@@ -5,32 +5,82 @@
 /* Site chrome only: not part of the package */
 
 /* ── Site tokens ─────────────────────────────────────────────────── */
-/* The few surfaces only the docs have, themed like the kit's own.   */
+/* The few surfaces only the site has, themed like the kit's own. The
+   dark values live in one block; the system copy is generated from it
+   (keep them in step, as in styles.css).                          */
 :root,
 .light,
 [data-theme='light'] {
-  /* The preview stage: the page's own grey, pressed slightly in */
+  /* The preview stage: a soft bezel holding the page's own grey,
+     pressed slightly in */
+  --stage-bezel: var(--panel-bezel);
+  --stage-bezel-shadow: var(--panel-shadow);
   --stage-shadow: inset 0 0 2px rgba(17, 17, 17, 0.12), inset 0 1px 2px rgba(17, 17, 17, 0.05);
   --bar-shadow-scrolled:
     0 1px 3px rgba(17, 17, 17, 0.04), 0 8px 24px -6px rgba(17, 17, 17, 0.12),
     0 0 0 0.5px rgba(17, 17, 17, 0.06), inset 0 2px 3px -2px rgba(255, 255, 255, 1);
   --menu-scrim: rgba(235, 235, 235, 0.6);
+
+  /* Landing demos: trays cut into the page, the light rig's floor, how
+     hard the lamp's beam lands, and an edge for the always-dark room */
+  --demo-well: linear-gradient(180deg, #e9e9e9 0%, #e2e2e2 100%);
+  --demo-well-shadow: inset 0 0 2px rgba(17, 17, 17, 0.12), inset 0 1px 3px rgba(17, 17, 17, 0.06);
+  --rig-floor: #d6d6d6;
+  --rig-floor-shadow: inset 0 0 2px rgba(17, 17, 17, 0.14), inset 0 1px 3px rgba(17, 17, 17, 0.08);
+  --rig-pool: 0.95;
+  --rig-pool-mid: 0.45;
+  --beam: 1;
+  --room-edge: 0 0 0 0 transparent;
 }
 .dark,
 [data-theme='dark'] {
-  --stage-shadow: inset 0 0 2px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.45);
+  /* A quieter stage: a thin lit edge instead of a thick dark frame */
+  --stage-bezel: linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0%, rgba(255, 255, 255, 0.015) 100%);
+  --stage-bezel-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --stage-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), inset 0 1px 2px rgba(0, 0, 0, 0.45);
   --bar-shadow-scrolled:
     0 1px 3px rgba(0, 0, 0, 0.3), 0 8px 24px -6px rgba(0, 0, 0, 0.6),
-    0 0 0 0.5px rgba(0, 0, 0, 0.6), inset 0 2px 3px -2px rgba(255, 255, 255, 0.075);
-  --menu-scrim: rgba(15, 15, 15, 0.6);
+    0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --menu-scrim: rgba(12, 12, 12, 0.6);
+
+  --demo-well: linear-gradient(180deg, #070707 0%, #0a0a0a 100%);
+  --demo-well-shadow:
+    inset 0 0 2px rgba(0, 0, 0, 0.8), inset 0 1px 3px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --rig-floor: #090909;
+  --rig-floor-shadow:
+    inset 0 0 2px rgba(0, 0, 0, 0.8), inset 0 1px 3px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  /* the same lamp in a dark room: a dimmer pool, a softer beam */
+  --rig-pool: 0.22;
+  --rig-pool-mid: 0.07;
+  --beam: 0.4;
+  --room-edge: 0 0 0 1px rgba(255, 255, 255, 0.07);
 }
 @media (prefers-color-scheme: dark) {
   [data-theme='system'] {
-    --stage-shadow: inset 0 0 2px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.45);
+    /* A quieter stage: a thin lit edge instead of a thick dark frame */
+    --stage-bezel: linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0%, rgba(255, 255, 255, 0.015) 100%);
+    --stage-bezel-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    --stage-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), inset 0 1px 2px rgba(0, 0, 0, 0.45);
     --bar-shadow-scrolled:
       0 1px 3px rgba(0, 0, 0, 0.3), 0 8px 24px -6px rgba(0, 0, 0, 0.6),
-      0 0 0 0.5px rgba(0, 0, 0, 0.6), inset 0 2px 3px -2px rgba(255, 255, 255, 0.075);
-    --menu-scrim: rgba(15, 15, 15, 0.6);
+      0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    --menu-scrim: rgba(12, 12, 12, 0.6);
+
+    --demo-well: linear-gradient(180deg, #070707 0%, #0a0a0a 100%);
+    --demo-well-shadow:
+      inset 0 0 2px rgba(0, 0, 0, 0.8), inset 0 1px 3px rgba(0, 0, 0, 0.6),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    --rig-floor: #090909;
+    --rig-floor-shadow:
+      inset 0 0 2px rgba(0, 0, 0, 0.8), inset 0 1px 3px rgba(0, 0, 0, 0.6),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    /* the same lamp in a dark room: a dimmer pool, a softer beam */
+    --rig-pool: 0.22;
+    --rig-pool-mid: 0.07;
+    --beam: 0.4;
+    --room-edge: 0 0 0 1px rgba(255, 255, 255, 0.07);
   }
 }
 

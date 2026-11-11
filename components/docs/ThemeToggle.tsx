@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useSyncExternalStore } from "react";
-import { usePathname } from "next/navigation";
 import { applyTheme, readTheme, subscribeTheme, writeTheme, type ThemeChoice } from "@/lib/theme";
 
 const darkQuery = "(prefers-color-scheme: dark)";
@@ -12,22 +11,26 @@ function subscribeSystem(cb: () => void) {
   return () => mq.removeEventListener("change", cb);
 }
 
-/* Keeps <html data-theme> in step with the page: the docs follow the
-   reader's choice, the landing page stays lit by its own lamp.      */
-export function useSiteTheme() {
-  const pathname = usePathname();
+/* Whether the page is dark right now: the reader's choice, or the OS
+   when they haven't made one. Read-only; useSiteTheme applies it.  */
+export function usePageDark() {
   const choice = useSyncExternalStore(subscribeTheme, readTheme, () => "system" as ThemeChoice);
   const systemDark = useSyncExternalStore(
     subscribeSystem,
     () => window.matchMedia(darkQuery).matches,
     () => false,
   );
+  return { choice, dark: choice === "dark" || (choice === "system" && systemDark) };
+}
+
+/* Keeps <html data-theme> in step with the reader's choice */
+export function useSiteTheme() {
+  const { choice, dark } = usePageDark();
 
   useEffect(() => {
-    applyTheme(choice, pathname);
-  }, [choice, pathname]);
+    applyTheme(choice);
+  }, [choice]);
 
-  const dark = choice === "dark" || (choice === "system" && systemDark);
   const toggle = () => {
     const next: ThemeChoice = dark ? "light" : "dark";
     writeTheme(next);
@@ -37,7 +40,7 @@ export function useSiteTheme() {
 
 function Sun() {
   return (
-    <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" viewBox="0 0 24 24" aria-hidden>
+    <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" viewBox="0 0 24 24" aria-hidden>
       <circle cx="12" cy="12" r="4" />
       <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
     </svg>
@@ -46,16 +49,20 @@ function Sun() {
 
 function Moon() {
   return (
-    <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden>
+    <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden>
       <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" />
     </svg>
   );
 }
 
-/* A small raised key, like the star beside it. The glyph shows the light
-   you're in; pressing it turns the lamp the other way, and the two glyphs
-   swap with a quarter turn.                                           */
-export function ThemeToggle({ dark, onToggle, className = "" }: { dark: boolean; onToggle: () => void; className?: string }) {
+/* The glyph shows the light you're in; pressing it turns the lamp the
+   other way, and the two glyphs swap with a quarter turn.
+
+   On the desktop bar it's a ghost key, like search beside it: quiet
+   until you point at it. On mobile it sits with the search and menu
+   keys, so it's a small raised key like them.                       */
+export function ThemeToggle({ dark, onToggle, variant = "ghost" }: { dark: boolean; onToggle: () => void; variant?: "ghost" | "key" }) {
+  const ghost = variant === "ghost";
   return (
     <button
       type="button"
@@ -63,12 +70,13 @@ export function ThemeToggle({ dark, onToggle, className = "" }: { dark: boolean;
       aria-label={dark ? "switch to light theme" : "switch to dark theme"}
       title={dark ? "light theme" : "dark theme"}
       className={[
-        "relative w-9 h-9 rounded-[11px] flex items-center justify-center text-ink-label hover:text-ink cursor-pointer",
-        "transition-[color,scale] duration-150 active:scale-95",
+        "relative w-9 h-9 flex items-center justify-center cursor-pointer",
         "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
-        className,
+        ghost
+          ? "rounded-[11px] text-ink-muted hover:text-ink hover:bg-surface-active/70 hover:[box-shadow:var(--ghost-shadow-hover)] active:[box-shadow:var(--ghost-shadow-pressed)] transition-[background-color,box-shadow,color] duration-150"
+          : "rounded-[10px] text-ink-label active:scale-95 transition-[scale] duration-150",
       ].join(" ")}
-      style={{ background: "var(--face)", boxShadow: "var(--tile-shadow)" }}
+      style={ghost ? undefined : { background: "var(--face)", boxShadow: "var(--tile-shadow)" }}
     >
       {[false, true].map((isMoon) => (
         <span

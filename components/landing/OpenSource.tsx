@@ -168,10 +168,10 @@ export function OpenSource({ stars }: { stars: number | null }) {
 
   return (
     <section className="flex flex-col">
-      <h2 className="text-[clamp(36px,5vw,64px)] font-medium leading-[1] tracking-[-0.05em] text-neutral-900">
+      <h2 className="text-[clamp(36px,5vw,64px)] font-medium leading-[1] tracking-[-0.05em] text-ink">
         tell me what to build next.
       </h2>
-      <p className="mt-6 max-w-[46ch] text-[17px] leading-[1.6] text-neutral-600 text-pretty">
+      <p className="mt-6 max-w-[46ch] text-[17px] leading-[1.6] text-ink-body text-pretty">
         if a part you need is missing, or one of them feels off, write it below. it opens as an issue on github with
         your words as its title.
       </p>

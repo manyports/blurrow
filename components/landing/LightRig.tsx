@@ -42,8 +42,8 @@ function LitCard({ theme, lamp, at }: { theme: "light" | "dark"; lamp: number; a
       />
       <CardShell theme={theme} railKind="text" rail={<span>{theme}</span>}>
         <div className="p-5 sm:p-6 min-h-[120px] sm:min-h-[140px] flex flex-col justify-end">
-          <p className={["text-[15px] font-medium", dark ? "text-white" : "text-neutral-900"].join(" ")}>weekly digest</p>
-          <p className={["text-[13px] mt-1", dark ? "text-neutral-400" : "text-neutral-500"].join(" ")}>
+          <p className={["text-[15px] font-medium", dark ? "text-white" : "text-ink"].join(" ")}>weekly digest</p>
+          <p className={["text-[13px] mt-1", dark ? "text-ink-faint" : "text-ink-muted"].join(" ")}>
             goes out every monday at 9am
           </p>
         </div>
@@ -149,8 +149,8 @@ export function LightRig() {
         ref={stage}
         className="relative h-[340px] sm:h-[380px] rounded-[24px] overflow-hidden select-none"
         style={{
-          background: "#d6d6d6",
-          boxShadow: "inset 0 0 2px rgba(17,17,17,0.14), inset 0 1px 3px rgba(17,17,17,0.08)",
+          background: "var(--rig-floor)",
+          boxShadow: "var(--rig-floor-shadow)",
         }}
       >
         {/* The pool of light, wherever the lamp hangs */}
@@ -158,11 +158,11 @@ export function LightRig() {
           aria-hidden
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: `radial-gradient(60% 95% at ${lamp * 100}% 48px, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.45) 45%, rgba(255,255,255,0) 80%)`,
+            background: `radial-gradient(60% 95% at ${lamp * 100}% 48px, rgba(255,255,255,var(--rig-pool)) 0%, rgba(255,255,255,var(--rig-pool-mid)) 45%, rgba(255,255,255,0) 80%)`,
           }}
         />
         {/* The track the lamp slides along */}
-        <span aria-hidden className="absolute top-[14px] inset-x-6 h-px bg-neutral-900/15" />
+        <span aria-hidden className="absolute top-[14px] inset-x-6 h-px bg-ink/15" />
 
         <div
           role="slider"
@@ -177,7 +177,7 @@ export function LightRig() {
           onPointerCancel={release}
           onKeyDown={onKey}
           className={[
-            "absolute top-[8px] -translate-x-1/2 z-10 px-3 pb-2 touch-none rounded-[10px] outline-none focus-visible:outline-2 focus-visible:outline-neutral-900",
+            "absolute top-[8px] -translate-x-1/2 z-10 px-3 pb-2 touch-none rounded-[10px] outline-none focus-visible:outline-2 focus-visible:outline-ink",
             dragging ? "cursor-grabbing" : "cursor-grab",
           ].join(" ")}
           style={{ left: `${lamp * 100}%` }}
@@ -207,7 +207,7 @@ export function LightRig() {
           ))}
         </div>
       </div>
-      <figcaption className="text-[13px] leading-[1.55] text-neutral-500 max-w-[52ch]">
+      <figcaption className="text-[13px] leading-[1.55] text-ink-muted max-w-[52ch]">
         go ahead, drag the lamp. let go and it swings back overhead, which is where it stays in the kit.
       </figcaption>
     </figure>

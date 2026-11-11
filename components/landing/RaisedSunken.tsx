@@ -47,8 +47,8 @@ export function RaisedSunken() {
     <div
       className="rounded-[24px] p-5 sm:p-8 flex flex-col gap-6"
       style={{
-        background: "linear-gradient(180deg, #e9e9e9 0%, #e2e2e2 100%)",
-        boxShadow: "inset 0 0 2px rgba(17,17,17,0.12), inset 0 1px 3px rgba(17,17,17,0.06)",
+        background: "var(--demo-well)",
+        boxShadow: "var(--demo-well-shadow)",
       }}
     >
       <form
@@ -66,7 +66,7 @@ export function RaisedSunken() {
             onChange={(e) => setTitle(e.target.value)}
             fullWidth
           />
-          <p className="text-[12px] text-neutral-500 pl-1">sunken, so you type into it</p>
+          <p className="text-[12px] text-ink-muted pl-1">sunken, so you type into it</p>
         </div>
         <div className="flex flex-col gap-2 items-start">
           <Button
@@ -77,12 +77,12 @@ export function RaisedSunken() {
           >
             save draft
           </Button>
-          <p className="text-[12px] text-neutral-500 pl-1">raised, so you press it</p>
+          <p className="text-[12px] text-ink-muted pl-1">raised, so you press it</p>
         </div>
       </form>
 
       <div className="flex flex-col gap-2">
-        <p className="text-[12px] text-neutral-500 pl-1">your drafts, resting in a well</p>
+        <p className="text-[12px] text-ink-muted pl-1">your drafts, resting in a well</p>
         <div
           className="rounded-[18px] p-2.5 flex flex-col gap-2 min-h-[176px]"
           style={{ background: "var(--well)", boxShadow: "var(--well-shadow)" }}
@@ -94,8 +94,8 @@ export function RaisedSunken() {
               className="rounded-[12px] px-4 py-3 flex items-center justify-between gap-3"
               style={{ background: "var(--face-light)", boxShadow: "var(--thumb-shadow)" }}
             >
-              <span className="text-[14px] font-medium text-neutral-900 truncate">{d.title}</span>
-              <span className="text-[12px] text-neutral-400 shrink-0">{d.fresh && i === 0 ? "just now" : "earlier"}</span>
+              <span className="text-[14px] font-medium text-ink truncate">{d.title}</span>
+              <span className="text-[12px] text-ink-faint shrink-0">{d.fresh && i === 0 ? "just now" : "earlier"}</span>
             </div>
           ))}
         </div>
