@@ -1,5 +1,8 @@
 <a href="https://www.blurrow.org">
-  <img src=".github/readme/banner.png" alt="blurrow/ui: buttons you want to press, fields you want to fill in" width="100%">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/readme/banner-dark.png">
+    <img src=".github/readme/banner.png" alt="the blurrow/ui home page: buttons you want to press, fields you want to fill in, above a panel of live controls" width="100%">
+  </picture>
 </a>
 
 <p align="center">
@@ -23,7 +26,10 @@ blurrow is a set of 62 react components that look and feel like physical things.
 i made it for my blog, [blogs](https://github.com/manyports/blogs), and kept polishing it until it felt wrong to keep it to myself. it's free, mit licensed, and built for react 19 and tailwind css v4.
 
 <p align="center">
-  <img src=".github/readme/favourites.png" alt="nine blurrow components: buttons, toggles, an input, tabs, pagination, a radio group, a select, a stat card and an alert" width="100%">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/readme/favourites-dark.png">
+    <img src=".github/readme/favourites.png" alt="ten blurrow components in a case: radio cards, an otp input, a slider, toggles, a color picker, buttons, tabs, a date picker, a file upload and a stat card" width="100%">
+  </picture>
 </p>
 
 ## getting started
@@ -32,7 +38,7 @@ i made it for my blog, [blogs](https://github.com/manyports/blogs), and kept pol
 npx @blurrow/ui init
 ```
 
-that's the whole setup. it installs the package, adds two lines to your stylesheet, loads the archivo font and wraps your app in `ToastProvider`. it shows you each change before it writes anything, and running it a second time won't hurt.
+that's the whole setup. it installs the package, adds two lines to your stylesheet, loads the archivo font, wraps your app in `ToastProvider` and writes a small `blurrow.json`. it shows you each change before it writes anything, and running it a second time won't hurt.
 
 <p align="center">
   <img src=".github/readme/cli.png" alt="the blurrow cli setting up a next.js project" width="640">
@@ -69,7 +75,7 @@ npx @blurrow/ui diff                    # shows what you've changed since
 
 | command | what it does |
 | --- | --- |
-| `init` | sets up a project: package, styles, font, toasts. safe to run again |
+| `init` | sets up a project: package, styles, font, toasts, config. safe to run again |
 | `add [names…]` | copies components into your project, with their dependencies |
 | `list` | every component, and which ones you've already copied |
 | `diff [name]` | what you've changed in your copies compared to the release |
@@ -79,34 +85,54 @@ everything takes `--yes`, `--dry-run` and `--cwd <path>`. once the package is in
 
 ## one light source
 
-<img src=".github/readme/anatomy.png" alt="a primary button pulled apart into its three layers under a lamp: label, face and bezel" width="100%">
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/readme/anatomy-dark.png">
+    <img src=".github/readme/anatomy.png" alt="fig. 2, exploded view: a subscribe button pulled apart into its three layers, label, face and bezel" width="640">
+  </picture>
+</p>
 
-every control is built from two parts: a bezel that never moves and a face that does. hover and the face lifts a pixel. press and it sinks flush with the bezel. that one idea repeats everywhere, from the smallest checkbox up to the cards.
+every control is built from three layers: a bezel that never moves, a face that does, and a label embossed on top. no images, no canvas, just gradients and shadows from one set of tokens. hover and the face lifts a pixel. press and it sinks flush with the bezel. that one idea repeats everywhere, from the smallest checkbox up to the cards.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/readme/raised-sunken-dark.png">
+    <img src=".github/readme/raised-sunken.png" alt="fig. 4, raised and sunken: a text field cut into the surface next to a key standing up on it" width="640">
+  </picture>
+</p>
 
 things you press are raised. things you type into are sunken. you can tell a button from a field before you've read either of them.
 
-<img src=".github/readme/one-light.png" alt="a light card and a dark card under a single lamp, casting the same shadow" width="100%">
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/readme/lighting-dark.png">
+    <img src=".github/readme/lighting.png" alt="fig. 3, lighting: a lamp above a button, with the highlight on the edge facing it and the shadow falling away" width="640">
+  </picture>
+</p>
 
-and every shadow is drawn as if one lamp is hanging right above your screen. top edges catch the light, bottom edges fall into shade. since the lamp never moves, a light card and a dark card cast the same shadow and get along fine on the same page. on [the website](https://www.blurrow.org) you can grab that lamp and drag it around.
+and every shadow is drawn as if one lamp is hanging right above your screen. top edges catch the light, bottom edges fall into shade. since the lamp stays put, everything on the page agrees on where the light is. on [the website](https://www.blurrow.org) you can watch it swing out of place for a moment and the highlights follow it.
 
-it comes in light and dark. put `data-theme="dark"` on `<html>` and every material swaps for a darker one under the same lamp, or use `data-theme="system"` to follow the os. [the installation guide](https://www.blurrow.org/docs/installation#dark-mode) has the details.
+it comes in light and dark. pages are light by default. put `data-theme="dark"` on `<html>` and every material swaps for a darker one under the same lamp, or use `data-theme="system"` to follow the os. [the installation guide](https://www.blurrow.org/docs/installation#dark-mode) has the details.
 
 ## what's in the box
 
 | | |
 | --- | --- |
 | **actions** | [button](https://www.blurrow.org/docs/components/button) · [button group](https://www.blurrow.org/docs/components/button-group) · [close button](https://www.blurrow.org/docs/components/close-button) |
-| **forms** | [input](https://www.blurrow.org/docs/components/input) · [textarea](https://www.blurrow.org/docs/components/textarea) · [select](https://www.blurrow.org/docs/components/select) · [checkbox](https://www.blurrow.org/docs/components/checkbox) · [radio group](https://www.blurrow.org/docs/components/radio-group) · [toggle](https://www.blurrow.org/docs/components/toggle) · [tag input](https://www.blurrow.org/docs/components/tag-input) |
+| **forms** | [input](https://www.blurrow.org/docs/components/input) · [number input](https://www.blurrow.org/docs/components/number-input) · [textarea](https://www.blurrow.org/docs/components/textarea) · [select](https://www.blurrow.org/docs/components/select) · [combobox](https://www.blurrow.org/docs/components/combobox) · [checkbox](https://www.blurrow.org/docs/components/checkbox) · [radio group](https://www.blurrow.org/docs/components/radio-group) · [radio cards](https://www.blurrow.org/docs/components/radio-cards) · [toggle](https://www.blurrow.org/docs/components/toggle) · [slider](https://www.blurrow.org/docs/components/slider) · [tag input](https://www.blurrow.org/docs/components/tag-input) · [otp input](https://www.blurrow.org/docs/components/otp-input) · [date picker](https://www.blurrow.org/docs/components/date-picker) · [date range picker](https://www.blurrow.org/docs/components/date-range-picker) · [time picker](https://www.blurrow.org/docs/components/time-picker) · [color picker](https://www.blurrow.org/docs/components/color-picker) · [file upload](https://www.blurrow.org/docs/components/file-upload) |
 | **navigation** | [tabs](https://www.blurrow.org/docs/components/tabs) · [pagination](https://www.blurrow.org/docs/components/pagination) · [breadcrumb](https://www.blurrow.org/docs/components/breadcrumb) · [sidebar](https://www.blurrow.org/docs/components/sidebar) · [steps](https://www.blurrow.org/docs/components/steps) · [table of contents](https://www.blurrow.org/docs/components/table-of-contents) · [command palette](https://www.blurrow.org/docs/components/command-palette) |
-| **overlays** | [modal](https://www.blurrow.org/docs/components/modal) · [drawer](https://www.blurrow.org/docs/components/drawer) · [popover](https://www.blurrow.org/docs/components/popover) · [tooltip](https://www.blurrow.org/docs/components/tooltip) · [dropdown menu](https://www.blurrow.org/docs/components/dropdown-menu) · [toast](https://www.blurrow.org/docs/components/toast) |
-| **feedback** | [alert](https://www.blurrow.org/docs/components/alert) · [banner](https://www.blurrow.org/docs/components/banner) · [progress](https://www.blurrow.org/docs/components/progress) · [skeleton](https://www.blurrow.org/docs/components/skeleton) · [empty state](https://www.blurrow.org/docs/components/empty-state) |
-| **data display** | [badge](https://www.blurrow.org/docs/components/badge) · [avatar](https://www.blurrow.org/docs/components/avatar) · [kbd](https://www.blurrow.org/docs/components/kbd) · [table](https://www.blurrow.org/docs/components/table) · [data list](https://www.blurrow.org/docs/components/data-list) · [stat](https://www.blurrow.org/docs/components/stat) · [stat card](https://www.blurrow.org/docs/components/stat-card) · [timeline](https://www.blurrow.org/docs/components/timeline) · [code block](https://www.blurrow.org/docs/components/code-block) · [accordion](https://www.blurrow.org/docs/components/accordion) |
+| **overlays** | [modal](https://www.blurrow.org/docs/components/modal) · [drawer](https://www.blurrow.org/docs/components/drawer) · [popover](https://www.blurrow.org/docs/components/popover) · [tooltip](https://www.blurrow.org/docs/components/tooltip) · [hover card](https://www.blurrow.org/docs/components/hover-card) · [dropdown menu](https://www.blurrow.org/docs/components/dropdown-menu) · [context menu](https://www.blurrow.org/docs/components/context-menu) · [toast](https://www.blurrow.org/docs/components/toast) |
+| **feedback** | [alert](https://www.blurrow.org/docs/components/alert) · [banner](https://www.blurrow.org/docs/components/banner) · [progress](https://www.blurrow.org/docs/components/progress) · [spinner](https://www.blurrow.org/docs/components/spinner) · [skeleton](https://www.blurrow.org/docs/components/skeleton) · [empty state](https://www.blurrow.org/docs/components/empty-state) |
+| **data display** | [badge](https://www.blurrow.org/docs/components/badge) · [avatar](https://www.blurrow.org/docs/components/avatar) · [kbd](https://www.blurrow.org/docs/components/kbd) · [separator](https://www.blurrow.org/docs/components/separator) · [table](https://www.blurrow.org/docs/components/table) · [data list](https://www.blurrow.org/docs/components/data-list) · [stat](https://www.blurrow.org/docs/components/stat) · [stat card](https://www.blurrow.org/docs/components/stat-card) · [timeline](https://www.blurrow.org/docs/components/timeline) · [code block](https://www.blurrow.org/docs/components/code-block) · [accordion](https://www.blurrow.org/docs/components/accordion) |
 | **cards** | [card shell](https://www.blurrow.org/docs/components/card-shell) · [card](https://www.blurrow.org/docs/components/card) · [quote card](https://www.blurrow.org/docs/components/quote-card) · [spotlight card](https://www.blurrow.org/docs/components/spotlight-card) · [author card](https://www.blurrow.org/docs/components/author-card) · [carousel](https://www.blurrow.org/docs/components/carousel) |
 | **editorial** | [reading progress](https://www.blurrow.org/docs/components/reading-progress) · [reading time](https://www.blurrow.org/docs/components/reading-time) · [reaction bar](https://www.blurrow.org/docs/components/reaction-bar) · [share buttons](https://www.blurrow.org/docs/components/share-buttons) |
 
 each one has [its own page](https://www.blurrow.org/docs/components) with a live preview, a handful of examples, its props and the full source.
 
-<img src=".github/readme/docs.png" alt="the docs page for the button component" width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/readme/docs-dark.png">
+  <img src=".github/readme/docs.png" alt="the docs page for the button component" width="100%">
+</picture>
 
 ## working on blurrow
 
@@ -141,7 +167,10 @@ mit, so use it for anything. if you build something nice with it, i'd really lik
 <br>
 
 <a href="https://www.blurrow.org">
-  <img src=".github/readme/lights-on.png" alt="a pendant lamp lighting the words: ready when you are" width="100%">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/readme/lights-on-dark.png">
+    <img src=".github/readme/lights-on.png" alt="ready when you are: one command, npx @blurrow/ui init, and a hand-written thank-you note" width="100%">
+  </picture>
 </a>
 
 <p align="center">
