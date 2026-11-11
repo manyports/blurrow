@@ -11,10 +11,10 @@ function subscribeSystem(cb: () => void) {
   return () => mq.removeEventListener("change", cb);
 }
 
-/* Whether the page is dark right now: the reader's choice, or the OS
+/* Whether the page is dark right now: the reader's choice, or light
    when they haven't made one. Read-only; useSiteTheme applies it.  */
 export function usePageDark() {
-  const choice = useSyncExternalStore(subscribeTheme, readTheme, () => "system" as ThemeChoice);
+  const choice = useSyncExternalStore(subscribeTheme, readTheme, () => "light" as ThemeChoice);
   const systemDark = useSyncExternalStore(
     subscribeSystem,
     () => window.matchMedia(darkQuery).matches,
