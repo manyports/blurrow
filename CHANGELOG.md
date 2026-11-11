@@ -2,9 +2,9 @@
 
 everything that changed in blurrow, newest first. the shape follows [keep a changelog](https://keepachangelog.com/en/1.1.0/).
 
-a note on numbers: the first commit is called "blurrow 1.0", but the package on npm is at 0.2.0. the versions below are the npm ones, since that's what people install.
+a note on numbers: the first commit is called "blurrow 1.0", but the package on npm is at 0.3.0. the versions below are the npm ones, since that's what people install.
 
-## unreleased
+## 0.3.0 (2026-11-11)
 
 ### added
 
@@ -25,8 +25,10 @@ these don't change the package, only the website:
 - a new readme with pictures, and a fresh package readme.
 - star counts on the landing page.
 - dark mode on the landing page, not just the docs. the hero's instrument follows the page's theme until you pick a finish.
-- the theme switch is a quiet ghost key beside search on desktop, and shows on every page.
 - a softer frame around component previews in dark mode.
+- "how it's made" is a deck on every screen: the section pins and the four steps slide across as you scroll, each holding still long enough to read, beside a plate that changes with them.
+- "the parts" on a phone is a stack of cards: each part pins under the header and the next slides up over it, while the one beneath steps back.
+- a new header, the same on every screen: a floating bar with the links in a well and a sliding thumb, a search field and the theme key, on every page. on a phone it's the name and a wide menu key, with search and a light / dark / auto switch inside the menu.
 
 ## 0.2.0 (2026-10-30)
 
