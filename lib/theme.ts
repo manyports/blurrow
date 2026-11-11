@@ -1,5 +1,5 @@
 /* The site's theme: the reader's choice, kept in localStorage and
-   written to <html data-theme>. "system" follows the OS.            */
+   written to <html data-theme>. "system" follows the OS. Light until they choose. */
 
 export type ThemeChoice = "light" | "dark" | "system";
 
@@ -10,9 +10,9 @@ const listeners = new Set<() => void>();
 export function readTheme(): ThemeChoice {
   try {
     const v = localStorage.getItem(THEME_KEY);
-    return v === "light" || v === "dark" ? v : "system";
+    return v === "dark" || v === "system" ? v : "light";
   } catch {
-    return "system";
+    return "light";
   }
 }
 
@@ -39,4 +39,4 @@ export function applyTheme(choice: ThemeChoice) {
 }
 
 /* Runs before first paint so a dark page never flashes light */
-export const themeScript = `try{var t=localStorage.getItem("${THEME_KEY}");if(t!=="light"&&t!=="dark")t="system";document.documentElement.dataset.theme=t}catch(e){}`;
+export const themeScript = `try{var t=localStorage.getItem("${THEME_KEY}");if(t!=="dark"&&t!=="system")t="light";document.documentElement.dataset.theme=t}catch(e){}`;
