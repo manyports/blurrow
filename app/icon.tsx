@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { Keycap, ogFonts } from "@/lib/og";
+import { Mark } from "@/lib/og";
 
 /* The mark at two sizes: a crisp favicon, and a large one for the web
    manifest and anywhere else that wants a big icon.                */
@@ -15,9 +15,9 @@ export default async function Icon({ id }: { id: Promise<string | number> }) {
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "transparent" }}>
-        <Keycap size={size} />
+        <Mark size={size} />
       </div>
     ),
-    { width: size, height: size, fonts: await ogFonts() },
+    { width: size, height: size },
   );
 }
